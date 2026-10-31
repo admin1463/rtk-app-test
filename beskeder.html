@@ -1,0 +1,815 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta name="rtk-version" content="51ffac1a5eb8">
+<script src="/opdater.js?v=f299a739b234" defer></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0B3D3A">
+<meta name="apple-mobile-web-app-title" content="Mit RTK">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="ikon-medlem-180.png">
+<link rel="icon" type="image/png" href="ikon-medlem-180.png">
+<title>Beskeder · Mit RTK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtk.css?v=ea143393276c">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <a class="hjem" href="./" data-t-aria="tilForsiden" aria-label="Til forsiden" title="Til forsiden"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h5v-6h4v6h5V9.5"/></svg></a>
+      <a class="logo" href="https://roskildetennisklub.dk" target="_blank" rel="noopener" data-t-aria="klubLink" aria-label="Roskilde Tennis Klubs hjemmeside (åbner i ny fane)"><img src="ikoner/rtk-hvid.png" alt=""></a>
+      <span class="navn titel"><b data-t="sideTitel">Beskeder</b><span><span class="klub-d">Mit RTK · </span><span data-t="side">Medlemssiden</span></span></span>
+    </div>
+    <div class="hoejre">
+      <div class="sprog" role="group" aria-label="Sprog / Language">
+        <button type="button" data-sprog="da" lang="da" aria-label="Dansk" aria-pressed="true">DA</button>
+        <button type="button" data-sprog="en" lang="en" aria-label="English" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="side">
+  <div class="monster lav" aria-hidden="true"></div>
+  <div class="wrap indhold smal">
+
+    <section id="loginDel" class="hidden">
+      <p class="kicker" data-t="kicker">Beskeder</p>
+      <h1 class="lille" data-t="h1">Sådan vil du have beskeder</h1>
+      <p class="hint" style="font-size:16px;max-width:560px" data-t="introLogin">Log ind med dit mobilnummer, så kan du vælge, hvordan beskeder fra klubben kommer.</p>
+      <div class="card" id="login" style="max-width:520px;margin-top:16px"></div>
+      <p class="hint"><span data-t="erForaelder">Er du forælder?</span> <a href="boern.html" data-t="tilBoernKort">Gå til Mine børn</a></p>
+    </section>
+
+    <section id="indeDel" class="hidden">
+      <div class="who"><span id="hvem"></span><button type="button" class="ghost small" id="logud" data-t="kLogUd">Log ud</button></div>
+      <div id="hentMsg" class="msg" aria-live="polite"></div>
+
+      <div id="kunForaelder" class="card hidden">
+        <b data-t="kunForaelderH">Du er logget ind som forælder</b>
+        <p class="hint" data-t="kunForaelderTekst">Her bestemmer du over beskederne om dine børn.</p>
+        <p style="margin:12px 0 0"><a href="boern.html" data-t="tilBoern">Gå til Mine børn</a></p>
+      </div>
+
+      <div id="voksen" class="hidden">
+        <h1 class="lille" data-t="h1">Sådan vil du have beskeder</h1>
+        <section class="afsnit" id="pushDel">
+          <h2 data-t="pushH">Notifikationer på denne telefon</h2>
+          <p class="hint" style="margin-top:4px" data-t="pushTekst">Få besked med det samme, fx når der er en ledig plads, eller når et spil er aflyst. Gratis for klubben.</p>
+          <div id="pushIos" class="hidden">
+            <div class="advarsel" role="note" data-t="pushIosH">På iPhone skal Mit RTK først ligge på hjemmeskærmen.</div>
+            <ol class="push-trin">
+              <li id="pushIos1" data-t="pushIos1">Tryk på Del-knappen (firkanten med pilen op) nederst i Safari.</li>
+              <li data-t="pushIos2">Vælg Føj til hjemmeskærm, og tryk Tilføj.</li>
+              <li data-t="pushIos3">Åbn Mit RTK fra hjemmeskærmen, log ind, og kom tilbage hertil.</li>
+              <li data-t="pushIos4">Tryk Slå notifikationer til, og svar Tillad.</li>
+            </ol>
+            <p class="hint" data-t="pushIosKrav">Kræver iOS 16.4 eller nyere.</p>
+          </div>
+          <p id="pushKanIkke" class="hint hidden" data-t="pushKanIkke">Denne browser kan ikke få notifikationer. Prøv Chrome, Edge, Firefox eller Safari.</p>
+          <div id="pushNej" class="advarsel hidden" role="note" data-t="pushNej">Du har sagt nej til notifikationer fra Mit RTK på denne enhed. Slå det til under webstedets indstillinger i browseren eller i telefonens indstillinger, og genindlæs siden.</div>
+          <div id="pushFra" class="hidden" style="margin-top:12px"><button type="button" id="pushTilKnap" class="ok" data-t="pushSlaaTil">Slå notifikationer til</button></div>
+          <div id="pushTil" class="hidden">
+            <div class="tak" style="margin:12px 0 0"><b data-t="pushSlaaetTil">Slået til</b> <span id="pushHvor"></span></div>
+            <div class="knapper" style="margin-top:12px"><button type="button" class="ghost small" id="pushProeve" data-t="pushProeve">Send en prøve</button><button type="button" class="ghost small" id="pushFraKnap" data-t="pushSlaaFra">Slå fra på denne enhed</button></div>
+          </div>
+          <p id="pushAndre" class="hint hidden"></p>
+          <div id="pushMsg" class="msg" aria-live="polite"></div>
+        </section>
+        <section class="afsnit hidden" id="valgDel">
+          <h2 data-t="valgH">Hvad vil du have besked om?</h2>
+          <p class="hint" style="margin-top:4px" data-t="valgTekst">Alt står også på siden med en markering, så du ikke går glip af noget, selvom du slår en besked fra.</p>
+          <h3 data-t="valgGrupper">Mine grupper</h3>
+          <div id="valgGrupper"></div>
+          <h3 data-t="valgPaamindH">Påmindelse før et spil</h3>
+          <p class="hint" style="margin-top:0" data-t="valgPaamindTekst">Kun når du har en plads. Vælg højst to, eller ingen.</p>
+          <div class="chips" id="paamindChips" role="group" data-t-aria="valgPaamindH" aria-label="Påmindelse før et spil"></div>
+          <h3 data-t="valgBoers">Spillerbørsen</h3>
+          <div id="valgBoers"></div>
+          <h3 data-t="valgRo">Ro</h3>
+          <div id="valgRo"></div>
+          <div id="valgMsg" class="msg" aria-live="polite"></div>
+        </section>
+        <section class="afsnit">
+          <h2 id="omDetH" data-t="omDet">Om det, du er med i</h2>
+          <p class="hint" data-t="omDetTekst">Fx at din ketsjer er klar, eller at en kamp er aflyst. De kan ikke slås fra, men du vælger, hvordan de kommer.</p>
+          <fieldset class="valg" id="kanaler" aria-labelledby="omDetH"></fieldset>
+          <div id="kanalMsg" class="msg" aria-live="polite"></div>
+        </section>
+        <section class="afsnit">
+          <div class="linje">
+            <div>
+              <h2 id="nyhH" data-t="nyheder">Nyt fra pro shoppen og partnerne</h2>
+              <p class="hint" style="margin-top:4px" data-t="nyhederTekst">Tilbud, nye varer og nyt fra Babolat og Racketlife. Aldrig som sms.</p>
+            </div>
+            <button type="button" role="switch" class="vippe" id="vippe" aria-checked="false" aria-labelledby="nyhH"></button>
+          </div>
+          <p id="nyhStatus" class="hint" style="font-weight:600;color:#000"></p>
+          <p class="hint" data-t="nyhederKanal">Kommer på mail. Notifikationer kommer snart.</p>
+          <p class="hint" data-t="aldrigVidere">Klubben sender selv. Dine oplysninger gives aldrig videre til partnerne.</p>
+          <div id="nyhMsg" class="msg" aria-live="polite"></div>
+        </section>
+      </div>
+
+      <div id="ung" class="hidden">
+        <h1 class="lille" data-t="h1Ung">Dine beskeder</h1>
+        <section class="afsnit">
+          <h2 data-t="omDet">Om det, du er med i</h2>
+          <p class="hint" data-t="omDetUng">Fx at din træning er flyttet, eller at en holdkamp er aflyst.</p>
+          <dl class="adresser">
+            <dt data-t="tilDig">Til dig</dt><dd id="ungTilDig"></dd>
+            <dt data-t="tilForaeldre">Til dine forældre</dt><dd id="ungForaeldre"></dd>
+          </dl>
+          <p class="hint" data-t="ungTekst">Dine forældre bestemmer, hvordan beskederne kommer, og hvilket nummer de går til. Når du fylder 18, bestemmer du selv.</p>
+        </section>
+        <section class="afsnit" id="ungModulDel">
+          <h2 data-t="detKanDu">Det kan du se</h2>
+          <ul class="moduler" id="ungModuler"></ul>
+          <ul class="oenskeliste" id="ungOensker"></ul>
+          <div id="oenskeSendt" class="advarsel hidden" role="status"></div>
+          <div id="oenskeStart" style="margin-top:16px">
+            <button type="button" id="oenskeKnap" style="width:100%" data-t="bedForaeldre">Bed mine forældre om at ændre noget</button>
+            <p class="hint" data-t="foraeldreBestemmer">Dine forældre bestemmer, hvad du kan se her, indtil du fylder 18.</p>
+          </div>
+          <p id="altTil" class="hint hidden" data-t="altTil">Dine forældre har slået det hele til.</p>
+          <form id="oenskeForm" class="hidden" novalidate style="margin-top:16px">
+            <fieldset class="valg" id="oenskeValg"><legend data-t="hvadVil">Hvad vil du gerne have?</legend></fieldset>
+            <label for="oenskeTekst" style="margin-top:12px" data-t="beskedTilForaeldre">Besked til dine forældre (frivillig)</label>
+            <textarea id="oenskeTekst" maxlength="300" data-t-ph="oenskePh" placeholder="Må jeg komme i U12-gruppen? Alle fra holdet er der."></textarea>
+            <button type="submit" style="width:100%;margin-top:14px" data-t="sendForaeldre">Send til dine forældre</button>
+            <button type="button" class="ghost small" id="oenskeFortryd" style="margin-top:10px" data-t="fortryd">Fortryd</button>
+            <div id="oenskeMsg" class="msg" aria-live="polite"></div>
+            <p class="hint" data-t="oenskeHint">De får en mail med et link til Mine børn. Du kan sende ét ønske om dagen pr. ting.</p>
+          </form>
+        </section>
+      </div>
+
+      <div id="foraelderKort" class="card hidden" style="margin-top:24px">
+        <b data-t="ogsaaForaelder">Du er også forælder</b>
+        <p class="hint" data-t="ogsaaForaelderTekst">Bestem over beskederne om dine børn under 18.</p>
+        <p style="margin:12px 0 0"><a href="boern.html" data-t="tilBoern">Gå til Mine børn</a></p>
+      </div>
+
+      <section class="afsnit" id="adresseDel">
+        <h2 data-t="herSender">Her sender vi til</h2>
+        <dl class="adresser">
+          <dt data-t="mobil">Mobilnummer</dt><dd id="visMobil"></dd>
+          <dt data-t="mail">Mail</dt><dd id="visMail"></dd>
+        </dl>
+        <p class="hint" data-t="forkert">Forkert nummer eller mail? Det skal rettes i dine medlemsoplysninger hos klubben, så det gælder alt fra klubben og ikke kun Mit RTK.</p>
+      </section>
+
+      <section class="afsnit" id="skrivDel">
+        <h2 data-t="skrivH">Skriv til klubben</h2>
+        <form id="skrivForm" novalidate>
+          <label for="skrivTekst" data-t="skrivLabel">Skriv til klubbens kontor, hvad der skal rettes</label>
+          <textarea id="skrivTekst" maxlength="2000"></textarea>
+          <label for="skrivMail" style="margin-top:12px" data-t="skrivMail">Din mail, så kontoret kan svare</label>
+          <input id="skrivMail" type="email" inputmode="email" autocomplete="email" maxlength="120">
+          <button type="submit" style="width:100%;margin-top:14px" data-t="sendKlub">Send til klubben</button>
+          <div id="skrivMsg" class="msg" aria-live="polite"></div>
+          <p class="hint" data-t="skrivHint">Beskeden går til kontakt@roskildetennisklub.dk, og kontoret svarer på din mail.</p>
+        </form>
+        <div id="skrivTak" class="tak hidden" tabindex="-1">
+          <b data-t="takH">Tak, beskeden er sendt.</b>
+          <span data-t="takTekst">Kontoret svarer på din mail.</span>
+          <p style="margin:10px 0 0"><button type="button" class="ghost small" id="skrivIgen" data-t="skrivIgen">Skriv en besked mere</button></p>
+        </div>
+      </section>
+
+      <p class="afsnit"><a href="privatliv.html" data-t="laesPrivatliv">Læs om privatliv i Mit RTK</a></p>
+    </section>
+  </div>
+
+  <div class="wrap partnere">
+    <img class="p-babolat" src="ikoner/babolat.png" alt="Babolat">
+    <span data-t="partnere">Officielle partnere</span>
+    <a class="p-racketlife" href="https://racketlife.dk" target="_blank" rel="noopener" data-t-aria="racketlifeLink" aria-label="Racketlife (åbner i ny fane)"><img src="ikoner/racketlife.png" alt=""></a>
+  </div>
+</main>
+
+<footer class="bund">
+  <div class="wrap">
+    <span class="klub">
+      <a href="https://roskildetennisklub.dk" target="_blank" rel="noopener" data-t-aria="klubLink" aria-label="Roskilde Tennis Klubs hjemmeside (åbner i ny fane)"><img src="ikoner/rtk-hvid.png" alt=""></a>
+      <span><b>Roskilde Tennis Klub</b> · mitrtk.dk</span>
+    </span>
+    <span class="hoejre">
+      <span data-t="test">Testversion. Data er opdigtede.</span>
+      <a class="diskret" href="personale/" lang="da">Personale og frivillige</a>
+      <a class="privat" href="privatliv.html" data-t="privatliv">Privatliv</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+window.TEKSTER = {
+  da: {
+    titel: 'Beskeder · Mit RTK', side: 'Medlemssiden', tilForsiden: 'Til forsiden',
+    klubLink: 'Roskilde Tennis Klubs hjemmeside (åbner i ny fane)', racketlifeLink: 'Racketlife (åbner i ny fane)',
+    partnere: 'Officielle partnere', test: 'Testversion. Data er opdigtede.', privatliv: 'Privatliv',
+    sideTitel: 'Beskeder',
+    kicker: 'Beskeder', h1: 'Sådan vil du have beskeder',
+    introLogin: 'Log ind med dit mobilnummer, så kan du vælge, hvordan beskeder fra klubben kommer.',
+    erForaelder: 'Er du forælder?', tilBoernKort: 'Gå til Mine børn', tilBoern: 'Gå til Mine børn',
+    kunForaelderH: 'Du er logget ind som forælder', kunForaelderTekst: 'Her bestemmer du over beskederne om dine børn.',
+    omDet: 'Om det, du er med i', omDetTekst: 'Fx at din ketsjer er klar, eller at en kamp er aflyst. De kan ikke slås fra, men du vælger, hvordan de kommer.',
+    kPush: 'Notifikation', kPushTekst: 'Med det samme på telefonen. Kræver, at notifikationer er slået til øverst. Ellers får du sms.', snart: 'Kommer snart. Indtil da får du sms.',
+    kSms: 'Sms', kSmsTekst: 'Til dit mobilnummer.', kMailNavn: 'Mail', kMailTekst: 'Til din mail.',
+    nyheder: 'Nyt fra pro shoppen og partnerne', nyhederTekst: 'Tilbud, nye varer og nyt fra Babolat og Racketlife. Aldrig som sms.',
+    nyhTil: 'Til. Du kan slå det fra igen når som helst.', nyhFra: 'Fra. Slå til, hvis du vil have nyt fra pro shoppen.',
+    nyhederKanal: 'Kommer på mail. Notifikationer kommer snart.', aldrigVidere: 'Klubben sender selv. Dine oplysninger gives aldrig videre til partnerne.',
+    h1Ung: 'Dine beskeder', omDetUng: 'Fx at din træning er flyttet, eller at en holdkamp er aflyst.',
+    tilDig: 'Til dig', tilForaeldre: 'Til dine forældre', smsTil: 'Sms til {nr}', ingenNr: 'Intet nummer endnu', ingenForaeldre: 'Ingen forældre registreret',
+    ungTekst: 'Dine forældre bestemmer, hvordan beskederne kommer, og hvilket nummer de går til. Når du fylder 18, bestemmer du selv.',
+    ogsaaForaelder: 'Du er også forælder', ogsaaForaelderTekst: 'Bestem over beskederne om dine børn under 18.',
+    herSender: 'Her sender vi til', mobil: 'Mobilnummer', mail: 'Mail', mangler: 'Mangler',
+    forkert: 'Forkert nummer eller mail? Det skal rettes i dine medlemsoplysninger hos klubben, så det gælder alt fra klubben og ikke kun Mit RTK.',
+    skrivH: 'Skriv til klubben', skrivLabel: 'Skriv til klubbens kontor, hvad der skal rettes', skrivMail: 'Din mail, så kontoret kan svare',
+    sendKlub: 'Send til klubben', skrivHint: 'Beskeden går til kontakt@roskildetennisklub.dk, og kontoret svarer på din mail.',
+    takH: 'Tak, beskeden er sendt.', takTekst: 'Kontoret svarer på din mail.', skrivIgen: 'Skriv en besked mere',
+    laesPrivatliv: 'Læs om privatliv i Mit RTK', henter: 'Henter …', gemmer: 'Gemmer …', gemt: 'Gemt.', sender: 'Sender …',
+    detKanDu: 'Det kan du se', mHoldkampe: 'Mine hold og holdkampe', mGrupper: 'Grupper', mProshop: 'Pro shop', mOpstrengning: 'Opstrengning',
+    mOpstrengningTekst: 'Er min ketsjer klar?', erTil: 'Slået til', ikkeTil: 'Ikke slået til af dine forældre', venter: 'Venter på dine forældre', kommerSnart: 'Kommer snart',
+    bedForaeldre: 'Bed mine forældre om at ændre noget', foraeldreBestemmer: 'Dine forældre bestemmer, hvad du kan se her, indtil du fylder 18.',
+    altTil: 'Dine forældre har slået det hele til.', hvadVil: 'Hvad vil du gerne have?', slaaXTil: 'Slå {modul} til',
+    beskedTilForaeldre: 'Besked til dine forældre (frivillig)', oenskePh: 'Må jeg komme i U12-gruppen? Alle fra holdet er der.',
+    sendForaeldre: 'Send til dine forældre', fortryd: 'Fortryd', oenskeHint: 'De får en mail med et link til Mine børn. Du kan sende ét ønske om dagen pr. ting.',
+    vaelgEn: 'Vælg, hvad du vil bede om', sendtKl: 'Sendt til dine forældre kl. {kl}.', ventSvar: '{modul}: venter på svar.',
+    oVenter: '{modul} · venter på svar', oJa: '{modul} · {af} sagde ja', oNej: '{modul} · {af} sagde nej tak',
+    pushH: 'Notifikationer på denne telefon', pushTekst: 'Få besked med det samme, fx når der er en ledig plads, eller når et spil er aflyst. Gratis for klubben.',
+    pushIosH: 'På iPhone skal Mit RTK først ligge på hjemmeskærmen.', pushIos1: 'Tryk på Del-knappen (firkanten med pilen op) nederst i Safari.',
+    pushIos2: 'Vælg Føj til hjemmeskærm, og tryk Tilføj.', pushIos3: 'Åbn Mit RTK fra hjemmeskærmen, log ind, og kom tilbage hertil.',
+    pushIos4: 'Tryk Slå notifikationer til, og svar Tillad.', pushIosKrav: 'Kræver iOS 16.4 eller nyere.',
+    pushKanIkke: 'Denne browser kan ikke få notifikationer. Prøv Chrome, Edge, Firefox eller Safari.',
+    pushNej: 'Du har sagt nej til notifikationer fra Mit RTK på denne enhed. Slå det til under webstedets indstillinger i browseren eller i telefonens indstillinger, og genindlæs siden.',
+    pushSlaaTil: 'Slå notifikationer til', pushSlaaetTil: 'Slået til', pushHvor: '{enhed}, siden {tid}', pushProeve: 'Send en prøve', pushSlaaFra: 'Slå fra på denne enhed',
+    pushSlaar: 'Slår notifikationer til …', pushOk: 'Notifikationer er slået til. Tryk Send en prøve for at se, hvordan de ser ud.',
+    pushAfvist: 'Notifikationer er ikke slået til. Du skal svare Tillad, når telefonen spørger.', pushFejl: 'Det lykkedes ikke at slå notifikationer til. Prøv igen om lidt.',
+    pushSender: 'Sender …', pushSendt: 'Prøven er sendt. Den kommer om et øjeblik.', pushFraOk: 'Notifikationer er slået fra på denne enhed.',
+    pushAndre: 'Slået til på {n} andre enheder: {liste}.', pushAnden: 'Slået til på en anden enhed: {liste}.',
+    valgH: 'Hvad vil du have besked om?', valgTekst: 'Alt står også på siden med en markering, så du ikke går glip af noget, selvom du slår en besked fra.',
+    valgGrupper: 'Mine grupper', valgPaamindH: 'Påmindelse før et spil', valgPaamindTekst: 'Kun når du har en plads. Vælg højst to, eller ingen.', valgRo: 'Ro',
+    vLedig: 'Ledig plads og rykket op', vLedigT: 'Når du rykker op fra ventelisten og får en plads.',
+    vAflyst: 'Aflyste spil', vAflystT: 'Når et spil, du har sagt ja eller måske til, bliver aflyst.',
+    vNyeSpil: 'Nye spil', vNyeSpilT: 'Når nogen lægger et spil eller arrangement ud i en af dine grupper.',
+    vChat: 'Nye beskeder i chatten', vChatT: 'Højst én besked hvert kvarter pr. gruppe.', vChatGrupper: 'Pr. gruppe:',
+    vAfbud: 'Afbud på spil, jeg har lagt ud', vAfbudT: 'Når en med en plads melder fra, så du kan finde en ny.',
+    vMailAfbud: 'Også på mail', vMailAfbudT: 'Afbud er det eneste fra grupperne, der kan komme på mail.',
+    valgBoers: 'Spillerbørsen', vBoersSpoerg: 'Spørgsmål og svar om opslag', vBoersSpoergT: 'Når nogen spørger om jeres opslag, og når en gruppe svarer på dit spørgsmål.', vBoersMeldt: 'Svar i spillerbørsen', vBoersMeldtT: 'Når nogen melder sig til jeres opslag, når du bliver valgt, og når en plads bliver ledig for dig som reserve.',
+    vBoersAlarm: 'Nye opslag (alarm)', vBoersAlarmT: 'Når en gruppe søger en spiller, der passer til dig. Højst tre om dagen.',
+    vAlarmFilter: 'Kun opslag med det valgte. Vælger du ingen, får du alle.', aSport: 'Sport', aSpilform: 'Spilform', aTennis: 'Tennis', aPadel: 'Padel', aDouble: 'Double', aSingle: 'Single', aMix: 'Mixdouble',
+    aDage: 'Dage', aMan: 'Man', aTir: 'Tir', aOns: 'Ons', aTor: 'Tor', aFre: 'Fre', aLoer: 'Lør', aSoen: 'Søn', aNiveau: 'Niveau', aNivFraS: '{sport}: niveau fra', aNivTilS: '{sport}: niveau til',
+    aFraAlle: 'Fra (alle)', aTilAlle: 'Til (alle)', aFraN: 'Fra {n}', aTilN: 'Til {n}', aNiveauT: 'Tennis efter NTRP, padel efter den danske skala. Opslag uden niveau kommer altid med. Dagene gælder spil på en bestemt dag.',
+    vInvitation: 'Invitationer til grupper', vInvitationT: 'Når nogen inviterer dig til en gruppe fra dit opslag på spillerbørsen, og når en, du har inviteret, svarer.',
+    vAnsoeg: 'Ansøgninger til grupper', vAnsoegT: 'Når nogen beder om at komme med i en gruppe, hvor du er gruppeadministrator eller må invitere, og når en gruppe svarer dig.', vMailAnsoeg: 'Ugentlig mail om ansøgninger, der venter', vMailAnsoegT: 'Mandag morgen, hvis der ligger ansøgninger, som ingen har svaret på. Kun til gruppeadministratorer.',
+    vMailUge: 'Ugentlig oversigt på mail', vMailUgeT: 'Mandag morgen en mail med det, der står åbent på spillerbørsen. Kun når der er noget.',
+    vStille: 'Stille om natten', vStilleT: 'Ingen notifikationer kl. 22 til 7. De venter til om morgenen. Driftsbeskeder kommer altid.',
+    p12t: '12 timer før', pMorgen: 'Om morgenen', p2t: '2 timer før', p1t: '1 time før', pMorgenT: 'Kl. 8 samme dag. Er spillet før kl. 10, aftenen før kl. 20.',
+    hoejstTo: 'Du kan højst vælge to påmindelser.',
+    pushIos1Chrome: 'Tryk på Del-ikonet (firkanten med pilen op) i Chrome.'
+  },
+  en: {
+    titel: 'Messages · Mit RTK', side: 'Members’ area', tilForsiden: 'To the front page',
+    klubLink: 'Roskilde Tennis Klub website (opens in a new tab)', racketlifeLink: 'Racketlife (opens in a new tab)',
+    partnere: 'Official partners', test: 'Test version. All data is fictitious.', privatliv: 'Privacy',
+    sideTitel: 'Messages',
+    kicker: 'Messages', h1: 'How you want your messages',
+    introLogin: 'Log in with your mobile number to choose how messages from the club reach you.',
+    erForaelder: 'Are you a parent?', tilBoernKort: 'Go to My children', tilBoern: 'Go to My children',
+    kunForaelderH: 'You are logged in as a parent', kunForaelderTekst: 'This is where you decide about messages concerning your children.',
+    omDet: 'About things you take part in', omDetTekst: 'For example that your racket is ready or that a match is cancelled. They cannot be turned off, but you choose how they reach you.',
+    kPush: 'Notification', kPushTekst: 'Straight to your phone. Notifications must be turned on at the top. Otherwise you get a text message.', snart: 'Coming soon. Until then you get a text message.',
+    kSms: 'Text message', kSmsTekst: 'To your mobile number.', kMailNavn: 'Email', kMailTekst: 'To your email address.',
+    nyheder: 'News from the pro shop and partners', nyhederTekst: 'Offers, new products and news from Babolat and Racketlife. Never by text message.',
+    nyhTil: 'On. You can turn it off again at any time.', nyhFra: 'Off. Turn it on if you want news from the pro shop.',
+    nyhederKanal: 'Sent by email. Notifications are coming soon.', aldrigVidere: 'The club sends them itself. Your details are never passed on to the partners.',
+    h1Ung: 'Your messages', omDetUng: 'For example that your training has moved or that a team match is cancelled.',
+    tilDig: 'To you', tilForaeldre: 'To your parents', smsTil: 'Text message to {nr}', ingenNr: 'No number yet', ingenForaeldre: 'No parents registered',
+    ungTekst: 'Your parents decide how messages are sent and which number they go to. When you turn 18, you decide yourself.',
+    ogsaaForaelder: 'You are also a parent', ogsaaForaelderTekst: 'Decide about messages concerning your children under 18.',
+    herSender: 'Where we send them', mobil: 'Mobile', mail: 'Email', mangler: 'Missing',
+    forkert: 'Wrong number or email? It must be corrected in your membership details with the club, so it applies to everything from the club and not only Mit RTK.',
+    skrivH: 'Write to the club', skrivLabel: 'Tell the club office what needs to be corrected', skrivMail: 'Your email, so the office can reply',
+    sendKlub: 'Send to the club', skrivHint: 'Your message goes to kontakt@roskildetennisklub.dk, and the office replies by email.',
+    takH: 'Thank you, your message has been sent.', takTekst: 'The office will reply by email.', skrivIgen: 'Write another message',
+    laesPrivatliv: 'Read about privacy in Mit RTK', henter: 'Loading …', gemmer: 'Saving …', gemt: 'Saved.', sender: 'Sending …',
+    detKanDu: 'What you can see', mHoldkampe: 'My teams and team matches', mGrupper: 'Groups', mProshop: 'Pro shop', mOpstrengning: 'Stringing',
+    mOpstrengningTekst: 'Is my racket ready?', erTil: 'Turned on', ikkeTil: 'Not turned on by your parents', venter: 'Waiting for your parents', kommerSnart: 'Coming soon',
+    bedForaeldre: 'Ask my parents to change something', foraeldreBestemmer: 'Your parents decide what you can see here until you turn 18.',
+    altTil: 'Your parents have turned everything on.', hvadVil: 'What would you like?', slaaXTil: 'Turn on {modul}',
+    beskedTilForaeldre: 'Message to your parents (optional)', oenskePh: 'Can I join the U12 group? Everyone from the team is there.',
+    sendForaeldre: 'Send to your parents', fortryd: 'Cancel', oenskeHint: 'They get an email with a link to My children. You can send one request a day for each thing.',
+    vaelgEn: 'Choose what you want to ask for', sendtKl: 'Sent to your parents at {kl}.', ventSvar: '{modul}: waiting for an answer.',
+    oVenter: '{modul} · waiting for an answer', oJa: '{modul} · {af} said yes', oNej: '{modul} · {af} said no thanks',
+    pushH: 'Notifications on this phone', pushTekst: 'Get told straight away, e.g. when a spot opens up or a game is cancelled. Free for the club.',
+    pushIosH: 'On iPhone, My RTK must first be on your home screen.', pushIos1: 'Tap the Share button (the square with the arrow) at the bottom of Safari.',
+    pushIos2: 'Choose Add to Home Screen, and tap Add.', pushIos3: 'Open My RTK from the home screen, log in and come back here.',
+    pushIos4: 'Tap Turn on notifications, and answer Allow.', pushIosKrav: 'Requires iOS 16.4 or later.',
+    pushKanIkke: 'This browser cannot receive notifications. Try Chrome, Edge, Firefox or Safari.',
+    pushNej: 'You have said no to notifications from My RTK on this device. Turn them on in the site settings of your browser or in your phone settings, and reload the page.',
+    pushSlaaTil: 'Turn on notifications', pushSlaaetTil: 'Turned on', pushHvor: '{enhed}, since {tid}', pushProeve: 'Send a test', pushSlaaFra: 'Turn off on this device',
+    pushSlaar: 'Turning on notifications …', pushOk: 'Notifications are on. Tap Send a test to see what they look like.',
+    pushAfvist: 'Notifications are not on. You need to answer Allow when your phone asks.', pushFejl: 'Notifications could not be turned on. Please try again in a moment.',
+    pushSender: 'Sending …', pushSendt: 'The test has been sent. It will arrive in a moment.', pushFraOk: 'Notifications are turned off on this device.',
+    pushAndre: 'Turned on on {n} other devices: {liste}.', pushAnden: 'Turned on on one other device: {liste}.',
+    valgH: 'What would you like to be told about?', valgTekst: 'Everything is also marked on the page, so you will not miss anything if you turn a message off.',
+    valgGrupper: 'My groups', valgPaamindH: 'Reminder before a game', valgPaamindTekst: 'Only when you have a spot. Choose up to two, or none.', valgRo: 'Quiet',
+    vLedig: 'Free spot and moved up', vLedigT: 'When you move up from the waiting list and get a spot.',
+    vAflyst: 'Cancelled games', vAflystT: 'When a game you said yes or maybe to is cancelled.',
+    vNyeSpil: 'New games', vNyeSpilT: 'When someone posts a game or event in one of your groups.',
+    vChat: 'New chat messages', vChatT: 'At most one notification every 15 minutes per group.', vChatGrupper: 'Per group:',
+    vAfbud: 'Drop-outs from games I posted', vAfbudT: 'When someone with a spot drops out, so you can find someone new.',
+    vMailAfbud: 'Also by email', vMailAfbudT: 'Drop-outs are the only thing from groups that can come by email.',
+    valgBoers: 'Player exchange', vBoersSpoerg: 'Questions and replies about posts', vBoersSpoergT: 'When someone asks about your post, and when a group replies to your question.', vBoersMeldt: 'Answers on the player exchange', vBoersMeldtT: 'When someone signs up for your post, when you are chosen, and when a place becomes free for you as a reserve.',
+    vBoersAlarm: 'New posts (alert)', vBoersAlarmT: 'When a group is looking for a player who matches you. At most three a day.',
+    vAlarmFilter: 'Only posts with what you choose. If you choose none, you get all.', aSport: 'Sport', aSpilform: 'Format', aTennis: 'Tennis', aPadel: 'Padel', aDouble: 'Doubles', aSingle: 'Singles', aMix: 'Mixed doubles',
+    aDage: 'Days', aMan: 'Mon', aTir: 'Tue', aOns: 'Wed', aTor: 'Thu', aFre: 'Fri', aLoer: 'Sat', aSoen: 'Sun', aNiveau: 'Level', aNivFraS: '{sport}: level from', aNivTilS: '{sport}: level to',
+    aFraAlle: 'From (all)', aTilAlle: 'To (all)', aFraN: 'From {n}', aTilN: 'To {n}', aNiveauT: 'Tennis by NTRP, padel by the Danish scale. Posts without a level are always included. The days apply to games on a specific day.',
+    vInvitation: 'Invitations to groups', vInvitationT: 'When someone invites you to a group from your post on the player exchange, and when someone you invited answers.',
+    vAnsoeg: 'Requests to join groups', vAnsoegT: 'When someone asks to join a group where you are a group admin or can invite, and when a group replies to you.', vMailAnsoeg: 'Weekly email about waiting requests', vMailAnsoegT: 'Monday morning, if there are requests no one has answered. Only for group admins.',
+    vMailUge: 'Weekly summary by email', vMailUgeT: 'Monday morning an email with what is open on the player exchange. Only when there is something.',
+    vStille: 'Quiet at night', vStilleT: 'No notifications from 10 pm to 7 am. They wait until morning. Club notices always come.',
+    p12t: '12 hours before', pMorgen: 'In the morning', p2t: '2 hours before', p1t: '1 hour before', pMorgenT: '8 am the same day. If the game is before 10 am, 8 pm the evening before.',
+    hoejstTo: 'You can choose up to two reminders.',
+    pushIos1Chrome: 'Tap the Share icon (the square with the arrow) in Chrome.'
+  }
+};
+</script>
+<script src="konfig.js?v=2f9e7a0af457"></script>
+<script src="konto.js?v=4106af28933d"></script>
+<script src="visning.js?v=9cd5651130e5"></script>
+<script src="sprog.js?v=1976d8c45489"></script>
+<script src="velkomst.js?v=b6e13365b949"></script>
+<script src="ace.js?v=f16258091977"></script>
+<script>
+const K = window.RTK_KONTO;
+const ALARM_NIV = {"tennis": [1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5], "padel": [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5]};
+const $ = (id) => document.getElementById(id);
+const t = K.t;
+let data = null;
+
+// Visningen i Firebase (trin 1, Lars 24. oktober kl. 10.41): siden viser det, motoren sidst lagde i Firebase, med det samme,
+// og henter det nyeste fra motoren bagefter. laest (motorens tid) afgør, hvad der er nyest. Er man i gang (gemmer, skriver,
+// har en menu åben), venter nye data, til man er færdig (gennemgangen af de mindre sider V5 og M1).
+const V = { stop: null, laest: 0, gemmer: 0, gen: 0, vent: null, henter: false };
+/** Motoren, men et svar, der kommer efter log ud eller et skift af person, bruges aldrig (gennemgangen V1). */
+function M(modul, handling, d, id) {
+  const g = V.gen;
+  return K.motor(modul, handling, d, id).then((s) => (g === V.gen ? s : new Promise(() => {})), (e) => { if (g !== V.gen) return new Promise(() => {}); throw e; });
+}
+function travlt() {
+  const a = document.activeElement;
+  return V.gemmer > 0 || nyhVenter !== null || !!(a && a.closest && a.closest('#indeDel') && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName));
+}
+/** Nye data fra kopien (kopi = true) eller fra motoren. Ældre data end det viste bruges ikke. */
+function tilbyd(d, t0, kopi) {
+  // Et svar uden tid (fx et reservesvar) bruges kun, når siden intet nyere viser
+  if (!d || (kopi && !t0)) return;
+  t0 = t0 || 0;
+  if (V.laest && (kopi ? t0 <= V.laest : t0 < V.laest)) return;
+  if (travlt()) { if (!V.vent || t0 > V.vent.t0) V.vent = { d, t0, kopi }; return; }
+  V.vent = null; V.laest = Math.max(V.laest, t0); data = d;
+  if (V.henter) { V.henter = false; K.besked($('hentMsg'), ''); }
+  vis();
+}
+/** Når man er færdig, vises det, der ventede. */
+function slip() { setTimeout(() => { if (V.vent && !travlt()) { const v = V.vent; V.vent = null; tilbyd(v.d, v.t0, v.kopi); } }, 0); }
+document.addEventListener('focusout', slip);
+/** Svaret på at gemme bruges altid. Kopier lavet før gemningen var færdig (tidSlut), tæller ikke. */
+function fraGem(handling, d) { if (!d) return; V.laest = Math.max(V.laest, K.tid('beskeder.' + handling).slut); data = d; V.vent = null; }
+function lytVisning() {
+  stopVisning();
+  if (!window.RTKV) return;
+  V.stop = RTKV.lyt(K.motor, 'beskMine', (x) => { if (x) tilbyd(x.svar, x.laest, true); });
+}
+function stopVisning() { if (V.stop) { try { V.stop(); } catch (e) {} } V.stop = null; V.laest = 0; V.vent = null; }
+
+function visLogin() {
+  stopVisning();
+  if (window.RTKV) RTKV.logUd();
+  // Alt fra den forrige person glemmes, også svar, der stadig er på vej (gennemgangen V1 og M11)
+  V.gen++; V.gemmer = 0; V.henter = false; nyhVenter = null;
+  data = null; pushData = null;
+  $('skrivTak').classList.add('hidden'); $('skrivForm').classList.remove('hidden'); $('skrivMail').value = ''; $('skrivTekst').value = '';
+  sendtBesked = null; $('oenskeForm').classList.add('hidden'); if ($('oenskeTekst')) $('oenskeTekst').value = '';
+  $('indeDel').classList.add('hidden'); $('loginDel').classList.remove('hidden');
+  K.loginKort($('login'), { onLogin: hent });
+}
+K.vedLogud(visLogin);
+
+async function hent() {
+  $('loginDel').classList.add('hidden'); $('indeDel').classList.remove('hidden');
+  if (!data) { V.henter = true; K.besked($('hentMsg'), t('henter')); }
+  lytVisning();
+  try { const d = await M('beskeder', 'mine'); if (V.henter && data) { V.henter = false; K.besked($('hentMsg'), ''); } tilbyd(d, K.tid('beskeder.mine').tid, false); }
+  catch (err) { if (K.loggetInd()) { V.henter = false; K.besked($('hentMsg'), K.fejlTekst(err.message), 'err'); } }
+}
+
+function kanalKort() {
+  const fs = $('kanaler');
+  fs.innerHTML = '';
+  [['push', 'kPush', 'kPushTekst', false], ['sms', 'kSms', 'kSmsTekst', false], ['mail', 'kMailNavn', 'kMailTekst', false]].forEach(([id, navn, tekst, snart]) => {
+    const valgt = data.kanal === id;
+    const l = K.el('label', { 'class': (valgt ? 'valgt' : '') + (snart ? ' slaaet-fra' : '') });
+    const r = K.el('input', { type: 'radio', name: 'kanal', value: id });
+    r.checked = valgt; r.disabled = snart;
+    r.addEventListener('change', () => gemValg({ kanal: id }, $('kanalMsg')));
+    const s = K.el('span');
+    s.append(K.el('b', null, t(navn)), K.el('span', { 'class': 'smaa' }, t(tekst)));
+    if (snart) s.append(K.el('span', { 'class': 'snart' }, t('snart')));
+    l.append(r, s); fs.append(l);
+  });
+}
+
+// ---------- Notifikationer (push). Besluttet af Lars 12. oktober kl. 12.47: push er den primære kanal.
+const PUSH = {
+  // Nøglerne står i konfig.js (fælles for alle sider)
+  vapid: window.RTK_KONFIG.vapid,
+  fb: 'https://www.gstatic.com/firebasejs/' + window.RTK_KONFIG.firebaseVersion + '/',
+  cfg: window.RTK_KONFIG.firebase
+};
+const pushHent = () => { try { return localStorage.getItem('rtk.push.id') || ''; } catch (e) { return ''; } };
+const pushGem = (v) => { try { v ? localStorage.setItem('rtk.push.id', v) : localStorage.removeItem('rtk.push.id'); } catch (e) {} };
+function pushMiljoe() {
+  const ua = navigator.userAgent;
+  const ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const hjem = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+  const kan = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+  return { ios, hjem, kan };
+}
+function enhedsnavn() {
+  const ua = navigator.userAgent;
+  const hvad = /iPhone/.test(ua) ? 'iPhone' : /iPad/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ? 'iPad'
+    : /Android/.test(ua) ? 'Android' : /Mac/.test(ua) ? 'Mac' : /Windows/.test(ua) ? 'Windows' : 'Computer';
+  const br = /Edg\//.test(ua) ? 'Edge' : /Firefox\//.test(ua) ? 'Firefox' : /Chrome\//.test(ua) ? 'Chrome' : /Safari\//.test(ua) ? 'Safari' : '';
+  return hvad === 'iPhone' || hvad === 'iPad' ? hvad : hvad + (br ? ', ' + br : '');
+}
+let pushData = null;
+async function pushFirebase() {
+  const [a, m] = await Promise.all([import(PUSH.fb + 'firebase-app.js'), import(PUSH.fb + 'firebase-messaging.js')]);
+  const app = a.getApps().find((x) => x.name === 'push') || a.initializeApp(PUSH.cfg, 'push');
+  return { m, messaging: m.getMessaging(app) };
+}
+function visPush() {
+  const env = pushMiljoe();
+  ['pushIos', 'pushKanIkke', 'pushNej', 'pushFra', 'pushTil', 'pushAndre'].forEach((id) => $(id).classList.add('hidden'));
+  if (env.ios && !env.hjem) {
+    const n = /CriOS/.test(navigator.userAgent) ? 'pushIos1Chrome' : 'pushIos1';
+    $('pushIos1').setAttribute('data-t', n); $('pushIos1').textContent = t(n);
+    $('pushIos').classList.remove('hidden'); visValg(); return;
+  }
+  if (!env.kan) { $('pushKanIkke').classList.remove('hidden'); return; }
+  if (Notification.permission === 'denied') { $('pushNej').classList.remove('hidden'); return; }
+  const enheder = (pushData && pushData.enheder) || [];
+  const id = pushHent();
+  const denne = Notification.permission === 'granted' && enheder.find((e) => e.id === id);
+  if (denne) {
+    $('pushHvor').textContent = t('pushHvor', { enhed: denne.enhed, tid: visTid(denne.oprettet) });
+    $('pushTil').classList.remove('hidden');
+  } else $('pushFra').classList.remove('hidden');
+  visValg();
+  const andre = enheder.filter((e) => !denne || e.id !== denne.id);
+  if (andre.length) {
+    $('pushAndre').textContent = t(andre.length === 1 ? 'pushAnden' : 'pushAndre', { n: andre.length, liste: andre.map((e) => e.enhed).join(', ') });
+    $('pushAndre').classList.remove('hidden');
+  }
+}
+function visTid(s) {
+  const m = /^(\d{4})-(\d\d)-(\d\d) (\d\d):(\d\d)/.exec(String(s || ''));
+  if (!m) return '';
+  const d = new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]);
+  return d.toLocaleDateString(document.documentElement.lang === 'en' ? 'en-GB' : 'da-DK', { day: 'numeric', month: 'short' }) + ' ' + m[4] + '.' + m[5];
+}
+// ---------- Hvad vil du have besked om? (push trin 2). Kontakterne skifter med det samme og gemmer bagefter.
+const VALG_GRUPPER = [['ledig', 'vLedig', 'vLedigT'], ['aflyst', 'vAflyst', 'vAflystT'], ['nyeSpil', 'vNyeSpil', 'vNyeSpilT'], ['chat', 'vChat', 'vChatT'], ['afbud', 'vAfbud', 'vAfbudT'], ['ansoeg', 'vAnsoeg', 'vAnsoegT'], ['invitation', 'vInvitation', 'vInvitationT']];
+const PAAMIND = [['morgen', 'pMorgen'], ['12t', 'p12t'], ['2t', 'p2t'], ['1t', 'p1t']];
+let valgVenter = null, valgGemmer = false;
+function vipRaekke(noegle, navn, tekst, til, paa) {
+  const r = K.el('div', { 'class': 'linje', style: 'padding:10px 0;border-top:1px solid var(--soft)' });
+  const tx = K.el('div');
+  const id = 'v-' + noegle;
+  tx.append(K.el('b', { id: id, style: 'display:block' }, t(navn)), K.el('span', { 'class': 'smaa', style: 'display:block;font-size:14px;color:var(--muted)' }, t(tekst)));
+  const v = K.el('button', { type: 'button', role: 'switch', 'class': 'vippe', 'aria-checked': String(!!til), 'aria-labelledby': id, 'data-valg': noegle });
+  v.addEventListener('click', () => { const ny = v.getAttribute('aria-checked') !== 'true'; v.setAttribute('aria-checked', String(ny)); paa(ny); });
+  r.append(tx, v);
+  return r;
+}
+function visValg() {
+  const harPush = !!(pushData && (pushData.enheder || []).length);
+  $('valgDel').classList.toggle('hidden', !harPush);
+  if (!harPush || valgGemmer) return;
+  const v = pushData.valg || {};
+  const g = $('valgGrupper'); g.innerHTML = '';
+  VALG_GRUPPER.forEach(([k, n, tx]) => {
+    g.append(vipRaekke(k, n, tx, v[k] !== false, (ny) => gemPushValg({ [k]: ny })));
+    if (k === 'chat' && v.chat !== false && (pushData.grupper || []).length) {
+      const pr = K.el('div', { style: 'margin:0 0 6px;padding:8px 12px;background:var(--soft);border-radius:6px' });
+      pr.append(K.el('span', { 'class': 'smaa', style: 'font-size:14px;color:var(--muted)' }, t('vChatGrupper')));
+      pushData.grupper.forEach((gr) => {
+        const fra = (v.chatFra || []).indexOf(gr.id) >= 0;
+        pr.append(vipRaekke('chat-' + gr.id, '', '', !fra, (ny) => {
+          const liste = (pushData.valg.chatFra || []).filter((x) => x !== gr.id);
+          if (!ny) liste.push(gr.id);
+          gemPushValg({ chatFra: liste });
+        }));
+        const rk = pr.lastChild; rk.querySelector('b').textContent = gr.navn; rk.querySelector('.smaa').remove();
+      });
+      g.append(pr);
+    }
+    if (k === 'afbud' && v.afbud !== false) {
+      const m = vipRaekke('mailAfbud', 'vMailAfbud', 'vMailAfbudT', v.mailAfbud !== false, (ny) => gemPushValg({ mailAfbud: ny }));
+      m.style.paddingLeft = '16px'; g.append(m);
+    }
+    if (k === 'ansoeg') {
+      const m = vipRaekke('mailAnsoeg', 'vMailAnsoeg', 'vMailAnsoegT', v.mailAnsoeg !== false, (ny) => gemPushValg({ mailAnsoeg: ny }));
+      m.style.paddingLeft = '16px'; g.append(m);
+    }
+  });
+  const c = $('paamindChips'); c.innerHTML = '';
+  const valgte = v.paamind || ['morgen'];
+  PAAMIND.forEach(([k, n]) => {
+    const b = K.el('button', { type: 'button', 'aria-pressed': String(valgte.indexOf(k) >= 0), 'data-p': k, title: k === 'morgen' ? t('pMorgenT') : '' }, t(n));
+    b.addEventListener('click', () => {
+      const nu = [...c.querySelectorAll('button[aria-pressed="true"]')].map((x) => x.dataset.p);
+      const til = b.getAttribute('aria-pressed') !== 'true';
+      if (til && nu.length >= 2) { K.besked($('valgMsg'), t('hoejstTo'), 'err'); return; }
+      b.setAttribute('aria-pressed', String(til));
+      gemPushValg({ paamind: [...c.querySelectorAll('button[aria-pressed="true"]')].map((x) => x.dataset.p) });
+    });
+    c.append(b);
+  });
+  // Spillerbørsen: svar, frivillig alarm med filter (højst tre om dagen) og frivillig ugentlig mail
+  const sb = $('valgBoers'); sb.innerHTML = '';
+  sb.append(vipRaekke('boersMeldt', 'vBoersMeldt', 'vBoersMeldtT', v.boersMeldt !== false, (ny) => gemPushValg({ boersMeldt: ny })));
+  sb.append(vipRaekke('boersSpoerg', 'vBoersSpoerg', 'vBoersSpoergT', v.boersSpoerg !== false, (ny) => gemPushValg({ boersSpoerg: ny })));
+  sb.append(vipRaekke('boersAlarm', 'vBoersAlarm', 'vBoersAlarmT', v.boersAlarm === true, (ny) => gemPushValg({ boersAlarm: ny })));
+  if (v.boersAlarm === true) {
+    const a = Object.assign({ sport: [], spilform: [] }, v.alarm || {});
+    const fl = K.el('div', { style: 'margin:0 0 6px;padding:8px 12px;background:var(--soft);border-radius:6px' });
+    fl.append(K.el('span', { 'class': 'smaa', style: 'display:block;font-size:14px;color:var(--muted);margin-bottom:6px' }, t('vAlarmFilter')));
+    [['sport', [['tennis', 'aTennis'], ['padel', 'aPadel']]], ['spilform', [['double', 'aDouble'], ['single', 'aSingle'], ['mix', 'aMix']]]].forEach(([felt, valg]) => {
+      const c2 = K.el('div', { 'class': 'chips', role: 'group', 'aria-label': t(felt === 'sport' ? 'aSport' : 'aSpilform'), style: 'margin:6px 0' });
+      valg.forEach(([k, n]) => {
+        const b = K.el('button', { type: 'button', 'aria-pressed': String((a[felt] || []).indexOf(k) >= 0) }, t(n));
+        b.addEventListener('click', () => {
+          const til = b.getAttribute('aria-pressed') !== 'true';
+          b.setAttribute('aria-pressed', String(til));
+          const nyListe = (a[felt] || []).filter((x) => x !== k).concat(til ? [k] : []);
+          a[felt] = nyListe;
+          gemPushValg({ alarm: Object.assign({}, a) });
+        });
+        c2.append(b);
+      });
+      fl.append(c2);
+    });
+    // Dage (kun for spil på en bestemt dag) og niveau i halve trin (Lars 13. oktober kl. 12.18)
+    const dg = K.el('div', { 'class': 'chips', role: 'group', 'aria-label': t('aDage'), style: 'margin:6px 0' });
+    [['man', 'aMan'], ['tir', 'aTir'], ['ons', 'aOns'], ['tor', 'aTor'], ['fre', 'aFre'], ['loer', 'aLoer'], ['soen', 'aSoen']].forEach(([k, n]) => {
+      const b = K.el('button', { type: 'button', 'aria-pressed': String((a.dage || []).indexOf(k) >= 0) }, t(n));
+      b.addEventListener('click', () => {
+        const til = b.getAttribute('aria-pressed') !== 'true';
+        b.setAttribute('aria-pressed', String(til));
+        a.dage = (a.dage || []).filter((x) => x !== k).concat(til ? [k] : []);
+        gemPushValg({ alarm: Object.assign({}, a) });
+      });
+      dg.append(b);
+    });
+    fl.append(K.el('span', { 'class': 'smaa', style: 'display:block;font-size:14px;margin-top:8px' }, t('aDage')), dg);
+    const tal = (v) => { const x = Number(v).toFixed(1); return window.RTK_SPROG.lokal() === 'da-DK' ? x.replace('.', ',') : x; };
+    // Niveau for hver sport for sig: tennis (NTRP) og padel (den danske skala) er to forskellige skalaer (Lars 13. oktober kl. 14.32).
+    // En linje vises for de sporter, alarmen gælder (ingen valgt sport betyder begge).
+    a.niveau = Object.assign({}, a.niveau || {});
+    fl.append(K.el('span', { 'class': 'smaa', style: 'display:block;font-size:14px;margin-top:8px' }, t('aNiveau')));
+    ['tennis', 'padel'].filter((s) => !(a.sport || []).length || a.sport.indexOf(s) >= 0).forEach((s) => {
+      const nu = a.niveau[s] || { fra: 1, til: 7 };
+      const r = K.el('div', { 'class': 'sb-to', style: 'display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:6px 0' });
+      const fra = K.el('select', { id: 'alarmNiv-' + s + '-fra', 'aria-label': t('aNivFraS', { sport: t(s === 'tennis' ? 'aTennis' : 'aPadel') }) });
+      const tilS = K.el('select', { id: 'alarmNiv-' + s + '-til', 'aria-label': t('aNivTilS', { sport: t(s === 'tennis' ? 'aTennis' : 'aPadel') }) });
+      fra.append(K.el('option', { value: '1' }, t('aFraAlle')));
+      ALARM_NIV[s].filter((v) => v > 1).forEach((v) => fra.append(K.el('option', { value: String(v) }, t('aFraN', { n: tal(v) }))));
+      ALARM_NIV[s].forEach((v) => tilS.append(K.el('option', { value: String(v) }, t('aTilN', { n: tal(v) }))));
+      tilS.append(K.el('option', { value: '7' }, t('aTilAlle')));
+      fra.value = String(ALARM_NIV[s].indexOf(Number(nu.fra)) >= 0 && Number(nu.fra) > 1 ? Number(nu.fra) : 1);
+      tilS.value = String(ALARM_NIV[s].indexOf(Number(nu.til)) >= 0 ? Number(nu.til) : 7);
+      const gem = () => { a.niveau = Object.assign({}, a.niveau, { [s]: { fra: Number(fra.value), til: Number(tilS.value) } }); gemPushValg({ alarm: Object.assign({}, a) }); };
+      fra.addEventListener('change', gem); tilS.addEventListener('change', gem);
+      r.append(K.el('span', { style: 'min-width:56px;font-size:14px;font-weight:600' }, t(s === 'tennis' ? 'aTennis' : 'aPadel')), fra, tilS);
+      fl.append(r);
+    });
+    fl.append(K.el('span', { 'class': 'smaa', style: 'display:block;font-size:13px;color:var(--muted)' }, t('aNiveauT')));
+    sb.append(fl);
+  }
+  sb.append(vipRaekke('mailUge', 'vMailUge', 'vMailUgeT', v.mailUge === true, (ny) => gemPushValg({ mailUge: ny })));
+  const ro = $('valgRo'); ro.innerHTML = '';
+  ro.append(vipRaekke('stille', 'vStille', 'vStilleT', v.stille !== false, (ny) => gemPushValg({ stille: ny })));
+}
+/** Gem ét eller flere valg. Kommer der flere tryk, mens der gemmes, samles de og gemmes bagefter. */
+async function gemPushValg(aendring) {
+  pushData.valg = Object.assign({}, pushData.valg, aendring);
+  valgVenter = Object.assign({}, valgVenter || {}, aendring);
+  if (valgGemmer) return;
+  valgGemmer = true;
+  K.besked($('valgMsg'), t('gemmer'));
+  try {
+    while (valgVenter) {
+      const send = valgVenter; valgVenter = null;
+      const r = await K.motor('push', 'gemValg', { valg: send }, K.nyId());
+      if (!valgVenter) pushData.valg = r.valg;
+    }
+    valgGemmer = false; visValg(); K.besked($('valgMsg'), t('gemt'), 'okm');
+  } catch (err) {
+    valgGemmer = false; valgVenter = null;
+    try { pushData = await K.motor('push', 'status'); } catch (e) {}
+    visValg(); K.besked($('valgMsg'), K.fejlTekst(err.message), 'err');
+  }
+}
+async function hentPush() {
+  try { pushData = await K.motor('push', 'status'); } catch (err) { pushData = null; }
+  visPush();
+}
+$('pushTilKnap').addEventListener('click', async () => {
+  const knap = $('pushTilKnap'); knap.disabled = true;
+  K.besked($('pushMsg'), t('pushSlaar'));
+  try {
+    const svar = await Notification.requestPermission();
+    if (svar !== 'granted') { K.besked($('pushMsg'), t('pushAfvist'), 'err'); visPush(); return; }
+    const reg = await navigator.serviceWorker.register('firebase-messaging-sw.js');
+    await navigator.serviceWorker.ready;
+    const fb = await pushFirebase();
+    const token = await fb.m.getToken(fb.messaging, { vapidKey: PUSH.vapid, serviceWorkerRegistration: reg });
+    if (!token) throw new Error('ingen nøgle');
+    const r = await K.motor('push', 'registrer', { token, enhed: enhedsnavn() }, K.nyId());
+    pushGem(r.id);
+    pushData = Object.assign({}, pushData || {}, { enheder: r.enheder });
+    visPush();
+    hentPush();
+    K.besked($('pushMsg'), t('pushOk'), 'okm');
+  } catch (err) {
+    console.warn('push', err);
+    K.besked($('pushMsg'), /Log ind|forbindelse/.test(err.message) ? K.fejlTekst(err.message) : t('pushFejl'), 'err');
+  } finally { knap.disabled = false; }
+});
+$('pushProeve').addEventListener('click', async () => {
+  K.besked($('pushMsg'), t('pushSender'));
+  try { await K.motor('push', 'proeve', {}, K.nyId()); K.besked($('pushMsg'), t('pushSendt'), 'okm'); }
+  catch (err) { K.besked($('pushMsg'), K.fejlTekst(err.message), 'err'); }
+});
+$('pushFraKnap').addEventListener('click', async () => {
+  try { const fb = await pushFirebase(); await fb.m.deleteToken(fb.messaging); } catch (err) { console.warn('push', err); }
+  try {
+    const r = await K.motor('push', 'afmeld', { id: pushHent() }, K.nyId());
+    pushGem(''); pushData = Object.assign({}, pushData || {}, { enheder: r.enheder });
+    visPush(); K.besked($('pushMsg'), t('pushFraOk'), 'okm');
+  } catch (err) { K.besked($('pushMsg'), K.fejlTekst(err.message), 'err'); }
+});
+
+function vis() {
+  if (!data) return;
+  $('hvem').textContent = t('kLoggetInd', { navn: data.navn });
+  const kun = !!data.kunForaelder;
+  $('kunForaelder').classList.toggle('hidden', !kun);
+  const ung = !!data.ung;
+  $('voksen').classList.toggle('hidden', kun || ung);
+  $('ung').classList.toggle('hidden', kun || !ung);
+  $('foraelderKort').classList.toggle('hidden', kun || !data.foraelder);
+  $('adresseDel').classList.toggle('hidden', kun);
+  $('skrivDel').classList.toggle('hidden', kun);
+  if (kun) return;
+  $('visMobil').textContent = data.mobil || t('mangler');
+  $('visMail').textContent = data.mail || t('mangler');
+  if (!$('skrivMail').value) $('skrivMail').value = data.mail || '';
+  if (ung) {
+    $('ungTilDig').textContent = data.mobil ? t('smsTil', { nr: data.mobil }) : t('ingenNr');
+    $('ungForaeldre').textContent = (data.foraeldre || []).join(', ') || t('ingenForaeldre');
+    visModuler();
+    return;
+  }
+  kanalKort();
+  if (!pushData) hentPush(); else visPush();
+  $('vippe').setAttribute('aria-checked', String(!!data.nyheder));
+  $('nyhStatus').textContent = t(data.nyheder ? 'nyhTil' : 'nyhFra');
+}
+
+const MNAVN = { holdkampe: 'mHoldkampe', grupper: 'mGrupper', proshop: 'mProshop' };
+const KLAR = window.RTK_KLAR || []; // moduler, der findes for juniorer i dag (testagenten 25. oktober K3)
+const mNavn = (m) => t(MNAVN[m] || m);
+let sendtBesked = null;
+function visModuler() {
+  const alle = data.moduler || [];
+  const moduler = alle.filter((m) => KLAR.indexOf(m.modul) >= 0);
+  const oensker = (data.oensker || []).filter((o) => KLAR.indexOf(o.modul) >= 0);
+  const venter = (m) => oensker.some((o) => o.modul === m && o.status === 'venter');
+  const ul = $('ungModuler'); ul.innerHTML = '';
+  const op = K.el('li'); op.append(K.el('b', null, t('mOpstrengning')), K.el('span', null, t('mOpstrengningTekst'))); ul.append(op);
+  alle.filter((m) => KLAR.indexOf(m.modul) < 0).forEach((m) => {
+    const li = K.el('li', { 'class': 'fra snart', 'data-modul': m.modul });
+    li.append(K.el('b', null, mNavn(m.modul)), K.el('span', null, t('kommerSnart')));
+    ul.append(li);
+  });
+  moduler.forEach((m) => {
+    const li = K.el('li', { 'class': m.til ? '' : 'fra', 'data-modul': m.modul });
+    li.append(K.el('b', null, mNavn(m.modul)), K.el('span', null, t(m.til ? 'erTil' : (venter(m.modul) ? 'venter' : 'ikkeTil'))));
+    ul.append(li);
+  });
+  const ol = $('ungOensker'); ol.innerHTML = '';
+  oensker.slice(0, 5).forEach((o) => ol.append(K.el('li', { 'class': 'hint', style: 'margin:0' },
+    t(o.status === 'venter' ? 'oVenter' : (o.status === 'ja' ? 'oJa' : 'oNej'), { modul: mNavn(o.modul), af: o.svarAf || '' }))));
+  const muligt = moduler.filter((m) => !m.til);
+  $('altTil').classList.toggle('hidden', muligt.length > 0 || !moduler.length);
+  const formAaben = !$('oenskeForm').classList.contains('hidden');
+  $('oenskeStart').classList.toggle('hidden', !muligt.length || formAaben);
+  if (!muligt.length) $('oenskeForm').classList.add('hidden');
+  const fs = $('oenskeValg');
+  const valgt = (fs.querySelector('input:checked') || {}).value;
+  fs.querySelectorAll('label').forEach((l) => l.remove());
+  muligt.forEach((m) => {
+    const l = K.el('label', { 'class': valgt === m.modul ? 'valgt' : '' });
+    const r = K.el('input', { type: 'radio', name: 'oenske', value: m.modul });
+    r.checked = valgt === m.modul;
+    r.addEventListener('change', () => fs.querySelectorAll('label').forEach((x) => x.classList.toggle('valgt', x.contains(r))));
+    const sp = K.el('span'); sp.append(K.el('b', null, t('slaaXTil', { modul: mNavn(m.modul) })));
+    l.append(r, sp); fs.append(l);
+  });
+  $('oenskeSendt').classList.toggle('hidden', !sendtBesked);
+  if (sendtBesked) $('oenskeSendt').textContent = t('sendtKl', { kl: sendtBesked.kl }) + ' ' + t('ventSvar', { modul: mNavn(sendtBesked.modul) });
+}
+$('oenskeKnap').addEventListener('click', () => {
+  sendtBesked = null;
+  $('oenskeStart').classList.add('hidden'); $('oenskeForm').classList.remove('hidden'); K.besked($('oenskeMsg'), '');
+  visModuler();
+  const f = $('oenskeValg').querySelector('input'); if (f) f.focus();
+});
+$('oenskeFortryd').addEventListener('click', () => { $('oenskeForm').classList.add('hidden'); visModuler(); $('oenskeKnap').focus(); });
+let oenskeId = K.nyId();
+$('oenskeForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const r = $('oenskeValg').querySelector('input:checked');
+  if (!r) { K.besked($('oenskeMsg'), t('vaelgEn'), 'err'); return; }
+  K.besked($('oenskeMsg'), t('sender'));
+  try {
+    const svar = await M('beskeder', 'oenske', { modul: r.value, tekst: $('oenskeTekst').value }, oenskeId);
+    oenskeId = K.nyId();
+    data.oensker = svar.oensker;
+    V.laest = Math.max(V.laest, K.tid('beskeder.oenske').slut); // en ældre kopi må ikke fjerne ønsket igen
+    const nu = new Date();
+    sendtBesked = { modul: r.value, kl: String(nu.getHours()).padStart(2, '0') + '.' + String(nu.getMinutes()).padStart(2, '0') };
+    $('oenskeTekst').value = ''; K.besked($('oenskeMsg'), '');
+    $('oenskeForm').classList.add('hidden');
+    visModuler();
+    $('oenskeSendt').focus && $('oenskeSendt').setAttribute('tabindex', '-1'); $('oenskeSendt').focus();
+  } catch (err) { K.besked($('oenskeMsg'), K.fejlTekst(err.message), 'err'); }
+});
+
+async function gemValg(aendring, msg) {
+  const ny = Object.assign({ kanal: data.kanal, nyheder: data.nyheder, nyhederKanal: data.nyhederKanal }, aendring);
+  K.besked(msg, t('gemmer'));
+  V.gemmer++;
+  try { fraGem('gemValg', await M('beskeder', 'gemValg', ny, K.nyId())); vis(); K.besked(msg, t('gemt'), 'okm'); }
+  catch (err) { vis(); K.besked(msg, K.fejlTekst(err.message), 'err'); }
+  finally { V.gemmer--; slip(); }
+}
+// Kontakten skifter med det samme og gemmer bagefter (Lars 12. oktober kl. 11.44). Det sidste tryk vinder.
+let nyhVenter = null;
+$('vippe').addEventListener('click', async () => {
+  const v = $('vippe');
+  const til = v.getAttribute('aria-checked') !== 'true';
+  v.setAttribute('aria-checked', String(til));
+  const igang = nyhVenter !== null;
+  nyhVenter = til;
+  if (igang) return;
+  const msg = $('nyhMsg');
+  K.besked(msg, t('gemmer'));
+  let oensket = til;
+  try {
+    for (;;) {
+      fraGem('gemValg', await M('beskeder', 'gemValg', { kanal: data.kanal, nyheder: oensket, nyhederKanal: data.nyhederKanal }, K.nyId()));
+      if (nyhVenter === oensket) break;
+      oensket = nyhVenter;
+    }
+    nyhVenter = null; vis(); K.besked(msg, t('gemt'), 'okm'); slip();
+  } catch (err) { nyhVenter = null; vis(); K.besked(msg, K.fejlTekst(err.message), 'err'); slip(); }
+});
+$('logud').addEventListener('click', () => K.logud());
+
+let skrivId = K.nyId();
+$('skrivForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  K.besked($('skrivMsg'), t('sender'));
+  try {
+    await M('beskeder', 'skrivTilKlubben', { tekst: $('skrivTekst').value, mail: $('skrivMail').value.trim(), side: 'beskeder' }, skrivId);
+    skrivId = K.nyId(); $('skrivTekst').value = ''; K.besked($('skrivMsg'), '');
+    $('skrivForm').classList.add('hidden'); $('skrivTak').classList.remove('hidden'); $('skrivTak').focus();
+  } catch (err) { K.besked($('skrivMsg'), K.fejlTekst(err.message), 'err'); }
+});
+$('skrivIgen').addEventListener('click', () => { $('skrivTak').classList.add('hidden'); $('skrivForm').classList.remove('hidden'); $('skrivTekst').focus(); });
+document.addEventListener('sprog', vis);
+
+if (K.loggetInd()) hent(); else visLogin();
+</script>
+</body>
+</html>
