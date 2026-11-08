@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="68a7019b0b8c">
+<meta name="rtk-version" content="b690417b890b">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -36,9 +36,26 @@
 .pd-mnd{display:flex;align-items:center;gap:10px;margin:6px 0}.pd-mnd b{min-width:150px;text-align:center}
 .pd-gitter{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin:6px 0}
 .pd-gh{font-size:12px;text-align:center;color:var(--muted);font-weight:700}
-.pd-c{border:1px solid var(--line);border-radius:6px;min-height:46px;font-size:13px;padding:3px 4px;display:flex;flex-direction:column;justify-content:space-between;background:#fff;cursor:pointer;text-align:left;font-weight:500;min-width:0}
+.pd-c{border:1px solid var(--line);border-radius:6px;min-height:50px;font-size:13px;padding:3px 4px;display:flex;flex-direction:column;gap:3px;background:#fff;cursor:pointer;text-align:left;font-weight:500;min-width:0}
+.pd-cn{all:unset;cursor:pointer;font-size:13px;font-weight:600;align-self:flex-start;min-width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;border-radius:99px}
+.pd-cn:focus-visible{outline:2px solid var(--teal)}
+.pd-c.idag .pd-cn{background:var(--pink);color:#fff}
+.pd-streger{display:flex;flex-direction:column;gap:2px;margin-top:auto}.pd-streger i{display:block;height:4px;border-radius:2px}
+.pd-chips{display:none}
+.pd-gk{display:inline}.pd-gl{display:none}
+.pd-idag{margin-left:auto}
+.pd-tommnd{margin:8px 0}
+@media (min-width:700px){
+  .pd-c{min-height:104px;padding:4px 5px}
+  .pd-streger{display:none}.pd-chips{display:flex;flex-direction:column;gap:3px;min-width:0}
+  .pd-gk{display:none}.pd-gl{display:inline}
+  .pd-chip{display:block;font-size:12.5px;line-height:1.25;padding:2px 5px 2px 6px;border-left:3px solid var(--f);background:color-mix(in srgb,var(--f) 10%,#fff);border-radius:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink);text-decoration:none}
+  .pd-chip:hover{text-decoration:underline}.pd-chip.gjort{text-decoration:line-through;color:var(--muted)}
+  .pd-chiplaas{font-size:10px}
+  .pd-mere{all:unset;cursor:pointer;font-size:12px;color:var(--muted);text-decoration:underline}
+}
 .pd-c.tom{border-color:transparent;background:transparent;cursor:default}
-.pd-c.roed{background:#FBE9E7}.pd-c.valgt{outline:2px solid var(--pink)}.pd-c.idag span:first-child{font-weight:800;color:var(--pink)}
+.pd-c.roed{background:#FBE9E7}.pd-c.valgt{outline:2px solid var(--pink)}
 .pd-prikker{display:flex;flex-wrap:wrap;gap:3px}.pd-prik{width:8px;height:8px;border-radius:50%;display:inline-block}
 .pd-leg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--muted);margin-top:6px}.pd-leg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
 .pd-boks{padding:14px 16px;margin:0 0 12px}
@@ -286,6 +303,13 @@ function tegnListe() {
   const t = $('tidligere'); if (t) t.addEventListener('click', () => { visTidligere = true; tegnListe(); });
   const f = $('flere'); if (f) f.addEventListener('click', () => { uger += 8; tegnListe(); });
 }
+// Månedsvisningen (Lars 8. november 2026 kl. 18.11, mockup padel_maaned.png): på en stor skærm op til 3 punkter med farve,
+// klokkeslæt og kort titel i hver dag, på telefonen en farvestreg pr. punkt og den valgte dag under kalenderen
+function kortTitel(p) {
+  if (p.type === 'tr') return /^Første/.test(p.titel) ? 'Første træning' : 'Træning';
+  if (p.type === 'darup') return 'Darup';
+  return p.titel;
+}
 function tegnMaaned() {
   if (!mnd) mnd = iDag() >= '2027-01-01' || !data.poster.length ? iDag().slice(0, 7) : data.poster[0].dag.slice(0, 7);
   const [aa, mm] = mnd.split('-').map(Number);
@@ -293,30 +317,48 @@ function tegnMaaned() {
   const dage = new Date(Date.UTC(aa, mm, 0)).getUTCDate();
   const skub = (dagD(foerste).getUTCDay() + 6) % 7;
   const pr = {};
-  data.poster.filter(iFilter).forEach((p) => {
+  const synlige = data.poster.filter(iFilter);
+  synlige.forEach((p) => {
     // Et punkt over flere dage (fx sommerferien) vises på hver dag
     let d = p.dag; const slut = p.slutDag || p.dag; let n = 0;
     while (d <= slut && n < 130) { (pr[d] = pr[d] || []).push(p); d = plusDage(d, 1); n++; }
   });
-  let h = '<div class="pd-mnd"><button type="button" class="ghost small" id="mFoer" aria-label="Forrige måned">&#8592;</button><b>' + MDR[mm - 1].charAt(0).toUpperCase() + MDR[mm - 1].slice(1) + ' ' + aa + '</b><button type="button" class="ghost small" id="mEfter" aria-label="Næste måned">&#8594;</button></div>';
-  h += '<div class="pd-gitter">' + ['M', 'T', 'O', 'T', 'F', 'L', 'S'].map((x) => '<div class="pd-gh">' + x + '</div>').join('');
+  const iMnd = Object.keys(pr).filter((d) => d.slice(0, 7) === mnd).sort();
+  // Den valgte dag fra start: i dag, hvis det er denne måned, ellers den første dag med noget
+  if (!valgtDag || valgtDag.slice(0, 7) !== mnd) valgtDag = iDag().slice(0, 7) === mnd ? iDag() : (iMnd[0] || '');
+  const MN = MDR[mm - 1].charAt(0).toUpperCase() + MDR[mm - 1].slice(1);
+  let h = '<div class="pd-mnd"><button type="button" class="ghost small" id="mFoer" aria-label="Forrige måned">&#8592;</button><b>' + MN + ' ' + aa + '</b><button type="button" class="ghost small" id="mEfter" aria-label="Næste måned">&#8594;</button>'
+    + (iDag().slice(0, 7) !== mnd ? '<button type="button" class="ghost small pd-idag" id="mIdag">I dag</button>' : '') + '</div>';
+  if (!iMnd.length && filter !== 'alle') {
+    // Intet med filteret i måneden: sig det, og vis det næste
+    const naeste = synlige.filter((p) => p.dag > mnd + '-31').sort((a, b) => a.ms - b.ms)[0];
+    h += '<p class="hint pd-tommnd">Ingen ' + esc(FILTRE[filter].navn.toLowerCase()) + ' i ' + MDR[mm - 1] + '.'
+      + (naeste ? ' Næste: <a href="#k/' + encodeURIComponent(naeste.id) + '">' + esc(dagTekst(naeste.dag).replace(/^\S+ /, '')) + ', ' + esc(naeste.titel) + '</a>.' : '') + '</p>';
+  }
+  h += '<div class="pd-gitter">' + ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'].map((x) => '<div class="pd-gh"><span class="pd-gl">' + x + '</span><span class="pd-gk">' + x.charAt(0) + '</span></div>').join('');
   for (let i = 0; i < skub; i++) h += '<div class="pd-c tom"></div>';
   for (let n = 1; n <= dage; n++) {
     const dag = mnd + '-' + String(n).padStart(2, '0');
-    const ps = pr[dag] || [];
-    const farver = [...new Set(ps.map((p) => typeAf(p.type).farve))].slice(0, 4);
+    const ps = (pr[dag] || []).slice().sort((a, b) => (a.heldag === b.heldag ? a.ms - b.ms : a.heldag ? 1 : -1));
     const cls = 'pd-c' + (ps.some((p) => p.type === 'roed') ? ' roed' : '') + (dag === valgtDag ? ' valgt' : '') + (dag === iDag() ? ' idag' : '');
-    h += '<button type="button" class="' + cls + '" data-dag="' + dag + '" aria-label="' + esc(dagTekst(dag)) + (ps.length ? ', ' + ps.length + ' i kalenderen' : '') + '"><span>' + n + '</span><span class="pd-prikker">' + farver.map((f) => '<i class="pd-prik" style="background:' + f + '"></i>').join('') + '</span></button>';
+    h += '<div class="' + cls + '" data-dag="' + dag + '"><button type="button" class="pd-cn" data-dag="' + dag + '" aria-label="' + esc(dagTekst(dag)) + (ps.length ? ', ' + ps.length + ' i kalenderen' : '') + '">' + n + '</button>';
+    h += '<span class="pd-streger" aria-hidden="true">' + ps.slice(0, 3).map((p) => '<i style="background:' + typeAf(p.type).farve + '"></i>').join('') + '</span>';
+    h += '<span class="pd-chips">' + ps.slice(0, 3).map((p) => '<a class="pd-chip' + (p.gjort ? ' gjort' : '') + '" href="#k/' + encodeURIComponent(p.id) + '" style="--f:' + typeAf(p.type).farve + '" title="' + esc(p.titel) + '">'
+      + (p.heldag ? '' : '<b>' + esc(p.start.replace(/^0/, '').replace(':00', '').replace(':', '.')) + '</b> ') + esc(kortTitel(p)) + (p.synlighed === 'intern' ? ' <span class="pd-chiplaas" aria-label="Ikke Padelcircle">&#128274;</span>' : '') + '</a>').join('')
+      + (ps.length > 3 ? '<button type="button" class="pd-mere" data-dag="' + dag + '">+' + (ps.length - 3) + ' mere</button>' : '') + '</span></div>';
   }
   h += '</div><div class="pd-leg">' + data.typer.map((t) => '<span><i style="background:' + t.farve + '"></i>' + esc(t.navn) + '</span>').join('') + '</div>';
-  if (valgtDag && valgtDag.slice(0, 7) === mnd) {
+  if (valgtDag) {
     const ps = pr[valgtDag] || [];
-    h += '<h3 class="pd-uge">' + esc(dagTekst(valgtDag)) + '</h3>' + (ps.length ? ps.map((p) => linje(p, false)).join('') : '<p class="hint">Intet denne dag.</p>');
+    h += '<h3 class="pd-uge" id="mDag">' + esc(dagTekst(valgtDag)) + '</h3>' + (ps.length ? ps.map((p) => linje(p, false)).join('') : '<p class="hint">Intet denne dag.</p>');
   }
   $('maaned').innerHTML = h;
   const skift = (d) => { const t = new Date(Date.UTC(aa, mm - 1 + d, 1)); mnd = t.toISOString().slice(0, 7); valgtDag = ''; tegnMaaned(); };
   $('mFoer').addEventListener('click', () => skift(-1)); $('mEfter').addEventListener('click', () => skift(1));
-  $('maaned').querySelectorAll('.pd-c[data-dag]').forEach((b) => b.addEventListener('click', () => { valgtDag = b.dataset.dag; tegnMaaned(); }));
+  if ($('mIdag')) $('mIdag').addEventListener('click', () => { mnd = iDag().slice(0, 7); valgtDag = ''; tegnMaaned(); });
+  const vaelg = (dag) => { valgtDag = dag; tegnMaaned(); const d = $('mDag'); if (d && d.scrollIntoView && window.innerWidth < 700) d.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); };
+  $('maaned').querySelectorAll('.pd-cn, .pd-mere').forEach((b) => b.addEventListener('click', (e) => { e.stopPropagation(); vaelg(b.dataset.dag); }));
+  $('maaned').querySelectorAll('.pd-c[data-dag]').forEach((c) => c.addEventListener('click', (e) => { if (!e.target.closest('a')) vaelg(c.dataset.dag); }));
 }
 function tegnKalender() {
   if (!data) return;
@@ -498,7 +540,7 @@ function tegnPush() {
   h += '<div class="msg" id="pushMsg" aria-live="polite"></div>';
   $('pushBoks').innerHTML = h;
   if ($('pushTil')) $('pushTil').addEventListener('click', slaaPushTil);
-  if ($('pushProeve')) $('pushProeve').addEventListener('click', async () => { try { await motor('push', 'proeve', {}, nyId()); besked($('pushMsg'), 'Sendt', 'okm'); } catch (err) { besked($('pushMsg'), err.message, 'err'); } });
+  if ($('pushProeve')) $('pushProeve').addEventListener('click', async () => { try { const r = await motor('push', 'proeve', {}, nyId()); besked($('pushMsg'), r && r.sendt ? 'Sendt til ' + r.sendt + (r.sendt === 1 ? ' enhed' : ' enheder') + '. Kommer der ingen notifikation, så tjek, at notifikationer er slået til for browseren i telefonens eller computerens indstillinger.' : 'Firebase tog ikke imod prøven. Slå påmindelser fra og til igen på denne enhed.', r && r.sendt ? 'okm' : 'err'); } catch (err) { besked($('pushMsg'), err.message, 'err'); } });
 }
 async function slaaPushTil() {
   besked($('pushMsg'), 'Slår til …');
