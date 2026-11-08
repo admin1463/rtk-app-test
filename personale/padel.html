@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="b690417b890b">
+<meta name="rtk-version" content="b5dafd4ff12a">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -33,6 +33,35 @@
 .pd-m{font-size:15px;line-height:1.3;min-width:0}.pd-u{display:block;font-size:13px;color:var(--muted)}
 .pd-l.gjort .pd-m b{text-decoration:line-through;color:var(--muted)}
 .pd-laas{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+/* Faner i to rækker og Om projektet (8. november 2026) */
+.pd-faner{margin:0 0 12px}.pd-fgr{margin:0 0 4px}.pd-fl{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:4px 0 4px}
+.pd-faner .tabs{flex-wrap:wrap;margin:0;gap:6px}
+@media (min-width:900px){.pd-faner{display:flex;gap:18px;align-items:flex-end}.pd-fgr+.pd-fgr{border-left:1px solid var(--line);padding-left:18px}}
+.pd-afs{border-top:1px solid var(--line);padding:10px 0 6px}.pd-afsh{display:flex;align-items:center;gap:8px}.pd-afsh .pd-sh{flex:1;margin:0}
+.pd-sh{font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--teal);margin:14px 0 6px}
+.pd-ret{font-size:14px;color:var(--teal)}.pd-retk{display:flex;gap:6px;align-items:center}
+.pd-p2{margin:4px 0 6px;font-size:15px;line-height:1.45}.pd-ul{margin:4px 0 6px;padding-left:20px;font-size:15px;line-height:1.45}
+.pd-tb{width:100%;border-collapse:collapse;font-size:15px;margin:4px 0}.pd-tb td{padding:5px 0;border-bottom:1px solid var(--line)}.pd-tb td:first-child{white-space:nowrap;padding-right:14px;color:var(--muted);font-weight:600;width:1%}.pd-tb td.tal{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--ink)}
+.pd-andre{margin:2px 0 6px}
+.pd-mini{all:unset;cursor:pointer;font-size:13px;border:1px solid var(--line);border-radius:6px;padding:3px 8px;color:var(--ink);background:#fff}.pd-mini:focus-visible{outline:2px solid var(--teal)}
+.pd-fs{border:0;padding:0;margin:12px 0 0}.pd-fs legend{font-weight:700;font-size:14px;padding:0;margin:0 0 6px}
+.pd-rk{display:grid;grid-template-columns:120px 1fr;gap:8px;align-items:center;margin:4px 0;font-size:14px}
+.pd-rk3{display:grid;grid-template-columns:1.6fr 1fr 1fr auto;gap:6px;align-items:center;margin:4px 0}
+@media (max-width:560px){.pd-rk3{grid-template-columns:1fr 1fr auto}.pd-rk3 input[data-f="tekst"]{grid-column:1/-1}}
+.pd-to{display:grid;grid-template-columns:2fr 1fr;gap:8px}
+.pd-cb{display:flex;gap:8px;align-items:center;font-weight:400;margin-top:10px}.pd-cb input{width:auto}
+.pd-ref,.pd-ide{display:flex;gap:12px;padding:10px 0;border-top:1px solid var(--line);text-decoration:none;color:inherit}.pd-ref:hover b,.pd-ide:hover b{text-decoration:underline}
+.pd-ide{flex-direction:column;gap:2px}
+.pd-rd{width:44px;flex:0 0 44px;text-align:center;font-size:20px;font-weight:700;line-height:1.1}.pd-rd b{display:block;font-size:12px;color:var(--muted);font-weight:600}
+.pd-rm b,.pd-ide b{display:block;font-size:16px;line-height:1.3}.pd-rm .u,.pd-ide .u{display:block;font-size:13px;color:var(--muted)}
+.pd-hd{display:grid;grid-template-columns:90px 1fr;gap:4px 10px;font-size:14px;margin:8px 0;padding:10px 12px;background:var(--soft);border-radius:8px}.pd-hd dt{color:var(--muted);font-weight:700}.pd-hd dd{margin:0}
+.pd-opg{list-style:none;padding:0;margin:0}.pd-opg li{border-left:3px solid #E6005C;padding:5px 10px;margin:6px 0}.pd-opg li.gjort b{text-decoration:line-through;color:var(--muted)}.pd-opg b{display:block;font-size:15px}.pd-opg .u{display:block;font-size:13px;color:var(--muted);margin-bottom:4px}
+.pd-bil{margin:12px 0 4px;font-size:15px}.pd-link{all:unset;cursor:pointer;color:var(--teal);text-decoration:underline}
+.pd-ideb{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:5px;font-size:13px;color:var(--muted)}
+.pd-st{border:1px solid;border-radius:99px;padding:1px 8px;font-size:12px;font-weight:700}
+.pd-ko{font-size:15px;padding:7px 0;border-top:1px solid var(--line)}
+.pd-adm{margin-top:14px;padding:10px 12px;background:var(--soft);border-radius:8px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .pd-mnd{display:flex;align-items:center;gap:10px;margin:6px 0}.pd-mnd b{min-width:150px;text-align:center}
 .pd-gitter{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin:6px 0}
 .pd-gh{font-size:12px;text-align:center;color:var(--muted);font-weight:700}
@@ -92,11 +121,22 @@
   <div id="omraade" class="hidden">
     <div class="who"><span id="hvem"></span><button class="ghost small" id="logud" type="button">Log ud</button></div>
     <div id="ingenAdgang" class="card hidden"><b>Kun for padel</b><p class="hint">Siden er for Styregruppen, Padel Team og RTK Padelcircle. Mener du, at du burde have adgang, så skriv til klubbens administratorer.</p></div>
-    <div class="tabs" role="tablist" id="faner">
-      <button type="button" role="tab" id="fane-kalender" aria-selected="true" data-fane="kalender">Kalender</button>
-      <button type="button" role="tab" id="fane-chat" aria-selected="false" data-fane="chat">Chat</button>
-      <button type="button" role="tab" id="fane-personer" aria-selected="false" data-fane="personer">Personer</button>
-    </div>
+    <!-- Fanerne i to rækker (Lars 8. november 2026 kl. 18.23): Til daglig og Om projektet. Økonomi kommer senere -->
+    <nav id="faner" class="pd-faner" aria-label="Padel">
+      <div class="pd-fgr"><span class="pd-fl" id="flDaglig">Til daglig</span>
+        <div class="tabs" role="tablist" aria-labelledby="flDaglig">
+          <button type="button" role="tab" id="fane-kalender" aria-selected="true" data-fane="kalender">Kalender</button>
+          <button type="button" role="tab" id="fane-chat" aria-selected="false" data-fane="chat">Chat</button>
+          <button type="button" role="tab" id="fane-ideer" aria-selected="false" data-fane="ideer">Idéboks</button>
+          <button type="button" role="tab" id="fane-personer" aria-selected="false" data-fane="personer">Personer</button>
+        </div></div>
+      <div class="pd-fgr"><span class="pd-fl" id="flProjekt">Om projektet</span>
+        <div class="tabs" role="tablist" aria-labelledby="flProjekt">
+          <button type="button" role="tab" id="fane-formaal" aria-selected="false" data-fane="formaal">Formål og plan</button>
+          <button type="button" role="tab" id="fane-org" aria-selected="false" data-fane="org">Organisering</button>
+          <button type="button" role="tab" id="fane-referater" aria-selected="false" data-fane="referater">Mødereferater</button>
+        </div></div>
+    </nav>
     <div id="hentMsg" class="msg" aria-live="polite">Henter …</div>
 
     <!-- Kalender -->
@@ -127,6 +167,12 @@
 
     <!-- Personer (hed Holdet) -->
     <section id="vHoldet" class="hidden"></section>
+
+    <!-- Om projektet og Idéboks (Lars 8. november 2026 kl. 19.09, mockups padel_org.png og padel_alle.png) -->
+    <section id="vFormaal" class="hidden"></section>
+    <section id="vOrg" class="hidden"></section>
+    <section id="vRef" class="hidden"></section>
+    <section id="vIde" class="hidden"></section>
   </div>
   </div>
   <div class="wrap partnere">
@@ -235,9 +281,10 @@ const iFilter = (p) => !FILTRE[filter] || !FILTRE[filter].typer || FILTRE[filter
 // ---------- Faner og ruter: #kalender  #k/<id>  #ny  #ret/<id>  #chat  #chat/ny  #personer (og det gamle #holdet)
 document.querySelectorAll('#faner button').forEach((b) => b.addEventListener('click', () => { location.hash = b.dataset.fane; }));
 window.addEventListener('hashchange', rute);
+const FANE_AF = { vChat: 'chat', vHoldet: 'personer', vFormaal: 'formaal', vOrg: 'org', vRef: 'referater', vIde: 'ideer' };
 function vis(id) {
-  ['vKalender', 'vPunkt', 'vForm', 'vChat', 'vHoldet'].forEach((v) => $(v).classList.toggle('hidden', v !== id));
-  const fane = id === 'vChat' ? 'chat' : id === 'vHoldet' ? 'personer' : 'kalender';
+  ['vKalender', 'vPunkt', 'vForm', 'vChat', 'vHoldet', 'vFormaal', 'vOrg', 'vRef', 'vIde'].forEach((v) => $(v).classList.toggle('hidden', v !== id));
+  const fane = FANE_AF[id] || 'kalender';
   document.querySelectorAll('#faner button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.fane === fane)));
 }
 function rute() {
@@ -248,6 +295,15 @@ function rute() {
   if (h[0] === 'ret' && h[1] && erAdmin()) return visForm(h[1]);
   if (h[0] === 'chat') return visChat(h[1] || '');
   if (h[0] === 'personer' || h[0] === 'holdet') return visHoldet();
+  if (h[0] === 'formaal') return visFormaal(h[1] === 'ret' && erAdmin() ? h[2] : '');
+  if (h[0] === 'org') return visOrg(h[1] === 'ret' && erAdmin() ? (h[2] || 'ny') : '');
+  if (h[0] === 'referater') return visReferater();
+  if (h[0] === 'r' && h[1]) return visReferat(h[1]);
+  if (h[0] === 'referat' && h[1] === 'ny' && erAdmin()) return visRefForm('');
+  if (h[0] === 'referat' && h[1] === 'ret' && h[2] && erAdmin()) return visRefForm(h[2]);
+  if (h[0] === 'ideer') return visIdeer();
+  if (h[0] === 'ide' && h[1] === 'ny') return visIdeNy();
+  if (h[0] === 'ide' && h[1]) return visIde(h[1]);
   vis('vKalender'); tegnKalender();
 }
 
@@ -698,6 +754,325 @@ async function visHoldet() {
     });
   } catch (e) { /* uden Firebase vises initialerne */ }
 }
+// ---------- Om projektet og Idéboks (Lars 8. november 2026 kl. 18.06 til 19.09)
+let projData = null, refData = null, ideData = null, ideEmne = '';
+/** En tekst med linjer: "- " giver punkter, "a | b" giver en tabel, ellers afsnit. */
+function tekstHtml(t) {
+  const linjer = String(t || '').split('\n');
+  let h = '', ul = [], tb = [];
+  const tom = () => { if (ul.length) { h += '<ul class="pd-ul">' + ul.map((x) => '<li>' + esc(x) + '</li>').join('') + '</ul>'; ul = []; } if (tb.length) { h += '<table class="pd-tb">' + tb.map((x) => '<tr><td>' + esc(x[0]) + '</td><td' + (/^[\d.,\s]+(kr\.?|%)?$/.test(x[1]) ? ' class="tal"' : '') + '>' + esc(x[1]) + '</td></tr>').join('') + '</table>'; tb = []; } };
+  linjer.forEach((l) => {
+    const x = l.trim();
+    if (/^[-•]\s+/.test(x)) { if (tb.length) tom(); ul.push(x.replace(/^[-•]\s+/, '')); }
+    else if (x.includes('|')) { if (ul.length) tom(); const i = x.indexOf('|'); tb.push([x.slice(0, i).trim(), x.slice(i + 1).trim()]); }
+    else { tom(); if (x) h += '<p class="pd-p2">' + esc(x) + '</p>'; }
+  });
+  tom();
+  return h;
+}
+async function hentProjekt() { projData = await motor('padel', 'projekt'); return projData; }
+const fejlHtml = (err) => '<p class="msg err">' + esc(err.message) + '</p>';
+
+async function visFormaal(ret) {
+  vis('vFormaal');
+  if (!projData) $('vFormaal').innerHTML = '<p class="hint">Henter …</p>';
+  try { await hentProjekt(); } catch (err) { $('vFormaal').innerHTML = fejlHtml(err); return; }
+  const a = ret && projData.formaal.find((x) => x.id === ret);
+  if (a) {
+    $('vFormaal').innerHTML = '<a class="gr-tilbage" href="#formaal">&#8592; Formål og plan</a><h2 class="lille" style="margin:8px 0">' + esc(a.navn) + '</h2>'
+      + '<p class="hint">En linje, der starter med "- ", bliver et punkt. "Tekst | tal" bliver en række i en tabel.</p>'
+      + '<label for="fTekst">Tekst</label><textarea id="fTekst" rows="9" maxlength="3000">' + esc(a.tekst) + '</textarea>'
+      + '<div class="pd-knapper"><button type="button" class="ok" id="fGem">Gem</button><a class="ghost" style="display:inline-flex;align-items:center;padding:6px 14px;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:6px" href="#formaal">Annullér</a></div><div class="msg" id="fMsg" aria-live="polite"></div>';
+    $('fGem').addEventListener('click', async () => {
+      besked($('fMsg'), 'Gemmer …');
+      try { await motor('padel', 'formaalRet', { id: a.id, tekst: $('fTekst').value }, nyId()); location.hash = 'formaal'; } catch (err) { besked($('fMsg'), err.message, 'err'); }
+    });
+    return;
+  }
+  let h = '';
+  projData.formaal.forEach((x) => {
+    h += '<section class="pd-afs"><div class="pd-afsh"><h3 class="pd-sh">' + esc(x.navn) + '</h3>' + (erAdmin() ? '<a class="pd-ret" href="#formaal/ret/' + x.id + '">Ret</a>' : '') + '</div>'
+      + (x.tekst ? tekstHtml(x.tekst) : '<p class="hint">Intet endnu.</p>') + '</section>';
+  });
+  $('vFormaal').innerHTML = h;
+}
+
+async function visOrg(ret) {
+  vis('vOrg');
+  if (!projData) $('vOrg').innerHTML = '<p class="hint">Henter …</p>';
+  try { await hentProjekt(); } catch (err) { $('vOrg').innerHTML = fejlHtml(err); return; }
+  if (ret) return visOrgRet(ret);
+  let h = erAdmin() ? '<div class="pd-knapper" style="margin:0 0 6px"><a class="pd-ret" href="#org/ret/ny">+ Ny gruppe</a></div>' : '';
+  projData.org.forEach((g, i) => {
+    h += '<section class="pd-afs"><div class="pd-afsh"><h3 class="pd-sh">' + esc(g.navn) + '</h3>' + (erAdmin() ? '<span class="pd-retk">'
+      + (i > 0 ? '<button type="button" class="pd-mini" data-flyt="-1" data-id="' + esc(g.id) + '" aria-label="Flyt ' + esc(g.navn) + ' op">&#8593;</button>' : '')
+      + (i < projData.org.length - 1 ? '<button type="button" class="pd-mini" data-flyt="1" data-id="' + esc(g.id) + '" aria-label="Flyt ' + esc(g.navn) + ' ned">&#8595;</button>' : '')
+      + '<a class="pd-ret" href="#org/ret/' + encodeURIComponent(g.id) + '">Ret</a></span>' : '') + '</div>';
+    if (g.opgaver) h += '<p class="pd-p2">' + esc(g.opgaver) + '</p>';
+    h += g.personer.map((x) => '<button type="button" class="pd-p" data-pid="' + esc(x.pid) + '"><span class="pd-av" data-av="' + esc(x.pid) + '">' + esc(initialer(x.navn)) + '</span><span><b>' + esc(x.navn) + '</b>' + (x.linje ? '<span class="u">' + esc(x.linje) + '</span>' : '') + '</span></button>').join('');
+    if (g.andre) h += '<p class="hint pd-andre">' + esc(g.andre) + '</p>';
+    h += '</section>';
+  });
+  $('vOrg').innerHTML = h;
+  $('vOrg').querySelectorAll('.pd-p').forEach((b) => b.addEventListener('click', () => visProfilFra(b.dataset.pid, projData.personer)));
+  $('vOrg').querySelectorAll('[data-flyt]').forEach((b) => b.addEventListener('click', async () => {
+    try { await motor('padel', 'orgRet', { id: b.dataset.id, flyt: Number(b.dataset.flyt) }, nyId()); projData = null; visOrg(''); } catch (err) { alert(err.message); }
+  }));
+  miniBilleder($('vOrg'), projData.personer);
+}
+function visOrgRet(id) {
+  const g = id === 'ny' ? { id: '', navn: '', opgaver: '', personer: [], andre: '' } : projData.org.find((x) => x.id === id);
+  if (!g) { location.hash = 'org'; return; }
+  const valgt = {}; g.personer.forEach((x) => { if (!(g.auto === 'circle' && !x.linje && projData.personer.find((y) => y.id === x.pid && y.kreds === 'circle'))) valgt[x.pid] = x.linje || ''; });
+  let h = '<a class="gr-tilbage" href="#org">&#8592; Organisering</a><h2 class="lille" style="margin:8px 0">' + (g.id ? 'Ret: ' + esc(g.navn) : 'Ny gruppe') + '</h2>';
+  h += '<label for="oNavn">Navn</label><input id="oNavn" maxlength="60" value="' + esc(g.navn) + '">';
+  h += '<label for="oOpg">Opgaver</label><textarea id="oOpg" rows="3" maxlength="1000">' + esc(g.opgaver) + '</textarea>';
+  h += '<fieldset class="pd-fs"><legend>Personer</legend><div class="chips pd-vaelg">' + projData.personer.map((x) => '<button type="button" data-pid="' + esc(x.id) + '" aria-pressed="' + (x.id in valgt) + '">' + esc(x.navn) + '</button>').join('') + '</div></fieldset>';
+  if (g.auto === 'circle') h += '<p class="hint">Alle i RTK Padelcircle står her af sig selv.</p>';
+  h += '<div id="oLinjer"></div>';
+  h += '<label for="oAndre">Andre, der ikke har en rolle i padel</label><input id="oAndre" maxlength="200" value="' + esc(g.andre) + '">';
+  h += '<div class="pd-knapper"><button type="button" class="ok" id="oGem">Gem</button><a class="ghost" style="display:inline-flex;align-items:center;padding:6px 14px;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:6px" href="#org">Annullér</a>'
+    + (g.id ? '<button type="button" class="ghost" id="oSlet">Slet gruppen</button>' : '') + '</div><div class="msg" id="oMsg" aria-live="polite"></div>';
+  $('vOrg').innerHTML = h;
+  const linjer = () => {
+    const ids = Object.keys(valgt);
+    $('oLinjer').innerHTML = ids.length ? '<label>Linje under en person (fx opgave)</label>' + ids.map((pid) => { const x = projData.personer.find((y) => y.id === pid); return '<div class="pd-rk"><span>' + esc(x ? x.navn : pid) + '</span><input data-linje="' + esc(pid) + '" maxlength="60" value="' + esc(valgt[pid]) + '" aria-label="Linje under ' + esc(x ? x.navn : pid) + '"></div>'; }).join('') : '';
+    $('oLinjer').querySelectorAll('input').forEach((i) => i.addEventListener('input', () => { valgt[i.dataset.linje] = i.value; }));
+  };
+  linjer();
+  $('vOrg').querySelectorAll('.pd-vaelg button').forEach((b) => b.addEventListener('click', () => {
+    if (b.dataset.pid in valgt) delete valgt[b.dataset.pid]; else valgt[b.dataset.pid] = '';
+    b.setAttribute('aria-pressed', String(b.dataset.pid in valgt)); linjer();
+  }));
+  $('oGem').addEventListener('click', async () => {
+    besked($('oMsg'), 'Gemmer …');
+    try {
+      await motor('padel', 'orgRet', { id: g.id, navn: $('oNavn').value, opgaver: $('oOpg').value, andre: $('oAndre').value, personer: Object.keys(valgt).map((pid) => ({ pid, linje: valgt[pid] })) }, nyId());
+      projData = null; location.hash = 'org';
+    } catch (err) { besked($('oMsg'), err.message, 'err'); }
+  });
+  if ($('oSlet')) {
+    let sikker = false;
+    $('oSlet').addEventListener('click', async () => {
+      if (!sikker) { sikker = true; $('oSlet').textContent = 'Tryk igen for at slette'; return; }
+      try { await motor('padel', 'orgRet', { id: g.id, slet: true }, nyId()); projData = null; location.hash = 'org'; } catch (err) { besked($('oMsg'), err.message, 'err'); }
+    });
+  }
+}
+/** Profilkortet for en person i en liste (Organisering, referater og idéer). */
+function visProfilFra(pid, personer) {
+  const x = (personer || []).find((y) => (y.id || y.pid) === pid);
+  if (!holdData) holdData = { personer: [] };
+  if (x && !holdData.personer.find((y) => y.id === pid)) holdData.personer.push({ id: pid, navn: x.navn, kreds: x.kreds || 'fuld', grupper: [] });
+  visProfil(pid);
+}
+async function miniBilleder(rod, personer) {
+  if (!window.RTKV) return;
+  try {
+    const f = await RTKV.db(motor);
+    (personer || []).forEach(async (x) => {
+      const id = x.id || x.pid;
+      try {
+        const d = await f.fs.getDoc(f.fs.doc(f.db, 'profilMini', id));
+        rod.querySelectorAll('[data-av="' + id + '"]').forEach((el) => { if (d.exists() && d.data().mini) { el.style.backgroundImage = 'url("' + d.data().mini + '")'; el.textContent = ''; } });
+      } catch (e) { /* intet billede */ }
+    });
+  } catch (e) { /* uden Firebase vises initialerne */ }
+}
+
+// ---------- Mødereferater
+const datoTekst = (dag) => dag ? dagTekst(dag).charAt(0).toUpperCase() + dagTekst(dag).slice(1) + ' ' + dag.slice(0, 4) : '';
+async function hentRef() { refData = await motor('padel', 'referater'); return refData; }
+async function visReferater() {
+  vis('vRef');
+  if (!refData) $('vRef').innerHTML = '<p class="hint">Henter …</p>';
+  try { await hentRef(); } catch (err) { $('vRef').innerHTML = fejlHtml(err); return; }
+  let h = erAdmin() ? '<div class="pd-knapper" style="margin:0 0 8px"><a class="ok small" style="display:inline-flex;align-items:center;border:2px solid var(--pink);border-radius:6px;padding:6px 12px;text-decoration:none;color:inherit;font-weight:700" href="#referat/ny">+ Nyt referat</a></div>' : '';
+  if (!refData.referater.length) h += '<p class="hint">Ingen referater endnu.</p>';
+  h += refData.referater.map((r) => {
+    const d = r.dag ? dagD(r.dag) : null;
+    const hvem = r.deltagere.map((x) => x.navn.replace(/^Test /, '').split(' ')[0]).concat(r.andre ? [r.andre] : []).join(', ');
+    return '<a class="pd-ref" href="#r/' + encodeURIComponent(r.id) + '"><span class="pd-rd">' + (d ? d.getUTCDate() + '<b>' + MDR[d.getUTCMonth()].slice(0, 3) + '</b>' : '') + '</span><span class="pd-rm"><b>' + esc(r.titel) + '</b><span class="u">' + esc(hvem)
+      + (r.opgaver.length ? ' · ' + r.opgaver.length + (r.opgaver.length === 1 ? ' opgave' : ' opgaver') : '') + (r.fil ? ' · fil' : '') + '</span>'
+      + (r.synlighed === 'intern' ? '<span class="pd-laas">&#128274; Ikke Padelcircle</span>' : '') + '</span></a>';
+  }).join('');
+  $('vRef').innerHTML = h;
+}
+async function visReferat(id) {
+  vis('vRef');
+  if (!refData) { $('vRef').innerHTML = '<p class="hint">Henter …</p>'; try { await hentRef(); } catch (err) { $('vRef').innerHTML = fejlHtml(err); return; } }
+  const r = refData.referater.find((x) => x.id === id);
+  if (!r) { $('vRef').innerHTML = '<a class="gr-tilbage" href="#referater">&#8592; Mødereferater</a><p class="hint">Referatet findes ikke, eller du kan ikke se det.</p>'; return; }
+  let h = '<a class="gr-tilbage" href="#referater">&#8592; Mødereferater</a><h2 class="lille" style="margin:8px 0 6px">' + esc(r.titel) + '</h2>';
+  const kal = r.kalId && data.poster.find((x) => x.id === r.kalId);
+  h += '<dl class="pd-hd"><dt>Dato</dt><dd>' + esc(datoTekst(r.dag)) + (r.kl ? ' kl. ' + esc(kl(r.kl)) : '') + '</dd>'
+    + '<dt>Deltagere</dt><dd>' + esc(r.deltagere.map((x) => x.navn).concat(r.andre ? [r.andre] : []).join(', ') || 'Ikke skrevet') + '</dd>'
+    + (r.formaal ? '<dt>Formål</dt><dd>' + esc(r.formaal) + '</dd>' : '')
+    + (kal ? '<dt>Kalender</dt><dd><a href="#k/' + encodeURIComponent(kal.id) + '">' + esc(kal.titel) + '</a></dd>' : '') + '</dl>';
+  if (r.punkter) h += '<div class="pd-punkter">' + r.punkter.split('\n').map((l) => /^\s*\d+\.\s+\S/.test(l) && l.length < 80 ? '<h3 class="pd-sh">' + esc(l.trim()) + '</h3>' : l.trim() ? '<p class="pd-p2">' + esc(l) + '</p>' : '').join('') + '</div>';
+  if (r.opgaver.length) {
+    h += '<h3 class="pd-sh">Det, mødet udløser</h3><ul class="pd-opg">' + r.opgaver.map((o, i) => '<li class="' + (o.gjort ? 'gjort' : '') + '"><b>' + esc(o.tekst) + '</b><span class="u">'
+      + [o.ansvarligNavn, o.frist ? 'senest ' + kortDag(o.frist) : '', o.kalId ? '<a href="#k/' + encodeURIComponent(o.kalId) + '">i kalenderen</a>' : '', o.gjort ? '&#10003; gjort' : ''].filter(Boolean).map((x, j) => (j === 2 && o.kalId) || x === '&#10003; gjort' ? x : esc(x)).join(' · ')
+      + '</span>' + (erAdmin() ? '<button type="button" class="pd-mini pd-gjortk" data-nr="' + i + '">' + (o.gjort ? 'Ikke gjort' : 'Markér som gjort') + '</button>' : '') + '</li>').join('') + '</ul>';
+  }
+  if (r.fil) h += '<p class="pd-bil">&#128206; <button type="button" class="pd-link" id="rFil">' + esc(r.fil.navn) + '</button> (' + Math.max(1, Math.round(r.fil.str / 1024)) + ' kB)</p><div class="msg" id="rFilMsg"></div>';
+  if (r.synlighed === 'intern') h += '<span class="pd-laas">&#128274; Ikke Padelcircle</span>';
+  if (erAdmin()) h += '<div class="pd-knapper"><a class="ghost small" style="display:inline-flex;align-items:center;padding:6px 12px;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:6px" href="#referat/ret/' + encodeURIComponent(r.id) + '">Ret</a><button type="button" class="ghost small" id="rSlet">Slet</button></div><div class="msg" id="rMsg"></div>';
+  $('vRef').innerHTML = h;
+  $('vRef').querySelectorAll('.pd-gjortk').forEach((b) => b.addEventListener('click', async () => {
+    const o = r.opgaver[Number(b.dataset.nr)];
+    try { await motor('padel', 'opgaveGjort', { id: r.id, nr: Number(b.dataset.nr), ikke: o.gjort }, nyId()); refData = null; if (o.kalId) await hentStart(); visReferat(r.id); } catch (err) { besked($('rMsg'), err.message, 'err'); }
+  }));
+  if ($('rFil')) $('rFil').addEventListener('click', async () => {
+    besked($('rFilMsg'), 'Henter filen …');
+    try { const f = await motor('padel', 'referatFil', { id: r.id }); gemFil(f); besked($('rFilMsg'), ''); } catch (err) { besked($('rFilMsg'), err.message, 'err'); }
+  });
+  if ($('rSlet')) { let sikker = false; $('rSlet').addEventListener('click', async () => {
+    if (!sikker) { sikker = true; $('rSlet').textContent = 'Tryk igen for at slette'; return; }
+    try { await motor('padel', 'referatSlet', { id: r.id }, nyId()); refData = null; location.hash = 'referater'; } catch (err) { besked($('rMsg'), err.message, 'err'); }
+  }); }
+}
+function gemFil(f) {
+  const bin = atob(f.data); const b = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) b[i] = bin.charCodeAt(i);
+  const url = URL.createObjectURL(new Blob([b], { type: f.type || 'application/octet-stream' }));
+  const a = document.createElement('a'); a.href = url; a.download = f.navn; document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
+async function visRefForm(id) {
+  vis('vRef');
+  if (!refData) { $('vRef').innerHTML = '<p class="hint">Henter …</p>'; try { await hentRef(); } catch (err) { $('vRef').innerHTML = fejlHtml(err); return; } }
+  if (!personerData) { try { personerData = await motor('padel', 'personer'); } catch (err) { $('vRef').innerHTML = fejlHtml(err); return; } }
+  const r = id ? refData.referater.find((x) => x.id === id) : null;
+  if (id && !r) { location.hash = 'referater'; return; }
+  const v = r || { titel: '', dag: iDag(), kl: '', kalId: '', deltagere: [], andre: '', formaal: '', punkter: '', opgaver: [], synlighed: 'intern', fil: null };
+  const valgt = new Set(v.deltagere.map((x) => x.id));
+  let opg = v.opgaver.map((o) => Object.assign({}, o));
+  let fil = null, filFjern = false;
+  let h = '<a class="gr-tilbage" href="' + (r ? '#r/' + encodeURIComponent(r.id) : '#referater') + '">&#8592; ' + (r ? 'Tilbage' : 'Mødereferater') + '</a><h2 class="lille" style="margin:8px 0">' + (r ? 'Ret referatet' : 'Nyt referat') + '</h2><form id="rForm" novalidate>';
+  h += '<label for="rTitel">Titel</label><input id="rTitel" maxlength="100" value="' + esc(v.titel) + '">';
+  h += '<div class="pd-to"><div><label for="rDag">Dato</label><input id="rDag" type="date" value="' + esc(v.dag) + '"></div><div><label for="rKl">Kl.</label><input id="rKl" type="time" value="' + esc(v.kl) + '"></div></div>';
+  h += '<label for="rKal">Møde i kalenderen (valgfrit)</label><select id="rKal"><option value="">Intet</option>' + refData.moeder.map((m) => '<option value="' + esc(m.id) + '"' + (m.id === v.kalId ? ' selected' : '') + '>' + esc(m.titel + ', ' + kortDag(m.dag)) + '</option>').join('') + '</select>';
+  h += '<fieldset class="pd-fs"><legend>Deltagere</legend><div class="chips pd-vaelg">' + personerData.map((x) => '<button type="button" data-pid="' + esc(x.id) + '" aria-pressed="' + valgt.has(x.id) + '">' + esc(x.navn) + '</button>').join('') + '</div></fieldset>';
+  h += '<label for="rAndre">Andre deltagere</label><input id="rAndre" maxlength="200" placeholder="Fx PADELPIT" value="' + esc(v.andre) + '">';
+  h += '<label for="rFormaal">Formål</label><input id="rFormaal" maxlength="300" value="' + esc(v.formaal) + '">';
+  h += '<label for="rPunkter">Punkter</label><p class="hint" style="margin:0 0 4px">En linje som "1. Status" bliver en overskrift.</p><textarea id="rPunkter" rows="10" maxlength="20000">' + esc(v.punkter) + '</textarea>';
+  h += '<label>Det, mødet udløser</label><div id="rOpg"></div><button type="button" class="ghost small" id="rOpgNy">+ Opgave</button>';
+  h += '<label class="pd-cb"><input type="checkbox" id="rKalOpg" checked> Læg opgaver med frist og ansvarlig i kalenderen</label>';
+  h += '<label for="rFilInput">Fil (valgfrit): PDF, Word, Excel eller billede, højst 5 MB</label><div id="rFilVis"></div><input type="file" id="rFilInput" accept=".pdf,.docx,.xlsx,.png,.jpg,.jpeg">';
+  h += '<fieldset class="pd-fs"><legend>Hvem kan se det?</legend><div class="chips" id="rSyn"><button type="button" data-s="alle" aria-pressed="' + (v.synlighed === 'alle') + '">Alle i padel</button><button type="button" data-s="intern" aria-pressed="' + (v.synlighed === 'intern') + '">Ikke Padelcircle</button></div></fieldset>';
+  h += '<div class="pd-knapper"><button type="submit" class="ok" id="rGem">Gem referatet</button></div><div class="msg" id="rMsg" aria-live="polite"></div></form>';
+  $('vRef').innerHTML = h;
+  let syn = v.synlighed;
+  $('rSyn').querySelectorAll('button').forEach((b) => b.addEventListener('click', () => { syn = b.dataset.s; $('rSyn').querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.s === syn))); }));
+  $('vRef').querySelectorAll('.pd-vaelg button').forEach((b) => b.addEventListener('click', () => { if (valgt.has(b.dataset.pid)) valgt.delete(b.dataset.pid); else valgt.add(b.dataset.pid); b.setAttribute('aria-pressed', String(valgt.has(b.dataset.pid))); }));
+  const tegnOpg = () => {
+    $('rOpg').innerHTML = opg.map((o, i) => '<div class="pd-rk3"><input data-i="' + i + '" data-f="tekst" maxlength="200" placeholder="Opgave" aria-label="Opgave ' + (i + 1) + '" value="' + esc(o.tekst) + '"' + (o.kalId ? ' disabled' : '') + '>'
+      + '<select data-i="' + i + '" data-f="ansvarlig" aria-label="Ansvarlig for opgave ' + (i + 1) + '"' + (o.kalId ? ' disabled' : '') + '><option value="">Ansvarlig</option>' + personerData.map((x) => '<option value="' + esc(x.id) + '"' + (x.id === o.ansvarlig ? ' selected' : '') + '>' + esc(x.navn) + '</option>').join('') + '</select>'
+      + '<input type="date" data-i="' + i + '" data-f="frist" aria-label="Frist for opgave ' + (i + 1) + '" value="' + esc(o.frist) + '"' + (o.kalId ? ' disabled' : '') + '>'
+      + '<button type="button" class="pd-mini" data-fjern="' + i + '" aria-label="Fjern opgave ' + (i + 1) + '">&#215;</button></div>' + (o.kalId ? '<p class="hint pd-andre">Står i kalenderen. Ret den dér.</p>' : '')).join('');
+    $('rOpg').querySelectorAll('[data-f]').forEach((e) => e.addEventListener('input', () => { opg[Number(e.dataset.i)][e.dataset.f] = e.value; }));
+    $('rOpg').querySelectorAll('[data-fjern]').forEach((b) => b.addEventListener('click', () => { opg.splice(Number(b.dataset.fjern), 1); tegnOpg(); }));
+  };
+  tegnOpg();
+  $('rOpgNy').addEventListener('click', () => { opg.push({ tekst: '', ansvarlig: '', frist: '' }); tegnOpg(); });
+  const tegnFil = () => {
+    const navn = fil ? fil.navn : (!filFjern && v.fil ? v.fil.navn : '');
+    $('rFilVis').innerHTML = navn ? '<p class="pd-bil">&#128206; ' + esc(navn) + ' <button type="button" class="pd-mini" id="rFilFjern">Fjern</button></p>' : '';
+    if ($('rFilFjern')) $('rFilFjern').addEventListener('click', () => { if (fil) fil = null; else filFjern = true; $('rFilInput').value = ''; tegnFil(); });
+  };
+  tegnFil();
+  $('rFilInput').addEventListener('change', () => {
+    const f = $('rFilInput').files[0]; if (!f) return;
+    if (f.size > 5 * 1024 * 1024) { besked($('rMsg'), 'Filen må højst fylde 5 MB', 'err'); $('rFilInput').value = ''; return; }
+    const rd = new FileReader();
+    rd.onload = () => { fil = { navn: f.name, data: String(rd.result).split(',')[1] || '' }; tegnFil(); besked($('rMsg'), ''); };
+    rd.readAsDataURL(f);
+  });
+  const regId = nyId();
+  $('rForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    besked($('rMsg'), fil ? 'Gemmer og lægger filen op …' : 'Gemmer …');
+    $('rGem').disabled = true;
+    try {
+      const svar = await motor('padel', 'referatGem', { id: r ? r.id : '', titel: $('rTitel').value, dag: $('rDag').value, kl: $('rKl').value, kalId: $('rKal').value, deltagere: [...valgt], andre: $('rAndre').value,
+        formaal: $('rFormaal').value, punkter: $('rPunkter').value, opgaver: opg, kalender: $('rKalOpg').checked, synlighed: syn, fil, filFjern }, regId);
+      refData = null;
+      if (opg.some((o) => o.frist && o.ansvarlig && !o.kalId) && $('rKalOpg').checked) await hentStart();
+      location.hash = 'r/' + encodeURIComponent(svar.id);
+    } catch (err) { besked($('rMsg'), err.message, 'err'); $('rGem').disabled = false; }
+  });
+}
+
+// ---------- Idéboks
+async function hentIdeer(id) { ideData = await motor('padel', 'ideer', id ? { id } : {}); return ideData; }
+const STATUSFARVE = { 'Ny': '#4A5560', 'Tages op på næste møde': '#3B6E8F', 'Vi prøver det': '#5A8F3C', 'Afprøvet': '#0B3D3A', 'Ikke nu': '#8FA9A6' };
+const statusTag = (s) => '<span class="pd-st" style="border-color:' + (STATUSFARVE[s] || '#4A5560') + ';color:' + (STATUSFARVE[s] || '#4A5560') + '">' + esc(s) + '</span>';
+async function visIdeer() {
+  vis('vIde');
+  if (!ideData) $('vIde').innerHTML = '<p class="hint">Henter …</p>';
+  try { await hentIdeer(); } catch (err) { $('vIde').innerHTML = fejlHtml(err); return; }
+  let h = '<div class="pd-knapper" style="margin:0 0 8px"><a class="ok small" style="display:inline-flex;align-items:center;border:2px solid var(--pink);border-radius:6px;padding:6px 12px;text-decoration:none;color:inherit;font-weight:700" href="#ide/ny">+ Ny idé</a></div>';
+  h += '<div class="chips" id="iEmner" role="group" aria-label="Emne">' + [''].concat(ideData.emner).map((e) => '<button type="button" data-e="' + esc(e) + '" aria-pressed="' + (ideEmne === e) + '">' + esc(e || 'Alle') + '</button>').join('') + '</div>';
+  const liste = ideData.ideer.filter((i) => !ideEmne || i.emne === ideEmne);
+  if (!liste.length) h += '<p class="hint">' + (ideData.ideer.length ? 'Ingen idéer om ' + esc(ideEmne.toLowerCase()) + ' endnu.' : 'Ingen idéer endnu. Skriv den første.') + '</p>';
+  h += liste.map((i) => '<a class="pd-ide" href="#ide/' + encodeURIComponent(i.id) + '"><b>' + esc(i.titel) + '</b><span class="u">' + esc(i.afNavn) + ' · ' + esc(omTid(i.tid)) + (i.emne ? ' · ' + esc(i.emne) : '') + '</span>'
+    + '<span class="pd-ideb">' + statusTag(i.status) + '<span>&#128077; ' + i.tommel + '</span><span>&#128172; ' + i.antalKomm + '</span></span></a>').join('');
+  $('vIde').innerHTML = h;
+  $('iEmner').querySelectorAll('button').forEach((b) => b.addEventListener('click', () => { ideEmne = b.dataset.e; visIdeer(); }));
+}
+function omTid(t) {
+  if (!t) return '';
+  const dag = String(t).slice(0, 10); const n = dageTil(dag);
+  return n === 0 ? 'i dag' : n === -1 ? 'i går' : kortDag(dag);
+}
+function visIdeNy() {
+  vis('vIde');
+  const emner = (ideData && ideData.emner) || ['Arrangementer', 'Spil og turneringer', 'Juniorer', 'Seniorer', 'Kommunikation', 'Sponsorer', 'Andet'];
+  let h = '<a class="gr-tilbage" href="#ideer">&#8592; Idéboks</a><h2 class="lille" style="margin:8px 0">Ny idé</h2><form id="iForm" novalidate>';
+  h += '<label for="iTitel">Overskrift</label><input id="iTitel" maxlength="120" placeholder="Fx Americano med pizza fredag aften">';
+  h += '<label for="iTekst">Fortæl lidt mere (valgfrit)</label><textarea id="iTekst" rows="5" maxlength="3000"></textarea>';
+  h += '<fieldset class="pd-fs"><legend>Emne</legend><div class="chips" id="iEmneValg">' + emner.map((e) => '<button type="button" data-e="' + esc(e) + '" aria-pressed="false">' + esc(e) + '</button>').join('') + '</div></fieldset>';
+  h += '<p class="hint">Dit navn står på idéen. Alle i padel kan se den.</p><div class="pd-knapper"><button type="submit" class="ok" id="iGem">Del idéen</button></div><div class="msg" id="iMsg" aria-live="polite"></div></form>';
+  $('vIde').innerHTML = h;
+  let emne = '';
+  $('iEmneValg').querySelectorAll('button').forEach((b) => b.addEventListener('click', () => { emne = emne === b.dataset.e ? '' : b.dataset.e; $('iEmneValg').querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.e === emne))); }));
+  const regId = nyId();
+  $('iForm').addEventListener('submit', async (e) => {
+    e.preventDefault(); besked($('iMsg'), 'Gemmer …'); $('iGem').disabled = true;
+    try { const svar = await motor('padel', 'ideNy', { titel: $('iTitel').value, tekst: $('iTekst').value, emne }, regId); ideData = null; location.hash = 'ide/' + encodeURIComponent(svar.id); }
+    catch (err) { besked($('iMsg'), err.message, 'err'); $('iGem').disabled = false; }
+  });
+  $('iTitel').focus();
+}
+async function visIde(id) {
+  vis('vIde');
+  if (!ideData || !ideData.ideer.find((x) => x.id === id && x.kommentarer)) $('vIde').innerHTML = '<p class="hint">Henter …</p>';
+  try { await hentIdeer(id); } catch (err) { $('vIde').innerHTML = fejlHtml(err); return; }
+  const i = ideData.ideer.find((x) => x.id === id);
+  if (!i) { $('vIde').innerHTML = '<a class="gr-tilbage" href="#ideer">&#8592; Idéboks</a><p class="hint">Idéen findes ikke længere.</p>'; return; }
+  let h = '<a class="gr-tilbage" href="#ideer">&#8592; Idéboks</a><h2 class="lille" style="margin:8px 0 4px">' + esc(i.titel) + '</h2><p class="hint" style="margin:0 0 8px">' + esc(i.afNavn) + ' · ' + esc(omTid(i.tid)) + (i.emne ? ' · ' + esc(i.emne) : '') + '</p>';
+  if (i.tekst) h += tekstHtml(i.tekst);
+  h += '<div class="pd-ideb"><button type="button" class="ghost small" id="iTommel" aria-pressed="' + i.minTommel + '">&#128077; ' + (i.minTommel ? 'Du synes godt om den' : 'Godt') + ' · ' + i.tommel + '</button>' + statusTag(i.status) + '</div>';
+  h += '<h3 class="pd-sh">Kommentarer</h3>' + (i.kommentarer.length ? i.kommentarer.map((k) => '<div class="pd-ko"><b>' + esc(k.afNavn.replace(/^Test /, '')) + '</b> ' + esc(k.tekst)
+    + (k.kanSlette ? ' <button type="button" class="pd-mini" data-k="' + esc(k.id) + '" aria-label="Slet kommentaren">Slet</button>' : '') + '</div>').join('') : '<p class="hint">Ingen endnu.</p>');
+  h += '<form id="kForm" novalidate><label for="kTekst" class="sr">Skriv en kommentar</label><textarea id="kTekst" rows="2" maxlength="1000" placeholder="Skriv en kommentar"></textarea><div class="pd-knapper"><button type="submit" class="ok small">Send</button></div></form><div class="msg" id="iMsg" aria-live="polite"></div>';
+  if (erAdmin()) h += '<div class="pd-adm"><b>For administratorer</b><label for="iStatus">Status</label><select id="iStatus">' + ideData.status.map((s) => '<option' + (s === i.status ? ' selected' : '') + '>' + esc(s) + '</option>').join('') + '</select></div>';
+  if (i.kanSlette) h += '<div class="pd-knapper"><button type="button" class="ghost small" id="iSlet">Slet idéen</button></div>';
+  $('vIde').innerHTML = h;
+  $('iTommel').addEventListener('click', async () => { try { await motor('padel', 'ideTommel', { id, fjern: i.minTommel }, nyId()); visIde(id); } catch (err) { besked($('iMsg'), err.message, 'err'); } });
+  const regId = nyId();
+  $('kForm').addEventListener('submit', async (e) => {
+    e.preventDefault(); if (!$('kTekst').value.trim()) return;
+    try { await motor('padel', 'ideKommenter', { id, tekst: $('kTekst').value }, regId); visIde(id); } catch (err) { besked($('iMsg'), err.message, 'err'); }
+  });
+  $('vIde').querySelectorAll('[data-k]').forEach((b) => b.addEventListener('click', async () => { try { await motor('padel', 'ideSlet', { kommentar: b.dataset.k }, nyId()); visIde(id); } catch (err) { besked($('iMsg'), err.message, 'err'); } }));
+  if ($('iStatus')) $('iStatus').addEventListener('change', async () => { try { await motor('padel', 'ideStatus', { id, status: $('iStatus').value }, nyId()); visIde(id); } catch (err) { besked($('iMsg'), err.message, 'err'); } });
+  if ($('iSlet')) { let sikker = false; $('iSlet').addEventListener('click', async () => {
+    if (!sikker) { sikker = true; $('iSlet').textContent = 'Tryk igen for at slette'; return; }
+    try { await motor('padel', 'ideSlet', { id }, nyId()); ideData = null; location.hash = 'ideer'; } catch (err) { besked($('iMsg'), err.message, 'err'); }
+  }); }
+}
+
 async function visProfil(pid) {
   // Det fælles profilkort fra Grupper i et ark nedefra (site/profilkort.js, Lars 8. november 2026 kl. 08.52)
   const x = holdData.personer.find((y) => y.id === pid);
