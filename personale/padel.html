@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="bc6b63dc1a23">
+<meta name="rtk-version" content="68a7019b0b8c">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../rtk.css?v=2af815a235fa">
+<link rel="stylesheet" href="../rtk.css?v=dff939250147">
 <style>
 /* Padel på personalesiden (Lars 8. november 2026, mockup padel.png version 2) */
 .pd-tag{display:inline-block;border:1.5px solid;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:1px 8px;margin-right:6px;vertical-align:2px;background:#fff}
@@ -54,11 +54,7 @@
 .pd-p{display:flex;gap:12px;align-items:center;padding:8px 0;border-top:1px solid var(--line);cursor:pointer;background:none;border-left:0;border-right:0;border-bottom:0;width:100%;text-align:left;border-radius:0;min-height:0;font-weight:400}
 .pd-p b{display:block;font-size:15px}.pd-p span.u{font-size:13px;color:var(--muted)}
 .pd-av{width:42px;height:42px;border-radius:50%;flex:0 0 42px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;background:var(--frost);background-size:cover;background-position:center}
-.pd-modal{position:fixed;inset:0;background:rgba(15,37,55,.55);display:flex;align-items:flex-end;justify-content:center;z-index:50;padding:12px}
-.pd-modal .card{width:100%;max-width:520px;max-height:88vh;overflow:auto;margin:0}
-.pd-pbillede{width:100%;max-height:340px;object-fit:cover;border-radius:6px;margin-bottom:10px}
 .pd-url{font-size:13px;word-break:break-all;background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin-top:8px}
-@media (min-width:700px){.pd-modal{align-items:center}}
 </style>
 </head>
 <body>
@@ -82,7 +78,7 @@
     <div class="tabs" role="tablist" id="faner">
       <button type="button" role="tab" id="fane-kalender" aria-selected="true" data-fane="kalender">Kalender</button>
       <button type="button" role="tab" id="fane-chat" aria-selected="false" data-fane="chat">Chat</button>
-      <button type="button" role="tab" id="fane-holdet" aria-selected="false" data-fane="holdet">Holdet</button>
+      <button type="button" role="tab" id="fane-personer" aria-selected="false" data-fane="personer">Personer</button>
     </div>
     <div id="hentMsg" class="msg" aria-live="polite">Henter …</div>
 
@@ -112,7 +108,7 @@
     <!-- Chat -->
     <section id="vChat" class="hidden"></section>
 
-    <!-- Holdet -->
+    <!-- Personer (hed Holdet) -->
     <section id="vHoldet" class="hidden"></section>
   </div>
   </div>
@@ -122,7 +118,6 @@
     <a class="p-racketlife" href="https://racketlife.dk" target="_blank" rel="noopener" aria-label="Racketlife (åbner i ny fane)"><img src="../ikoner/racketlife.png" alt=""></a>
   </div>
 </main>
-<div id="modal" class="pd-modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitel"></div>
 
 <footer class="bund">
   <div class="wrap">
@@ -141,6 +136,8 @@
 <script src="../konfig.js?v=5d3b61fda9e3"></script>
 <script src="../adminpin.js?v=072d3999ca21"></script>
 <script src="../visning.js?v=491810b71d5d"></script>
+<script src="../niveauer.js?v=4cc686edce45"></script>
+<script src="../profilkort.js?v=54b402e6f497"></script>
 <script>
 // Padel på personalesiden (Lars 8. november 2026 kl. 05.36 til 06.19). Kalender med årshjulet fra aftalen med PADELPIT,
 // chat i grupper for personale og frivillige og Holdet med profilkortene. Motoren styrer, hvad den enkelte ser: et punkt,
@@ -218,12 +215,12 @@ const FILTRE = {
 };
 const iFilter = (p) => !FILTRE[filter] || !FILTRE[filter].typer || FILTRE[filter].typer.includes(p.type);
 
-// ---------- Faner og ruter: #kalender  #k/<id>  #ny  #ret/<id>  #chat  #chat/ny  #holdet
+// ---------- Faner og ruter: #kalender  #k/<id>  #ny  #ret/<id>  #chat  #chat/ny  #personer (og det gamle #holdet)
 document.querySelectorAll('#faner button').forEach((b) => b.addEventListener('click', () => { location.hash = b.dataset.fane; }));
 window.addEventListener('hashchange', rute);
 function vis(id) {
   ['vKalender', 'vPunkt', 'vForm', 'vChat', 'vHoldet'].forEach((v) => $(v).classList.toggle('hidden', v !== id));
-  const fane = id === 'vChat' ? 'chat' : id === 'vHoldet' ? 'holdet' : 'kalender';
+  const fane = id === 'vChat' ? 'chat' : id === 'vHoldet' ? 'personer' : 'kalender';
   document.querySelectorAll('#faner button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.fane === fane)));
 }
 function rute() {
@@ -233,7 +230,7 @@ function rute() {
   if (h[0] === 'ny' && erAdmin()) return visForm(null, h[1] || '');
   if (h[0] === 'ret' && h[1] && erAdmin()) return visForm(h[1]);
   if (h[0] === 'chat') return visChat(h[1] || '');
-  if (h[0] === 'holdet') return visHoldet();
+  if (h[0] === 'personer' || h[0] === 'holdet') return visHoldet();
   vis('vKalender'); tegnKalender();
 }
 
@@ -588,8 +585,8 @@ async function visChat(under) {
       + (g.beskrivelse ? '<p class="hint" style="margin:4px 0 0">' + esc(g.beskrivelse) + '</p>' : '')
       + (chatData.kanOprette ? '<details style="margin-top:6px"><summary class="hint" style="cursor:pointer;margin:0">Medlemmer</summary><div data-g="' + esc(g.id) + '" class="pd-medl"></div></details>' : '') + '</div>';
   });
-  if (chatData.kanOprette) h += '<div class="pd-knapper" style="margin-top:14px"><button type="button" class="ok small" id="nyGruppe">+ Ny gruppe</button></div><p class="hint">Kun klubbens administratorer kan oprette grupper og tage folk med. Grupperne kan ikke findes af andre og kommer ikke på spillerbørsen.</p>';
-  else h += '<p class="hint">Chatten er den samme som i Grupper: svar, reaktioner og notifikationer. Grupperne kan ikke findes af andre medlemmer.</p>';
+  if (chatData.kanOprette) h += '<div class="pd-knapper" style="margin-top:14px"><button type="button" class="ok small" id="nyGruppe">+ Ny gruppe</button></div><p class="hint">Kun klubbens administratorer kan oprette grupper og tage folk med. Kun dem, der er med i en gruppe, kan se den.</p>';
+  else h += '<p class="hint">Svar på en besked, reagér med en emoji, og få en notifikation, når der er nyt. Kun dem, der er med i en gruppe, kan se den.</p>';
   h += '<div class="msg" id="chatMsg" aria-live="polite"></div>';
   $('vChat').innerHTML = h;
   if ($('nyGruppe')) $('nyGruppe').addEventListener('click', () => { location.hash = 'chat/ny'; });
@@ -630,15 +627,18 @@ async function visNyGruppe() {
 }
 
 // ---------- Holdet: profilkortene fra Grupper (ét kort pr. person, Lars 06.04)
+/** Initialer af de første to ord, der starter med et bogstav ("Helle (test)" giver H, ikke "H("). */
+function initialer(n) { return String(n || '').replace(/^Test /, '').split(/\s+/).map((w) => (w.match(/\p{L}/u) || [''])[0]).filter(Boolean).slice(0, 2).join('').toUpperCase(); }
+// Fanen hed Holdet. Lars 8. november 2026 kl. 09.02: "Personer". #holdet virker stadig
 async function visHoldet() {
   vis('vHoldet');
-  if (!holdData) $('vHoldet').innerHTML = '<p class="hint">Henter holdet …</p>';
+  if (!holdData) $('vHoldet').innerHTML = '<p class="hint">Henter personerne …</p>';
   try { holdData = await motor('padel', 'hold'); } catch (err) { $('vHoldet').innerHTML = '<p class="msg err">' + esc(err.message) + '</p>'; return; }
-  const ini = (n) => n.replace(/^Test /, '').split(/\s+/).filter(Boolean).map((x) => x[0]).join('').slice(0, 2).toUpperCase();
+  const ini = (n) => initialer(n);
   const fuld = holdData.personer.filter((x) => x.kreds === 'fuld'), circle = holdData.personer.filter((x) => x.kreds === 'circle');
   const p = (x) => '<button type="button" class="pd-p" data-pid="' + esc(x.id) + '"><span class="pd-av" data-av="' + esc(x.id) + '">' + esc(ini(x.navn)) + '</span><span><b>' + esc(x.navn) + '</b><span class="u">' + esc((x.grupper.length ? x.grupper.join(', ') : x.kreds === 'circle' ? 'RTK Padelcircle' : 'Padel')) + '</span></span></button>';
   let h = '<div class="pd-knapper" style="margin:0 0 10px"><a class="ok small" style="display:inline-flex;align-items:center;border:2px solid var(--pink);border-radius:6px;padding:6px 12px;text-decoration:none;color:inherit;font-weight:700" href="../grupper.html?padel=1#profil">Mit profilkort</a></div>';
-  h += '<p class="hint" style="margin:0 0 8px">Dit profilkort er det samme som i Grupper: billede, en kort tekst og niveau i tennis og padel, hvis du vil.</p>';
+  h += '<p class="hint" style="margin:0 0 8px">Dit profilkort: billeder, lidt om dig, niveau i tennis og padel og evt. telefonnummer og mail, hvis du vil.</p>';
   if (fuld.length) h += '<h3 class="pd-uge">Styregruppen og Padel Team</h3>' + fuld.map(p).join('');
   if (circle.length) h += '<h3 class="pd-uge">RTK Padelcircle</h3>' + circle.map(p).join('');
   $('vHoldet').innerHTML = h;
@@ -656,28 +656,34 @@ async function visHoldet() {
     });
   } catch (e) { /* uden Firebase vises initialerne */ }
 }
-const NIV = (n) => String(n).replace('.', ',');
 async function visProfil(pid) {
+  // Det fælles profilkort fra Grupper i et ark nedefra (site/profilkort.js, Lars 8. november 2026 kl. 08.52)
   const x = holdData.personer.find((y) => y.id === pid);
-  const m = $('modal');
-  m.innerHTML = '<div class="card"><h2 id="modalTitel" style="margin:0 0 6px">' + esc(x.navn) + '</h2><div id="profilIndhold"><p class="hint">Henter profilkortet …</p></div><button type="button" class="ghost small" id="lukModal" style="margin-top:12px">Luk</button></div>';
-  m.classList.remove('hidden'); $('lukModal').focus();
-  const luk = () => { m.classList.add('hidden'); m.innerHTML = ''; };
-  $('lukModal').addEventListener('click', luk);
-  m.addEventListener('click', (e) => { if (e.target === m) luk(); }, { once: true });
+  if (!x) return;
+  const linje = x.rolle || (x.kreds === 'fuld' ? 'Styregruppen og Padel Team' : 'RTK Padelcircle');
+  const ini = initialer(x.navn);
+  const a = RTKPK.ark('da', x.navn);
+  const vis = (p) => { a.krop.innerHTML = ''; a.krop.append(RTKPK.kort({ pid, navn: x.navn, linje, p, sprog: 'da', farve: x.kreds === 'fuld' ? '#0B3D3A' : '#4A5560', initialer: ini, egen: pid === data.mig.id ? 'dig' : '',
+    onBillede: (bil, i) => RTKPK.fuld({ navn: x.navn, billeder: bil, i, sprog: 'da', hentStort: hentStort(pid) }) })); };
+  vis(null);
+  a.krop.append(Object.assign(document.createElement('p'), { className: 'hint', textContent: 'Henter profilkortet …' }));
   try {
     const f = await RTKV.db(motor);
     const d = await f.fs.getDoc(f.fs.doc(f.db, 'profiler', pid));
-    if (!$('profilIndhold')) return;
-    if (!d.exists()) { $('profilIndhold').innerHTML = '<p class="hint">' + esc(x.navn.replace(/^Test /, '').split(' ')[0]) + ' har ikke lavet et profilkort endnu.</p>'; return; }
-    const p = d.data();
-    let h = p.billede ? '<img class="pd-pbillede" src="' + esc(p.billede) + '" alt="">' : '';
-    if (p.tekst) h += '<p style="white-space:pre-wrap;margin:0 0 8px">' + esc(p.tekst) + '</p>';
-    const n = p.niveau || {};
-    const niv = [n.tennis ? 'Tennis ' + NIV(n.tennis) : '', n.padel ? 'Padel ' + NIV(n.padel) : ''].filter(Boolean).join(' · ');
-    if (niv) h += '<p class="hint" style="margin:0">' + esc(niv) + '</p>';
-    $('profilIndhold').innerHTML = h || '<p class="hint">Profilkortet er tomt.</p>';
-  } catch (e) { if ($('profilIndhold')) $('profilIndhold').innerHTML = '<p class="hint">Profilkortet kunne ikke hentes lige nu.</p>'; }
+    if (!a.krop.isConnected) return;
+    vis(d.exists() ? d.data() : null);
+    if (!d.exists()) a.krop.append(Object.assign(document.createElement('p'), { className: 'hint', textContent: x.navn.replace(/^Test /, '').split(' ')[0] + ' har ikke lavet et profilkort endnu.' }));
+  } catch (e) {
+    if (a.krop.isConnected) a.krop.append(Object.assign(document.createElement('p'), { className: 'hint', textContent: 'Profilkortet kunne ikke hentes lige nu.' }));
+  }
+}
+/** Det store billede fra Firebase (profilBilleder/<pid>_<plads>), som i Grupper. */
+function hentStort(pid) {
+  return async (b) => {
+    const f = await RTKV.db(motor);
+    const d = await f.fs.getDoc(f.fs.doc(f.db, 'profilBilleder', pid + '_' + b.i));
+    return d.exists() && d.data().data ? d.data().data : null;
+  };
 }
 
 // ---------- Start

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="e57910df07d1">
+<meta name="rtk-version" content="56887aef7783">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../rtk.css?v=2af815a235fa">
+<link rel="stylesheet" href="../rtk.css?v=dff939250147">
 </head>
 <body>
 <header class="top">
@@ -137,9 +137,9 @@ const FELTER = [
   // Privattimer (Lars 22. oktober 2026): ledige tider, forespørgsler, kvittering og trænerens profil
   { afsnit: 'arbejde', navn: 'Privattimer', side: 'privattimer.html', ikon: 'privat', roller: ['traener', 'cheftraener'],
     tekst: () => 'Dine privattimer, ledige tider, forespørgsler fra medlemmer og din trænerprofil.' },
-  // Padel (Lars 8. november 2026): kalender med årshjul og frister, chat og holdet. Navngivne personer med rollen padel eller padelcircle
+  // Padel (Lars 8. november 2026): kalender med årshjul og frister, chat og personer. Navngivne personer med rollen padel eller padelcircle
   { afsnit: 'arbejde', navn: 'Padel', side: 'padel.html', ikon: 'padel', roller: ['padel', 'padelcircle'],
-    tekst: (p) => harRolle(p, ['padel']) ? 'Kalender og frister, chat og holdet bag RTK Padel.' : 'Kalender, chat og holdet bag RTK Padel.' },
+    tekst: (p) => harRolle(p, ['padel']) ? 'Kalender og frister, chat og personerne bag RTK Padel.' : 'Kalender, chat og personerne bag RTK Padel.' },
   // Pladsholder (Lars 14. oktober kl. 21.43): trænerne registrerer deltagerne ved hver holdtræning, også nye.
   { afsnit: 'arbejde', navn: 'Deltagerregistrering', snart: true, ikon: 'liste', roller: ['traener', 'cheftraener'],
     tekst: () => 'Registrér deltagerne ved hver holdtræning, også nye spillere.' },
