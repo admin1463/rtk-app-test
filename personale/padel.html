@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="b5dafd4ff12a">
+<meta name="rtk-version" content="5342bfeb6f99">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../rtk.css?v=dff939250147">
+<link rel="stylesheet" href="../rtk.css?v=2de082c9bdad">
 <style>
 /* Padel på personalesiden (Lars 8. november 2026, mockup padel.png version 2) */
 .pd-tag{display:inline-block;border:1.5px solid;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:1px 8px;margin-right:6px;vertical-align:2px;background:#fff}
@@ -33,6 +33,18 @@
 .pd-m{font-size:15px;line-height:1.3;min-width:0}.pd-u{display:block;font-size:13px;color:var(--muted)}
 .pd-l.gjort .pd-m b{text-decoration:line-through;color:var(--muted)}
 .pd-laas{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+/* Billeder (8. november 2026, mockup padel_billeder.png) */
+.pd-laas2{margin:6px 0 0}.pd-nyk{display:inline-flex;align-items:center;border:2px solid var(--pink);border-radius:6px;padding:6px 12px;text-decoration:none;color:inherit;font-weight:700}
+.pd-nyk2{display:inline-flex;align-items:center;padding:6px 12px;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:6px}
+.pd-beg{display:flex;gap:12px;align-items:center;padding:8px 0;border-top:1px solid var(--line);text-decoration:none;color:inherit}.pd-beg:hover b{text-decoration:underline}
+.pd-begf{width:84px;height:64px;flex:0 0 84px;border-radius:8px;background:var(--soft) center/cover no-repeat}
+.pd-begt b{display:block;font-size:16px;line-height:1.3}.pd-begt .u{display:block;font-size:13px;color:var(--muted)}.pd-kal{display:block;font-size:12px;color:var(--teal)}
+.pd-gr3{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin:6px 0}@media (min-width:700px){.pd-gr3{grid-template-columns:repeat(5,1fr)}}
+.pd-gr3>a,.pd-gr3>button,.pd-gr3>span{all:unset;display:block;aspect-ratio:1;background:var(--soft) center/cover no-repeat;border-radius:4px;position:relative;cursor:pointer}
+.pd-gr3>button:focus-visible,.pd-gr3>a:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.pd-valgt>span button{all:unset;position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;text-align:center;line-height:26px;font-size:17px;cursor:pointer}
+.pd-tilf{display:flex!important;flex-direction:column;align-items:center;justify-content:center;aspect-ratio:1;border:2px dashed var(--line);border-radius:4px;color:var(--teal);font-size:26px;font-weight:400;margin:0!important;cursor:pointer}.pd-tilf small{font-size:12px}
+.pd-filin{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
 /* Faner i to rækker og Om projektet (8. november 2026) */
 .pd-faner{margin:0 0 12px}.pd-fgr{margin:0 0 4px}.pd-fl{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:4px 0 4px}
 .pd-faner .tabs{flex-wrap:wrap;margin:0;gap:6px}
@@ -127,6 +139,7 @@
         <div class="tabs" role="tablist" aria-labelledby="flDaglig">
           <button type="button" role="tab" id="fane-kalender" aria-selected="true" data-fane="kalender">Kalender</button>
           <button type="button" role="tab" id="fane-chat" aria-selected="false" data-fane="chat">Chat</button>
+          <button type="button" role="tab" id="fane-billeder" aria-selected="false" data-fane="billeder">Billeder</button>
           <button type="button" role="tab" id="fane-ideer" aria-selected="false" data-fane="ideer">Idéboks</button>
           <button type="button" role="tab" id="fane-personer" aria-selected="false" data-fane="personer">Personer</button>
         </div></div>
@@ -173,6 +186,7 @@
     <section id="vOrg" class="hidden"></section>
     <section id="vRef" class="hidden"></section>
     <section id="vIde" class="hidden"></section>
+    <section id="vBil" class="hidden"></section>
   </div>
   </div>
   <div class="wrap partnere">
@@ -200,7 +214,7 @@
 <script src="../adminpin.js?v=072d3999ca21"></script>
 <script src="../visning.js?v=491810b71d5d"></script>
 <script src="../niveauer.js?v=4cc686edce45"></script>
-<script src="../profilkort.js?v=54b402e6f497"></script>
+<script src="../profilkort.js?v=c76b2fa856d0"></script>
 <script>
 // Padel på personalesiden (Lars 8. november 2026 kl. 05.36 til 06.19). Kalender med årshjulet fra aftalen med PADELPIT,
 // chat i grupper for personale og frivillige og Holdet med profilkortene. Motoren styrer, hvad den enkelte ser: et punkt,
@@ -281,9 +295,9 @@ const iFilter = (p) => !FILTRE[filter] || !FILTRE[filter].typer || FILTRE[filter
 // ---------- Faner og ruter: #kalender  #k/<id>  #ny  #ret/<id>  #chat  #chat/ny  #personer (og det gamle #holdet)
 document.querySelectorAll('#faner button').forEach((b) => b.addEventListener('click', () => { location.hash = b.dataset.fane; }));
 window.addEventListener('hashchange', rute);
-const FANE_AF = { vChat: 'chat', vHoldet: 'personer', vFormaal: 'formaal', vOrg: 'org', vRef: 'referater', vIde: 'ideer' };
+const FANE_AF = { vChat: 'chat', vHoldet: 'personer', vFormaal: 'formaal', vOrg: 'org', vRef: 'referater', vIde: 'ideer', vBil: 'billeder' };
 function vis(id) {
-  ['vKalender', 'vPunkt', 'vForm', 'vChat', 'vHoldet', 'vFormaal', 'vOrg', 'vRef', 'vIde'].forEach((v) => $(v).classList.toggle('hidden', v !== id));
+  ['vKalender', 'vPunkt', 'vForm', 'vChat', 'vHoldet', 'vFormaal', 'vOrg', 'vRef', 'vIde', 'vBil'].forEach((v) => $(v).classList.toggle('hidden', v !== id));
   const fane = FANE_AF[id] || 'kalender';
   document.querySelectorAll('#faner button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.fane === fane)));
 }
@@ -301,6 +315,8 @@ function rute() {
   if (h[0] === 'r' && h[1]) return visReferat(h[1]);
   if (h[0] === 'referat' && h[1] === 'ny' && erAdmin()) return visRefForm('');
   if (h[0] === 'referat' && h[1] === 'ret' && h[2] && erAdmin()) return visRefForm(h[2]);
+  if (h[0] === 'billeder') return h[1] === 'ny' ? visBilNy(h[2] || '') : visBilleder();
+  if (h[0] === 'bil' && h[1]) return visBeg(h[1]);
   if (h[0] === 'ideer') return visIdeer();
   if (h[0] === 'ide' && h[1] === 'ny') return visIdeNy();
   if (h[0] === 'ide' && h[1]) return visIde(h[1]);
@@ -1071,6 +1087,239 @@ async function visIde(id) {
     if (!sikker) { sikker = true; $('iSlet').textContent = 'Tryk igen for at slette'; return; }
     try { await motor('padel', 'ideSlet', { id }, nyId()); ideData = null; location.hash = 'ideer'; } catch (err) { besked($('iMsg'), err.message, 'err'); }
   }); }
+}
+
+// ---------- Billeder (Lars 8. november 2026 kl. 19.09 til 21.03, mockup padel_billeder.png)
+// Billederne ligger i Firestore (padelBeg, padelBilleder og padelStor) og ses kun af voksne i padel. Motoren giver adgangen
+// (padelAdgang). Alle kan lægge op og hente. Den, der lagde et billede op, og administratorerne kan slette det.
+let bilAdg = null, bilBeg = null;
+const BIL_MAKS = 20;
+async function bilFB() {
+  if (!window.RTKV) throw new Error('Billederne kan ikke hentes lige nu.');
+  if (!bilAdg) bilAdg = motor('padel', 'billederAdgang').catch((e) => { bilAdg = null; throw e; });
+  const a = await bilAdg;
+  const f = await RTKV.db(motor);
+  return Object.assign({ admin: !!a.admin }, f);
+}
+async function bilNavne() {
+  const a = await bilAdg;
+  const n = Object.assign({}, (a && a.navne) || {}); if (data && data.mig) n[data.mig.id] = n[data.mig.id] || person.navn;
+  return n;
+}
+const fornavn = (n) => String(n || '').replace(/^Test /, '').split(' ')[0];
+const tsMs = (t) => t && t.toMillis ? t.toMillis() : 0;
+function tidTekst(ms) {
+  if (!ms) return '';
+  const d = new Date(ms);
+  const dag = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  return kortDag(dag) + ' kl. ' + String(d.getHours()).padStart(2, '0') + '.' + String(d.getMinutes()).padStart(2, '0');
+}
+async function hentBeg(f) {
+  const snap = await f.fs.getDocs(f.fs.collection(f.db, 'padelBeg'));
+  bilBeg = snap.docs.map((d) => Object.assign({ id: d.id }, d.data())).sort((a, b) => a.dag < b.dag ? 1 : a.dag > b.dag ? -1 : tsMs(b.sidst) - tsMs(a.sidst));
+  return bilBeg;
+}
+async function visBilleder() {
+  vis('vBil');
+  $('vBil').innerHTML = '<p class="hint">Henter billederne …</p>';
+  let f, beg, senest;
+  try {
+    f = await bilFB();
+    beg = (await hentBeg(f)).filter((b) => b.antal > 0);
+    const q = f.fs.query(f.fs.collection(f.db, 'padelBilleder'), f.fs.orderBy('tid', 'desc'), f.fs.limit(6));
+    senest = (await f.fs.getDocs(q)).docs.map((d) => Object.assign({ id: d.id }, d.data()));
+  } catch (err) { $('vBil').innerHTML = fejlHtml(err); return; }
+  const forsider = {};
+  await Promise.all(beg.map(async (b) => {
+    if (!b.forside) return;
+    const s = senest.find((x) => x.id === b.forside);
+    if (s) { forsider[b.id] = s.mini; return; }
+    try { const d = await f.fs.getDoc(f.fs.doc(f.db, 'padelBilleder', b.forside)); if (d.exists()) forsider[b.id] = d.data().mini; } catch (e) { /* intet */ }
+  }));
+  let h = '<div class="pd-knapper" style="margin:0 0 6px"><a class="ok small pd-nyk" href="#billeder/ny">+ Læg billeder op</a></div>';
+  h += '<p class="hint pd-laas2">&#128274; Kun for dem i padel. Billederne lægges aldrig offentligt.</p>';
+  if (!beg.length) h += '<p class="hint">Ingen billeder endnu. Læg de første op.</p>';
+  else {
+    h += '<h3 class="pd-sh">Begivenheder</h3>';
+    h += beg.map((b) => '<a class="pd-beg" href="#bil/' + encodeURIComponent(b.id) + '"><span class="pd-begf"' + (forsider[b.id] ? ' style="background-image:url(&quot;' + forsider[b.id] + '&quot;)"' : '') + '></span><span class="pd-begt"><b>' + esc(b.navn) + '</b><span class="u">'
+      + esc(datoTekst(b.dag)) + ' · ' + b.antal + (b.antal === 1 ? ' billede' : ' billeder') + '</span>' + (b.kalId ? '<span class="pd-kal">&#128197; Fra kalenderen</span>' : '') + '</span></a>').join('');
+    if (senest.length) h += '<h3 class="pd-sh">Senest lagt op</h3><div class="pd-gr3">' + senest.map((x) => '<a href="#bil/' + encodeURIComponent(x.beg) + '" style="background-image:url(&quot;' + x.mini + '&quot;)" aria-label="Billede fra ' + esc((beg.find((b) => b.id === x.beg) || {}).navn || '') + '"></a>').join('') + '</div>';
+  }
+  $('vBil').innerHTML = h;
+}
+async function visBeg(eid) {
+  vis('vBil');
+  $('vBil').innerHTML = '<p class="hint">Henter billederne …</p>';
+  let f, b, bil, navne;
+  try {
+    f = await bilFB();
+    const d = await f.fs.getDoc(f.fs.doc(f.db, 'padelBeg', eid));
+    if (!d.exists()) { $('vBil').innerHTML = '<a class="gr-tilbage" href="#billeder">&#8592; Billeder</a><p class="hint">Begivenheden findes ikke længere.</p>'; return; }
+    b = Object.assign({ id: d.id }, d.data());
+    const snap = await f.fs.getDocs(f.fs.query(f.fs.collection(f.db, 'padelBilleder'), f.fs.where('beg', '==', eid)));
+    bil = snap.docs.map((x) => Object.assign({ id: x.id }, x.data())).sort((a, c) => tsMs(a.tid) - tsMs(c.tid));
+    navne = await bilNavne();
+  } catch (err) { $('vBil').innerHTML = fejlHtml(err); return; }
+  const mig = data.mig.id, kanRette = b.af === mig || f.admin;
+  const fra = [...new Set(bil.map((x) => fornavn(navne[x.af] || '')).filter(Boolean))];
+  let h = '<a class="gr-tilbage" href="#billeder">&#8592; Billeder</a><h2 class="lille" style="margin:6px 0 2px">' + esc(b.navn) + '</h2>';
+  h += '<p class="hint" style="margin:0 0 6px">' + esc(datoTekst(b.dag)) + ' · ' + bil.length + (bil.length === 1 ? ' billede' : ' billeder') + (fra.length ? ' fra ' + esc(fra.length > 1 ? fra.slice(0, -1).join(', ') + ' og ' + fra[fra.length - 1] : fra[0]) : '') + '</p>';
+  h += '<div id="bTekst">' + (b.tekst ? '<p class="pd-p2">' + esc(b.tekst) + '</p>' : '') + '</div>';
+  if (kanRette) h += '<button type="button" class="pd-mini" id="bRet">' + (b.tekst ? 'Ret teksten' : 'Skriv en tekst') + '</button>';
+  h += bil.length ? '<div class="pd-gr3 pd-gr3s">' + bil.map((x, i) => '<button type="button" data-i="' + i + '" style="background-image:url(&quot;' + x.mini + '&quot;)" aria-label="Billede ' + (i + 1) + ' af ' + bil.length + ', lagt op af ' + esc(fornavn(navne[x.af] || '')) + '"></button>').join('') + '</div>' : '<p class="hint">Ingen billeder tilbage.</p>';
+  h += '<div class="pd-knapper"><a class="ghost small pd-nyk2" href="#billeder/ny/' + encodeURIComponent(eid) + '">+ Læg flere op</a></div><div class="msg" id="bMsg" aria-live="polite"></div>';
+  $('vBil').innerHTML = h;
+  if ($('bRet')) $('bRet').addEventListener('click', () => {
+    $('bTekst').innerHTML = '<label for="bTekstF" class="sr">Tekst til begivenheden</label><textarea id="bTekstF" rows="3" maxlength="500">' + esc(b.tekst || '') + '</textarea><div class="pd-knapper"><button type="button" class="ok small" id="bTekstGem">Gem</button></div>';
+    $('bRet').remove();
+    $('bTekstGem').addEventListener('click', async () => {
+      try { await f.fs.updateDoc(f.fs.doc(f.db, 'padelBeg', eid), { tekst: $('bTekstF').value.trim().slice(0, 500), sidst: f.fs.serverTimestamp() }); visBeg(eid); }
+      catch (err) { besked($('bMsg'), 'Teksten kunne ikke gemmes.', 'err'); }
+    });
+  });
+  const liste = bil.map((x) => ({ thumb: x.mini, id: x.id, af: x.af, tid: x.tid }));
+  let slettet = false; // Når fuld skærm lukkes efter en sletning, tegnes siden igen
+  $('vBil').querySelectorAll('.pd-gr3s button').forEach((k) => k.addEventListener('click', () => RTKPK.fuld({
+    navn: b.navn, billeder: liste, i: Number(k.dataset.i), sprog: 'da', vedLuk: () => { if (slettet) visBeg(eid); },
+    hentStort: async (x) => { const d = await f.fs.getDoc(f.fs.doc(f.db, 'padelStor', x.id)); return d.exists() ? d.data().data : null; },
+    info: (x) => 'Lagt op af ' + fornavn(navne[x.af] || '') + (tsMs(x.tid) ? ' · ' + tidTekst(tsMs(x.tid)) : ''),
+    knapper: [
+      { tekst: 'Hent', fn: (x, styr) => hentBillede(styr.stort(), b.navn, liste.indexOf(x) + 1) },
+      { tekst: 'Slet', klasse: 'slet', vis: (x) => x.af === mig || f.admin, fn: async (x, styr, knap) => {
+        if (knap.dataset.sikker !== '1') { knap.dataset.sikker = '1'; knap.textContent = 'Tryk igen for at slette'; return; }
+        knap.disabled = true; knap.textContent = 'Sletter …';
+        try {
+          const rest = liste.filter((y) => y.id !== x.id);
+          const w = f.fs.writeBatch(f.db);
+          w.delete(f.fs.doc(f.db, 'padelStor', x.id));
+          w.delete(f.fs.doc(f.db, 'padelBilleder', x.id));
+          const ret = { antal: f.fs.increment(-1), sidst: f.fs.serverTimestamp() };
+          if (b.forside === x.id) { ret.forside = rest.length ? rest[0].id : ''; b.forside = ret.forside; }
+          w.update(f.fs.doc(f.db, 'padelBeg', eid), ret);
+          await w.commit();
+          slettet = true;
+          styr.fjern();
+        } catch (err) { knap.disabled = false; knap.textContent = 'Kunne ikke slette'; }
+      } }
+    ]
+  })));
+}
+/** Gem billedet på telefonen: del-arket, hvor det findes (iPhone og Android), ellers en almindelig hentning. */
+async function hentBillede(url, navn, nr) {
+  const ascii = String(navn || 'padel').replace(/æ/g, 'ae').replace(/ø/g, 'oe').replace(/å/g, 'aa').replace(/Æ/g, 'Ae').replace(/Ø/g, 'Oe').replace(/Å/g, 'Aa');
+  const filnavn = (ascii.replace(/[^A-Za-z0-9 -]/g, '').trim().replace(/\s+/g, '-') || 'padel') + '-' + nr + '.jpg';
+  try {
+    const blob = await (await fetch(url)).blob();
+    const fil = new File([blob], filnavn, { type: 'image/jpeg' });
+    if (navigator.canShare && navigator.canShare({ files: [fil] }) && /Mobi|Android|iPhone|iPad/.test(navigator.userAgent)) { await navigator.share({ files: [fil] }); return; }
+    const u = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = u; a.download = filnavn; document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(u), 60000);
+  } catch (e) { /* annulleret eller ikke muligt */ }
+}
+/** Gør et billede mindre som JPEG under en grænse: først lavere kvalitet, så mindre. */
+async function bilSkaler(fil, side, tegn) {
+  const url = URL.createObjectURL(fil);
+  try {
+    const img = await new Promise((ok, nej) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => nej(new Error('billede')); i.src = url; });
+    let q = 0.85;
+    for (let k = 0; k < 12; k++) {
+      const s = Math.min(1, side / Math.max(img.naturalWidth, img.naturalHeight));
+      const c = document.createElement('canvas');
+      c.width = Math.max(1, Math.round(img.naturalWidth * s)); c.height = Math.max(1, Math.round(img.naturalHeight * s));
+      const x = c.getContext('2d'); x.fillStyle = '#FFFFFF'; x.fillRect(0, 0, c.width, c.height); x.drawImage(img, 0, 0, c.width, c.height);
+      const d = c.toDataURL('image/jpeg', q);
+      if (d.length <= tegn && d.indexOf('data:image/jpeg;base64,') === 0) return d;
+      if (q > 0.6) q -= 0.1; else side = Math.round(side * 0.8);
+    }
+    throw new Error('stort');
+  } finally { URL.revokeObjectURL(url); }
+}
+const bilId = () => { const t = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'; const r = crypto.getRandomValues(new Uint8Array(20)); return [...r].map((x) => t[x % t.length]).join(''); };
+async function visBilNy(eid) {
+  vis('vBil');
+  $('vBil').innerHTML = '<p class="hint">Henter …</p>';
+  let f;
+  try { f = await bilFB(); await hentBeg(f); } catch (err) { $('vBil').innerHTML = fejlHtml(err); return; }
+  const kendte = new Set(bilBeg.map((b) => b.kalId).filter(Boolean));
+  const kal = (data.poster || []).filter((p) => p.dag && dageTil(p.dag) <= 1 && dageTil(p.dag) >= -120 && !kendte.has(p.id)).sort((a, b) => a.dag < b.dag ? 1 : -1).slice(0, 25);
+  const valgt = eid || (bilBeg[0] ? bilBeg[0].id : (kal[0] ? 'k:' + kal[0].id : '_ny'));
+  let h = '<a class="gr-tilbage" href="' + (eid ? '#bil/' + encodeURIComponent(eid) : '#billeder') + '">&#8592; ' + (eid ? 'Tilbage' : 'Billeder') + '</a><h2 class="lille" style="margin:6px 0 8px">Læg billeder op</h2><form id="nForm" novalidate>';
+  h += '<label for="nBeg">Begivenhed</label><select id="nBeg">';
+  if (bilBeg.length) h += '<optgroup label="Har billeder">' + bilBeg.map((b) => '<option value="' + esc(b.id) + '"' + (b.id === valgt ? ' selected' : '') + '>' + esc(b.navn + ', ' + kortDag(b.dag)) + '</option>').join('') + '</optgroup>';
+  if (kal.length) h += '<optgroup label="Fra kalenderen">' + kal.map((p) => '<option value="k:' + esc(p.id) + '"' + ('k:' + p.id === valgt ? ' selected' : '') + '>' + esc(p.titel + ', ' + kortDag(p.dag)) + '</option>').join('') + '</optgroup>';
+  h += '<option value="_ny"' + (valgt === '_ny' ? ' selected' : '') + '>Ny begivenhed …</option></select>';
+  h += '<div id="nNy" class="hidden"><label for="nNavn">Navn</label><input id="nNavn" maxlength="80" placeholder="Fx Americano med pizza"><label for="nDag">Dato</label><input id="nDag" type="date" value="' + iDag() + '"></div>';
+  h += '<label for="nFiler">Billeder</label><div class="pd-gr3 pd-valgt" id="nVis"></div><input type="file" id="nFiler" accept="image/*" multiple class="pd-filin">';
+  h += '<p class="hint" id="nAntal">Højst ' + BIL_MAKS + ' ad gangen. De gøres mindre, før de lægges op.</p>';
+  h += '<div id="nTekstBoks" class="hidden"><label for="nTekst">Tekst til begivenheden (valgfrit)</label><textarea id="nTekst" rows="2" maxlength="500"></textarea></div>';
+  h += '<div class="pd-knapper"><button type="submit" class="ok" id="nGem" disabled>Læg billeder op</button></div><div class="msg" id="nMsg" aria-live="polite"></div>';
+  h += '<p class="hint pd-laas2">&#128274; Kun dem i padel kan se billederne. Du kan selv slette dine billeder igen.</p></form>';
+  $('vBil').innerHTML = h;
+  let filer = [];
+  const nyBeg = () => $('nBeg').value === '_ny' || $('nBeg').value.indexOf('k:') === 0;
+  const opd = () => {
+    $('nNy').classList.toggle('hidden', $('nBeg').value !== '_ny');
+    $('nTekstBoks').classList.toggle('hidden', !nyBeg());
+    $('nGem').disabled = !filer.length;
+    $('nGem').textContent = filer.length ? 'Læg ' + filer.length + (filer.length === 1 ? ' billede' : ' billeder') + ' op' : 'Læg billeder op';
+    $('nAntal').textContent = (filer.length ? filer.length + (filer.length === 1 ? ' billede. ' : ' billeder. ') : '') + 'Højst ' + BIL_MAKS + ' ad gangen. De gøres mindre, før de lægges op.';
+  };
+  const tegn = () => {
+    $('nVis').innerHTML = filer.map((x, i) => '<span style="background-image:url(&quot;' + x.url + '&quot;)"><button type="button" data-fjern="' + i + '" aria-label="Fjern billede ' + (i + 1) + '">&#215;</button></span>').join('')
+      + (filer.length < BIL_MAKS ? '<label for="nFiler" class="pd-tilf">+<small>' + (filer.length ? 'Vælg flere' : 'Vælg billeder') + '</small></label>' : '');
+    $('nVis').querySelectorAll('[data-fjern]').forEach((k) => k.addEventListener('click', () => { const x = filer.splice(Number(k.dataset.fjern), 1)[0]; URL.revokeObjectURL(x.url); tegn(); }));
+    opd();
+  };
+  $('nBeg').addEventListener('change', opd);
+  $('nFiler').addEventListener('change', () => {
+    const nye = [...$('nFiler').files].filter((x) => /^image\//.test(x.type) || /\.(jpe?g|png|heic|webp)$/i.test(x.name));
+    nye.slice(0, BIL_MAKS - filer.length).forEach((x) => filer.push({ fil: x, url: URL.createObjectURL(x) }));
+    if (nye.length > BIL_MAKS - filer.length + nye.slice(0, BIL_MAKS - filer.length).length) besked($('nMsg'), 'Højst ' + BIL_MAKS + ' billeder ad gangen.', 'err'); else besked($('nMsg'), '');
+    $('nFiler').value = '';
+    tegn();
+  });
+  tegn();
+  $('nForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!filer.length) return;
+    const v = $('nBeg').value;
+    let id, ny = null;
+    if (v === '_ny') {
+      const navn = $('nNavn').value.trim().replace(/\s+/g, ' ').slice(0, 80);
+      if (!navn) { besked($('nMsg'), 'Giv begivenheden et navn.', 'err'); $('nNavn').focus(); return; }
+      if (!/^\d{4}-\d{2}-\d{2}$/.test($('nDag').value)) { besked($('nMsg'), 'Vælg en dato.', 'err'); return; }
+      id = 'e' + bilId().slice(0, 16); ny = { navn, dag: $('nDag').value, kalId: '' };
+    } else if (v.indexOf('k:') === 0) {
+      const p = data.poster.find((x) => x.id === v.slice(2));
+      id = ('k' + p.id).replace(/[^A-Za-z0-9_-]/g, '_').slice(0, 40); ny = { navn: String(p.titel).slice(0, 80), dag: p.dag, kalId: String(p.id).slice(0, 20) };
+    } else id = v;
+    $('nGem').disabled = true; $('nBeg').disabled = true;
+    let lagt = 0;
+    try {
+      // Findes begivenheden allerede (en anden har lige lagt op til det samme punkt), lægges billederne bare i den
+      let findes = !ny || (await f.fs.getDoc(f.fs.doc(f.db, 'padelBeg', id))).exists();
+      for (const x of filer) {
+        besked($('nMsg'), 'Lægger billede ' + (lagt + 1) + ' af ' + filer.length + ' op …');
+        const stor = await bilSkaler(x.fil, 1600, 650000);
+        const mini = await bilSkaler(x.fil, 480, 110000);
+        const bid = bilId();
+        const w = f.fs.writeBatch(f.db);
+        if (!findes) w.set(f.fs.doc(f.db, 'padelBeg', id), { navn: ny.navn, dag: ny.dag, kalId: ny.kalId, tekst: $('nTekst').value.trim().slice(0, 500), af: data.mig.id, oprettet: f.fs.serverTimestamp(), antal: 1, forside: bid, sidst: f.fs.serverTimestamp() });
+        else w.update(f.fs.doc(f.db, 'padelBeg', id), { antal: f.fs.increment(1), sidst: f.fs.serverTimestamp() });
+        w.set(f.fs.doc(f.db, 'padelStor', bid), { data: stor, af: data.mig.id });
+        w.set(f.fs.doc(f.db, 'padelBilleder', bid), { beg: id, af: data.mig.id, mini, tid: f.fs.serverTimestamp() });
+        await w.commit();
+        findes = true; lagt++;
+      }
+      filer.forEach((x) => URL.revokeObjectURL(x.url));
+      location.hash = 'bil/' + encodeURIComponent(id);
+    } catch (err) {
+      besked($('nMsg'), (lagt ? lagt + ' billeder er lagt op. ' : '') + (String(err && err.message) === 'stort' || String(err && err.message) === 'billede' ? 'Et billede kunne ikke læses. Prøv et andet.' : 'Resten kunne ikke lægges op. Prøv igen.'), 'err');
+      filer = filer.slice(lagt); tegn(); $('nBeg').disabled = false;
+      if (lagt && ny) { $('nBeg').innerHTML = '<option value="' + esc(id) + '">' + esc(ny.navn) + '</option>'; opd(); }
+    }
+  });
 }
 
 async function visProfil(pid) {

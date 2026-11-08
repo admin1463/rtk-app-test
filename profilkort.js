@@ -138,7 +138,9 @@
 
   // ---------- Billedet i fuld skærm (Padel. Grupper har sin egen i egne_side.js)
   let aabenFuld = null;
-  /** o: { navn, billeder, i, sprog, hentStort(b) -> Promise<url eller null> }. Viser det lille billede først og det store, når det er hentet. */
+  /** o: { navn, billeder, i, sprog, hentStort(b) -> Promise<url eller null>, info(b) -> tekst, knapper: [{ tekst, vis(b), fn(b, styr) }] }.
+   * Viser det lille billede først og det store, når det er hentet. knapper (Padel-billeder, 8. november 2026) står i bunden.
+   * styr: { luk(), fjern() (tag billedet ud af visningen), stort() (det store billede, hvis det er hentet) }. */
   function fuld(o) {
     if (!o.billeder || !o.billeder.length) return;
     const sprog = o.sprog === 'en' ? 'en' : 'da';
@@ -151,10 +153,12 @@
     const img = el('img', { alt: '' });
     const fo = el('button', { type: 'button', 'class': 'pk-fuldv-pil forrige', 'aria-label': tk(sprog, 'forrige') }, '‹');
     const nae = el('button', { type: 'button', 'class': 'pk-fuldv-pil naeste', 'aria-label': tk(sprog, 'naeste') }, '›');
+    const bund = el('div', { 'class': 'pk-fuldv-bund' });
     f.append(top, img, fo, nae);
+    if (o.info || (o.knapper && o.knapper.length)) f.append(bund);
     document.body.append(f);
-    const n = o.billeder.length;
-    const x = { i: o.i || 0 };
+    let n = o.billeder.length;
+    const x = { i: o.i || 0, stort: {} };
     aabenFuld = x;
     function vis(i) {
       x.i = (i + n) % n;
@@ -164,11 +168,30 @@
       tal2.textContent = o.navn + (n > 1 ? ' · ' + tk(sprog, 'nAf', { n: x.i + 1, af: n }) : '');
       fo.classList.toggle('hidden', n < 2); nae.classList.toggle('hidden', n < 2);
       const nr = x.i;
-      if (o.hentStort) Promise.resolve(o.hentStort(b)).then((u) => { if (aabenFuld === x && x.i === nr && okBillede(u)) img.src = u; }).catch(() => {});
+      if (o.hentStort) Promise.resolve(o.hentStort(b)).then((u) => { if (okBillede(u)) x.stort[nr] = u; if (aabenFuld === x && x.i === nr && okBillede(u)) img.src = u; }).catch(() => {});
+      tegnBund(b);
     }
+    function tegnBund(b) {
+      if (!bund.isConnected) return;
+      bund.innerHTML = '';
+      if (o.info) bund.append(el('span', { 'class': 'pk-fuldv-info' }, o.info(b) || ''));
+      const kn = el('div', { 'class': 'pk-fuldv-kn' });
+      (o.knapper || []).filter((k) => !k.vis || k.vis(b)).forEach((k) => {
+        const knap = el('button', { type: 'button', 'class': 'pk-fuldv-knap' + (k.klasse ? ' ' + k.klasse : '') }, k.tekst);
+        knap.addEventListener('click', (e) => { e.stopPropagation(); k.fn(b, styr, knap); });
+        kn.append(knap);
+      });
+      bund.append(kn);
+    }
+    const styr = {
+      luk: () => luk(),
+      stort: () => x.stort[x.i] || o.billeder[x.i].thumb,
+      fjern: () => { o.billeder.splice(x.i, 1); x.stort = {}; n = o.billeder.length; if (!n) luk(); else vis(Math.min(x.i, n - 1)); }
+    };
     function luk() {
       if (aabenFuld !== x) return;
       aabenFuld = null; f.remove(); document.removeEventListener('keydown', tast, true);
+      if (o.vedLuk) { try { o.vedLuk(); } catch (e) { /* intet */ } }
       if (foer && foer.isConnected && foer.focus) foer.focus();
     }
     function tast(e) {
