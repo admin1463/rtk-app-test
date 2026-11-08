@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="058ef188db22">
+<meta name="rtk-version" content="e57910df07d1">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../rtk.css?v=5d9d8ba646d9">
+<link rel="stylesheet" href="../rtk.css?v=2af815a235fa">
 </head>
 <body>
 <header class="top">
@@ -44,7 +44,7 @@
       <h2>Log ind</h2>
       <!-- Login med mobilnummer og engangskode på sms. Besluttet af Lars 11. oktober 2026. -->
       <form id="mobilForm" autocomplete="on">
-        <p class="hint" style="margin:0 0 12px">Skriv dit mobilnummer, så sender vi en kode på sms. Ingen pinkode at huske. Når du er logget ind, husker telefonen dig i 30 dage.</p>
+        <p class="hint" style="margin:0 0 12px">Skriv dit mobilnummer, så sender vi en kode på sms. Ingen pinkode at huske.</p>
         <label for="mobil">Dit mobilnummer</label>
         <input id="mobil" type="tel" inputmode="tel" autocomplete="tel" aria-describedby="landekode" maxlength="22" style="font-size:20px;letter-spacing:.04em">
         <p class="hint" id="landekode" style="margin:6px 0 0">Danske numre skrives uden +45. Udenlandske med landekode, fx +46.</p>
@@ -54,7 +54,7 @@
         <label for="kode" id="kodeLabel">Koden fra sms'en</label>
         <div class="big"><input id="kode" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="one-time-code"></div>
         <p class="hint" style="margin:6px 0 0">Koden gælder i 10 minutter. Kommer der ingen sms, så tjek nummeret.</p>
-        <label style="display:flex;align-items:center;gap:12px;margin:14px 0 0;font-size:15px;min-height:44px"><input type="checkbox" id="husk" checked style="width:22px;height:22px;min-height:0;margin:0;accent-color:#E6005C"> Husk mig på denne telefon i 30 dage. Uden flueben skal du logge ind igen i morgen.</label>
+        <label style="display:flex;align-items:center;gap:12px;margin:14px 0 0;font-size:15px;min-height:44px"><input type="checkbox" id="husk" checked style="width:22px;height:22px;min-height:0;margin:0;accent-color:#E6005C"> Husk mig på denne enhed i 30 dage</label>
         <button type="submit" style="width:100%;margin-top:10px">Log ind</button>
         <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px">
           <button type="button" class="ghost small" id="sendIgen">Send igen</button>
@@ -99,7 +99,7 @@
   </div>
 </footer>
 
-<script src="../konfig.js?v=9f80df47682e"></script>
+<script src="../konfig.js?v=5d3b61fda9e3"></script>
 <script>
 // Adressen til motoren står i konfig.js (fælles for alle sider)
 const MILJOE = window.RTK_KONFIG.miljoe;
@@ -116,6 +116,8 @@ const IKON = {
   toej: '<svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true" fill="none" stroke="#0F2537" stroke-width="1.5" stroke-linejoin="round"><path d="M16 6l-10 6 4 8 5-2v20h14V18l5 2 4-8-10-6c-1 3-3.5 5-6 5s-5-2-6-5z"/><line x1="19" y1="28" x2="25" y2="28"/></svg>',
   // Privattimer (22. oktober 2026): en træner og en spiller ved nettet
   privat: '<svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true" fill="none" stroke="#0F2537" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="9" r="3.5"/><path d="M11 13v13M11 17l-5 5M11 17l6-3M11 26l-4 10M11 26l4 10"/><circle cx="33" cy="11" r="3"/><path d="M33 14v11M33 18l5 4M33 18l-5 3M33 25l-3 9M33 25l3 9"/><line x1="22" y1="20" x2="22" y2="38" stroke-dasharray="2 2"/><circle cx="22" cy="14" r="1.6"/></svg>',
+  // Padel (8. november 2026): et padelbat og en bold
+  padel: '<svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true" fill="none" stroke="#0F2537" stroke-width="1.5"><rect x="7" y="4" width="20" height="24" rx="10"/><circle cx="13" cy="12" r="1.2"/><circle cx="17" cy="10" r="1.2"/><circle cx="21" cy="12" r="1.2"/><circle cx="15" cy="16" r="1.2"/><circle cx="19" cy="16" r="1.2"/><circle cx="17" cy="21" r="1.2"/><line x1="17" y1="28" x2="17" y2="40" stroke-width="3"/><circle cx="34" cy="34" r="5"/></svg>',
   ketsjer: '<svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true" fill="none" stroke="#0F2537" stroke-width="1.5"><ellipse cx="17" cy="16" rx="11" ry="13"/><line x1="9" y1="10" x2="25" y2="10"/><line x1="7" y1="16" x2="27" y2="16"/><line x1="9" y1="22" x2="25" y2="22"/><line x1="12" y1="4" x2="12" y2="28"/><line x1="17" y1="3" x2="17" y2="29"/><line x1="22" y1="4" x2="22" y2="28"/><line x1="24" y1="27" x2="38" y2="41" stroke-width="3"/></svg>'
 };
 
@@ -135,6 +137,9 @@ const FELTER = [
   // Privattimer (Lars 22. oktober 2026): ledige tider, forespørgsler, kvittering og trænerens profil
   { afsnit: 'arbejde', navn: 'Privattimer', side: 'privattimer.html', ikon: 'privat', roller: ['traener', 'cheftraener'],
     tekst: () => 'Dine privattimer, ledige tider, forespørgsler fra medlemmer og din trænerprofil.' },
+  // Padel (Lars 8. november 2026): kalender med årshjul og frister, chat og holdet. Navngivne personer med rollen padel eller padelcircle
+  { afsnit: 'arbejde', navn: 'Padel', side: 'padel.html', ikon: 'padel', roller: ['padel', 'padelcircle'],
+    tekst: (p) => harRolle(p, ['padel']) ? 'Kalender og frister, chat og holdet bag RTK Padel.' : 'Kalender, chat og holdet bag RTK Padel.' },
   // Pladsholder (Lars 14. oktober kl. 21.43): trænerne registrerer deltagerne ved hver holdtræning, også nye.
   { afsnit: 'arbejde', navn: 'Deltagerregistrering', snart: true, ikon: 'liste', roller: ['traener', 'cheftraener'],
     tekst: () => 'Registrér deltagerne ved hver holdtræning, også nye spillere.' },
@@ -331,6 +336,6 @@ if (!token) { glemForrige(); visLogin(qs.get('igen') ? 'Log ind igen.' : ''); }
 else { const husket = migHusket(); if (husket) { visFelter(husket); migHent().then((p) => { if (JSON.stringify(p) !== JSON.stringify(husket)) visFelter(p); }).catch(() => {}); } else migHent().then(visFelter).catch(() => {}); }
 </script>
 <script src="../velkomst.js?v=0c6d2cc815a7"></script>
-<script src="../ace.js?v=f16258091977"></script>
+<script src="../ace.js?v=eba7e744710b"></script>
 </body>
 </html>

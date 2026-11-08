@@ -88,7 +88,8 @@
     p_opstrengning: ['Hvordan melder jeg en ketsjer klar?', 'Hvad gør jeg, når jeg har tømt skabet?', 'Hvordan laver jeg en ny kode til skabet?', 'Noget virker ikke'],
     p_bolde: ['Hvordan tager jeg bolde til træning?', 'Hvordan fortryder jeg?', 'Hvordan tæller jeg lageret op?', 'Noget virker ikke'],
     p_arbejdstoej: ['Hvordan vælger jeg mit arbejdstøj?', 'Hvordan finder jeg min skostørrelse?', 'Hvad sker der, når fristen udløber?', 'Noget virker ikke'],
-    p_privattimer: ['Hvordan åbner jeg ledige tider?', 'Hvordan svarer jeg på en forespørgsel?', 'Hvordan kvitterer jeg for en time?', 'Noget virker ikke']
+    p_privattimer: ['Hvordan åbner jeg ledige tider?', 'Hvordan svarer jeg på en forespørgsel?', 'Hvordan kvitterer jeg for en time?', 'Noget virker ikke'],
+    p_padel: ['Hvornår er der træning hos PADELPIT?', 'Hvilke frister kommer snart?', 'Hvordan får jeg kalenderen i min egen kalender?', 'Noget virker ikke']
   };
   function forslag() { return PERSONALE ? (FORSLAG_P[SIDE] || ['Hvad kan jeg på denne side?', 'Hvad kan jeg på personalesiden?', 'Noget virker ikke']) : ['f1', 'f2', 'f3', 'f4'].map(function (k) { return t(k); }); }
 

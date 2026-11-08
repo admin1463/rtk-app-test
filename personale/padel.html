@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta name="rtk-version" content="bc6b63dc1a23">
+<script src="/opdater.js?v=f299a739b234" defer></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0B3D3A">
+<meta name="apple-mobile-web-app-title" content="RTK personale">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="ikon-personale-180.png">
+<link rel="icon" type="image/png" href="ikon-personale-180.png">
+<title>Padel · RTK personale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../rtk.css?v=2af815a235fa">
+<style>
+/* Padel på personalesiden (Lars 8. november 2026, mockup padel.png version 2) */
+.pd-tag{display:inline-block;border:1.5px solid;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:1px 8px;margin-right:6px;vertical-align:2px;background:#fff}
+.pd-snart{background:var(--soft);border-left:4px solid var(--pink);border-radius:6px;padding:10px 14px;margin:0 0 14px;font-size:15px}
+.pd-snart-t{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--pink);margin-bottom:4px}
+.pd-snart a{color:inherit;text-decoration:none;display:block;margin:4px 0;line-height:1.35}
+.pd-vis{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:6px}
+.pd-vis .chips button,.pd-form .chips button,.pd-boks .chips button{min-height:38px;padding:4px 12px;font-size:14px}
+.pd-skift{display:inline-flex;border:1px solid var(--line2);border-radius:8px;overflow:hidden}
+.pd-skift button{border:0;border-radius:0;min-height:38px;padding:4px 14px;font-size:14px;background:#fff;color:var(--ink);font-weight:600}
+.pd-skift button[aria-pressed="true"]{background:var(--teal);color:#fff;font-weight:700}
+.pd-uge{font-size:13px;letter-spacing:.04em;text-transform:uppercase;margin:16px 0 6px;color:var(--muted)}
+.pd-l{display:flex;gap:10px;padding:9px 0 9px 8px;border-top:1px solid var(--line);border-left:4px solid transparent;text-decoration:none;color:inherit;cursor:pointer}
+.pd-l:hover{background:var(--soft)}
+.pd-d{width:40px;flex:0 0 40px;text-align:center;font-size:12px;color:var(--muted);line-height:1.2}.pd-d b{display:block;font-size:18px;color:var(--ink)}
+.pd-m{font-size:15px;line-height:1.3;min-width:0}.pd-u{display:block;font-size:13px;color:var(--muted)}
+.pd-l.gjort .pd-m b{text-decoration:line-through;color:var(--muted)}
+.pd-laas{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.pd-mnd{display:flex;align-items:center;gap:10px;margin:6px 0}.pd-mnd b{min-width:150px;text-align:center}
+.pd-gitter{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin:6px 0}
+.pd-gh{font-size:12px;text-align:center;color:var(--muted);font-weight:700}
+.pd-c{border:1px solid var(--line);border-radius:6px;min-height:46px;font-size:13px;padding:3px 4px;display:flex;flex-direction:column;justify-content:space-between;background:#fff;cursor:pointer;text-align:left;font-weight:500;min-width:0}
+.pd-c.tom{border-color:transparent;background:transparent;cursor:default}
+.pd-c.roed{background:#FBE9E7}.pd-c.valgt{outline:2px solid var(--pink)}.pd-c.idag span:first-child{font-weight:800;color:var(--pink)}
+.pd-prikker{display:flex;flex-wrap:wrap;gap:3px}.pd-prik{width:8px;height:8px;border-radius:50%;display:inline-block}
+.pd-leg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--muted);margin-top:6px}.pd-leg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
+.pd-boks{padding:14px 16px;margin:0 0 12px}
+.pd-frist{margin:10px 0 4px;font-size:15px}.pd-frist b{color:var(--pink)}
+.pd-kvote{height:10px;background:var(--soft);border:1px solid var(--line);border-radius:99px;margin-top:8px;overflow:hidden}.pd-kvote i{display:block;height:100%;background:var(--teal)}
+.pd-knapper{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.pd-form label{margin-top:12px}
+.pd-form .pd-to{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pd-chk{display:flex !important;align-items:center;gap:10px;font-weight:500;min-height:44px}.pd-chk input{width:22px;height:22px;min-height:0;margin:0;accent-color:#E6005C}
+.pd-fp{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
+.pd-g{border-top:1px solid var(--line);padding:12px 0}.pd-g-n{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:16px}
+.pd-g-h{font-size:13px;color:var(--muted)}
+.pd-p{display:flex;gap:12px;align-items:center;padding:8px 0;border-top:1px solid var(--line);cursor:pointer;background:none;border-left:0;border-right:0;border-bottom:0;width:100%;text-align:left;border-radius:0;min-height:0;font-weight:400}
+.pd-p b{display:block;font-size:15px}.pd-p span.u{font-size:13px;color:var(--muted)}
+.pd-av{width:42px;height:42px;border-radius:50%;flex:0 0 42px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;background:var(--frost);background-size:cover;background-position:center}
+.pd-modal{position:fixed;inset:0;background:rgba(15,37,55,.55);display:flex;align-items:flex-end;justify-content:center;z-index:50;padding:12px}
+.pd-modal .card{width:100%;max-width:520px;max-height:88vh;overflow:auto;margin:0}
+.pd-pbillede{width:100%;max-height:340px;object-fit:cover;border-radius:6px;margin-bottom:10px}
+.pd-url{font-size:13px;word-break:break-all;background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin-top:8px}
+@media (min-width:700px){.pd-modal{align-items:center}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <a class="hjem" href="./" aria-label="Til forsiden" title="Til forsiden"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h5v-6h4v6h5V9.5"/></svg></a>
+      <a class="logo" href="https://roskildetennisklub.dk" target="_blank" rel="noopener" aria-label="Roskilde Tennis Klubs hjemmeside (åbner i ny fane)"><img src="../ikoner/rtk-hvid.png" alt=""></a>
+      <span class="navn titel"><b>Padel</b><span>Personale og frivillige</span></span>
+    </div>
+  </div>
+</header>
+
+<main class="side">
+  <div class="monster lav" aria-hidden="true"></div>
+  <div class="wrap indhold smal">
+  <div id="testBanner" class="card hidden" style="padding:10px 14px;font-size:14px;background:var(--soft);color:var(--muted)">Testmiljø med opdigtede data.</div>
+  <div id="omraade" class="hidden">
+    <div class="who"><span id="hvem"></span><button class="ghost small" id="logud" type="button">Log ud</button></div>
+    <div id="ingenAdgang" class="card hidden"><b>Kun for padel</b><p class="hint">Siden er for Styregruppen, Padel Team og RTK Padelcircle. Mener du, at du burde have adgang, så skriv til klubbens administratorer.</p></div>
+    <div class="tabs" role="tablist" id="faner">
+      <button type="button" role="tab" id="fane-kalender" aria-selected="true" data-fane="kalender">Kalender</button>
+      <button type="button" role="tab" id="fane-chat" aria-selected="false" data-fane="chat">Chat</button>
+      <button type="button" role="tab" id="fane-holdet" aria-selected="false" data-fane="holdet">Holdet</button>
+    </div>
+    <div id="hentMsg" class="msg" aria-live="polite">Henter …</div>
+
+    <!-- Kalender -->
+    <section id="vKalender">
+      <div id="snart"></div>
+      <div class="pd-vis">
+        <div class="chips" id="filtre" role="group" aria-label="Vis"></div>
+      </div>
+      <div class="pd-vis">
+        <div class="pd-skift" role="group" aria-label="Visning"><button type="button" id="visListe" aria-pressed="true">Liste</button><button type="button" id="visMaaned" aria-pressed="false">Måned</button></div>
+        <button type="button" class="ok small hidden" id="nyKnap">+ Ny i kalenderen</button>
+      </div>
+      <div id="liste"></div>
+      <div id="maaned" class="hidden"></div>
+      <div class="pd-knapper" id="aarshjulBoks"></div>
+      <section class="card pd-boks" id="abBoks" style="margin-top:18px"></section>
+      <section class="card pd-boks" id="pushBoks"></section>
+    </section>
+
+    <!-- Et punkt -->
+    <section id="vPunkt" class="hidden"></section>
+
+    <!-- Ny eller ret (kun administratorer) -->
+    <section id="vForm" class="hidden"></section>
+
+    <!-- Chat -->
+    <section id="vChat" class="hidden"></section>
+
+    <!-- Holdet -->
+    <section id="vHoldet" class="hidden"></section>
+  </div>
+  </div>
+  <div class="wrap partnere">
+    <img class="p-babolat" src="../ikoner/babolat.png" alt="Babolat">
+    <span>Officielle partnere</span>
+    <a class="p-racketlife" href="https://racketlife.dk" target="_blank" rel="noopener" aria-label="Racketlife (åbner i ny fane)"><img src="../ikoner/racketlife.png" alt=""></a>
+  </div>
+</main>
+<div id="modal" class="pd-modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitel"></div>
+
+<footer class="bund">
+  <div class="wrap">
+    <span class="klub">
+      <a href="https://roskildetennisklub.dk" target="_blank" rel="noopener" aria-label="Roskilde Tennis Klubs hjemmeside (åbner i ny fane)"><img src="../ikoner/rtk-hvid.png" alt=""></a>
+      <span><b>Roskilde Tennis Klub</b> · mitrtk.dk</span>
+    </span>
+    <span class="hoejre">
+      <span>Testversion. Data er opdigtede.</span>
+      <a class="diskret" href="../">Til medlemssiden</a>
+      <a class="privat" href="../privatliv.html">Privatliv</a>
+    </span>
+  </div>
+</footer>
+
+<script src="../konfig.js?v=5d3b61fda9e3"></script>
+<script src="../adminpin.js?v=072d3999ca21"></script>
+<script src="../visning.js?v=491810b71d5d"></script>
+<script>
+// Padel på personalesiden (Lars 8. november 2026 kl. 05.36 til 06.19). Kalender med årshjulet fra aftalen med PADELPIT,
+// chat i grupper for personale og frivillige og Holdet med profilkortene. Motoren styrer, hvad den enkelte ser: et punkt,
+// der ikke er for RTK Padelcircle, kommer aldrig til siden for en med kun rollen padelcircle. Kun administratorer retter.
+const MILJOE = window.RTK_KONFIG.miljoe;
+const URL_MOTOR = window.RTK_KONFIG.motor;
+const $ = (id) => document.getElementById(id);
+const gem = (k, v) => { try { v === null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} };
+const hent = (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const nyId = () => (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(16).slice(2));
+let token = hent('rtk.token') || '';
+let person = null;
+if (MILJOE === 'test') $('testBanner').classList.remove('hidden');
+function besked(el, t, s) { el.textContent = t || ''; el.className = 'msg' + (s ? ' ' + s : ''); }
+
+// ---------- Motoren
+const SIDST = {}, LAEST = {};
+async function motor(modul, handling, data, id) {
+  let res;
+  try { res = await fetch(URL_MOTOR, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ modul, handling, data: data || {}, token, apin: (window.RTK_APIN ? RTK_APIN.bevis() : ''), id: id || '' }) }); }
+  catch (e) { throw new Error('Ingen forbindelse. Tjek net og prøv igen.'); }
+  let svar;
+  try { svar = await res.json(); } catch (e) { throw new Error('Ingen forbindelse. Tjek net og prøv igen.'); }
+  if (!svar.ok && svar.apin && window.RTK_APIN) { await RTK_APIN.spoerg(motor); return motor(modul, handling, data, id); }
+  if (!svar.ok && svar.igang) { await new Promise((r) => setTimeout(r, 1500)); return motor(modul, handling, data, id); }
+  if (!svar.ok) { if (svar.login) logUd(true); throw new Error(svar.fejl || 'Noget gik galt'); }
+  SIDST[handling] = svar.tid || 0;
+  if (id) LAEST.start = Math.max(LAEST.start || 0, svar.tidSlut || svar.tid || 0);
+  return svar.data;
+}
+function logUd(udloebet) {
+  if (window.RTK_UD) return; window.RTK_UD = true;
+  if (!udloebet && token) motor('kerne', 'logud').catch(() => {});
+  token = ''; person = null; gem('rtk.token', null); gem('rtk.mig', null);
+  (window.RTKV ? RTKV.logUd() : Promise.resolve()).then(() => location.replace(udloebet ? './?til=padel.html&igen=1' : './'));
+}
+$('logud').addEventListener('click', () => logUd(false));
+
+// ---------- Tid og tekst
+const MDR = ['januar', 'februar', 'marts', 'april', 'maj', 'juni', 'juli', 'august', 'september', 'oktober', 'november', 'december'];
+const UGEDAG = ['søndag', 'mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag'];
+const UG3 = ['søn', 'man', 'tir', 'ons', 'tor', 'fre', 'lør'];
+const dagD = (dag) => new Date(dag + 'T12:00:00Z');
+const iDag = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+const plusDage = (dag, n) => new Date(dagD(dag).getTime() + n * 86400000).toISOString().slice(0, 10);
+const dagTekst = (dag) => { const d = dagD(dag); return UGEDAG[d.getUTCDay()] + ' ' + d.getUTCDate() + '. ' + MDR[d.getUTCMonth()]; };
+const kortDag = (dag) => { const d = dagD(dag); return d.getUTCDate() + '. ' + MDR[d.getUTCMonth()].slice(0, 3); };
+const kl = (t) => String(t || '').replace(':', '.');
+const dageTil = (dag) => Math.round((dagD(dag) - dagD(iDag())) / 86400000);
+const omTekst = (n) => n === 0 ? 'I dag' : n === 1 ? 'I morgen' : n > 1 ? 'Om ' + n + ' dage' : n === -1 ? 'I går' : 'For ' + (-n) + ' dage siden';
+// ISO-uge (mandag først)
+function ugeNr(dag) { const d = dagD(dag); const t = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())); const dn = (t.getUTCDay() + 6) % 7; t.setUTCDate(t.getUTCDate() - dn + 3); const f = new Date(Date.UTC(t.getUTCFullYear(), 0, 4)); return 1 + Math.round(((t - f) / 86400000 - 3 + ((f.getUTCDay() + 6) % 7)) / 7); }
+const mandagAf = (dag) => plusDage(dag, -((dagD(dag).getUTCDay() + 6) % 7));
+
+// ---------- Tilstand
+let data = null;          // svaret fra padel.start
+let visning = 'liste';    // liste eller maaned
+let filter = 'alle';
+let mnd = null;           // 'yyyy-mm' i månedsvisningen
+let valgtDag = '';
+let visTidligere = false;
+let chatData = null, holdData = null, personerData = null;
+const typeAf = (id) => (data && data.typer.find((t) => t.id === id)) || { id, navn: id, farve: '#4A5560' };
+const tag = (id) => { const t = typeAf(id); return '<span class="pd-tag" style="border-color:' + t.farve + ';color:' + t.farve + '">' + esc(t.navn) + '</span>'; };
+const erAdmin = () => !!(data && data.mig.admin);
+const erFuld = () => !!(data && data.mig.fuld);
+const FILTRE = {
+  alle: { navn: 'Alt', typer: null },
+  traening: { navn: 'Træning', typer: ['tr', 'darup', 'camp', 'roed'] },
+  frister: { navn: 'Frister', typer: ['frist', 'beslut'], fuld: true },
+  moeder: { navn: 'Møder', typer: ['moede'], fuld: true },
+  oekonomi: { navn: 'Fakturaer', typer: ['faktura'], fuld: true },
+  andet: { navn: 'Milepæle og ferie', typer: ['mile', 'ferie'] }
+};
+const iFilter = (p) => !FILTRE[filter] || !FILTRE[filter].typer || FILTRE[filter].typer.includes(p.type);
+
+// ---------- Faner og ruter: #kalender  #k/<id>  #ny  #ret/<id>  #chat  #chat/ny  #holdet
+document.querySelectorAll('#faner button').forEach((b) => b.addEventListener('click', () => { location.hash = b.dataset.fane; }));
+window.addEventListener('hashchange', rute);
+function vis(id) {
+  ['vKalender', 'vPunkt', 'vForm', 'vChat', 'vHoldet'].forEach((v) => $(v).classList.toggle('hidden', v !== id));
+  const fane = id === 'vChat' ? 'chat' : id === 'vHoldet' ? 'holdet' : 'kalender';
+  document.querySelectorAll('#faner button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.fane === fane)));
+}
+function rute() {
+  if (!data) return;
+  const h = location.hash.replace(/^#/, '').split('/').map((x) => { try { return decodeURIComponent(x); } catch (e) { return ''; } });
+  if (h[0] === 'k' && h[1]) return visPunkt(h[1]);
+  if (h[0] === 'ny' && erAdmin()) return visForm(null, h[1] || '');
+  if (h[0] === 'ret' && h[1] && erAdmin()) return visForm(h[1]);
+  if (h[0] === 'chat') return visChat(h[1] || '');
+  if (h[0] === 'holdet') return visHoldet();
+  vis('vKalender'); tegnKalender();
+}
+
+// ---------- Kalenderen
+function tegnFiltre() {
+  const ok = Object.keys(FILTRE).filter((k) => !FILTRE[k].fuld || erFuld());
+  $('filtre').innerHTML = ok.map((k) => '<button type="button" data-f="' + k + '" aria-pressed="' + (filter === k) + '">' + esc(FILTRE[k].navn) + '</button>').join('');
+  $('filtre').querySelectorAll('button').forEach((b) => b.addEventListener('click', () => { filter = b.dataset.f; tegnKalender(); }));
+}
+function tegnSnart() {
+  // Frister, beslutninger, møder, milepæle og camps de næste 30 dage, som ikke er gjort
+  const vigtige = data.poster.filter((p) => !['tr', 'darup', 'ferie', 'roed'].includes(p.type) && !p.gjort && dageTil(p.dag) >= 0 && dageTil(p.dag) <= 30);
+  // Frister for at frigive en dag, der skal frigives, men ikke er det endnu (kun padel)
+  const frigiv = erFuld() ? data.poster.filter((p) => p.brug === 'frigiv' && !p.frigivet && p.fristFrigiv && dageTil(p.fristFrigiv) >= -1 && dageTil(p.fristFrigiv) <= 30) : [];
+  if (!vigtige.length && !frigiv.length) { $('snart').innerHTML = ''; return; }
+  const linjer = vigtige.slice(0, 6).map((p) => '<a href="#k/' + encodeURIComponent(p.id) + '"><b>' + omTekst(dageTil(p.dag)) + '</b> · ' + esc(p.titel) + ' (' + kortDag(p.dag) + ')' + (p.ansvarligNavn ? ' · <i>' + esc(p.ansvarligNavn.split(' ').filter((x) => x !== 'Test')[0]) + '</i>' : '') + '</a>')
+    .concat(frigiv.map((p) => '<a href="#k/' + encodeURIComponent(p.id) + '"><b>' + omTekst(dageTil(p.fristFrigiv)) + '</b> · Frist: frigiv ' + esc(dagTekst(p.dag)) + ' hos PADELPIT</a>'));
+  $('snart').innerHTML = '<div class="pd-snart"><div class="pd-snart-t">Snart</div>' + linjer.join('') + '</div>';
+}
+function linje(p, medDag) {
+  const d = dagD(p.dag);
+  const tid = p.heldag ? (p.slutDag && p.slutDag !== p.dag ? 'til ' + dagTekst(p.slutDag) : 'Hele dagen') : 'kl. ' + kl(p.start) + (p.slut ? ' til ' + kl(p.slut) : '');
+  const under = [tid, p.baner ? p.baner + (p.baner === 1 ? ' bane' : ' baner') : '', p.sted && p.type !== 'tr' ? p.sted : '', p.ansvarligNavn ? 'Ansvarlig ' + p.ansvarligNavn.replace(/^Test /, '') : ''].filter(Boolean).join(' · ');
+  const status = p.gjort ? ' · Gjort' : p.frigivet ? ' · Frigivet' : p.brug === 'camp' ? ' · Camp' : p.brug === 'frigiv' ? ' · Skal frigives' : '';
+  const t = typeAf(p.type);
+  return '<a class="pd-l' + (p.gjort ? ' gjort' : '') + '" href="#k/' + encodeURIComponent(p.id) + '" style="border-left-color:' + t.farve + '">'
+    + '<div class="pd-d">' + (medDag ? UG3[d.getUTCDay()] + '<b>' + d.getUTCDate() + '</b>' : '') + '</div>'
+    + '<div class="pd-m">' + (p.titel.indexOf(t.navn) === 0 && p.type !== 'frist' ? '' : tag(p.type)) + '<b' + (p.type === 'frist' ? ' style="color:var(--pink)"' : '') + '>' + esc(p.titel) + '</b>'
+    + '<span class="pd-u">' + esc(under + status) + '</span>'
+    + (p.synlighed === 'intern' && erFuld() ? '<span class="pd-laas">&#128274; Ikke Padelcircle</span>' : '') + '</div></a>';
+}
+// Listen viser 8 uger ad gangen fra denne uge (eller fra det første, der kommer), så kalenderen og abonnementet ikke forsvinder
+// under et helt år. "Vis 8 uger mere" udvider
+let uger = 8;
+function tegnListe() {
+  const fra = visTidligere ? '0000' : mandagAf(iDag());
+  const alle = data.poster.filter((p) => iFilter(p) && ((p.slutDag || p.dag) >= fra));
+  const foerste = alle.length ? mandagAf(alle.find((p) => p.dag >= fra) ? alle.find((p) => p.dag >= fra).dag : alle[0].dag) : fra;
+  const til = plusDage(foerste > mandagAf(iDag()) ? foerste : mandagAf(iDag()), uger * 7);
+  const poster = alle.filter((p) => p.dag < til);
+  const flere = alle.length - poster.length;
+  let html = '';
+  if (!visTidligere && data.poster.some((p) => iFilter(p) && (p.slutDag || p.dag) < fra)) html += '<button type="button" class="ghost small" id="tidligere">Vis tidligere</button>';
+  if (!poster.length) html += '<p class="hint">Intet i kalenderen her.</p>';
+  let uge = '', sidstDag = '';
+  poster.forEach((p) => {
+    const m = mandagAf(p.dag);
+    if (m !== uge) { uge = m; sidstDag = ''; html += '<h3 class="pd-uge">Uge ' + ugeNr(p.dag) + ' · ' + kortDag(m) + ' til ' + kortDag(plusDage(m, 6)) + ' ' + p.dag.slice(0, 4) + '</h3>'; }
+    html += linje(p, p.dag !== sidstDag); sidstDag = p.dag;
+  });
+  if (flere > 0) html += '<div class="pd-knapper"><button type="button" class="ghost small" id="flere">Vis 8 uger mere</button><span class="hint" style="margin:0;align-self:center">' + flere + ' mere i kalenderen</span></div>';
+  $('liste').innerHTML = html;
+  const t = $('tidligere'); if (t) t.addEventListener('click', () => { visTidligere = true; tegnListe(); });
+  const f = $('flere'); if (f) f.addEventListener('click', () => { uger += 8; tegnListe(); });
+}
+function tegnMaaned() {
+  if (!mnd) mnd = iDag() >= '2027-01-01' || !data.poster.length ? iDag().slice(0, 7) : data.poster[0].dag.slice(0, 7);
+  const [aa, mm] = mnd.split('-').map(Number);
+  const foerste = mnd + '-01';
+  const dage = new Date(Date.UTC(aa, mm, 0)).getUTCDate();
+  const skub = (dagD(foerste).getUTCDay() + 6) % 7;
+  const pr = {};
+  data.poster.filter(iFilter).forEach((p) => {
+    // Et punkt over flere dage (fx sommerferien) vises på hver dag
+    let d = p.dag; const slut = p.slutDag || p.dag; let n = 0;
+    while (d <= slut && n < 130) { (pr[d] = pr[d] || []).push(p); d = plusDage(d, 1); n++; }
+  });
+  let h = '<div class="pd-mnd"><button type="button" class="ghost small" id="mFoer" aria-label="Forrige måned">&#8592;</button><b>' + MDR[mm - 1].charAt(0).toUpperCase() + MDR[mm - 1].slice(1) + ' ' + aa + '</b><button type="button" class="ghost small" id="mEfter" aria-label="Næste måned">&#8594;</button></div>';
+  h += '<div class="pd-gitter">' + ['M', 'T', 'O', 'T', 'F', 'L', 'S'].map((x) => '<div class="pd-gh">' + x + '</div>').join('');
+  for (let i = 0; i < skub; i++) h += '<div class="pd-c tom"></div>';
+  for (let n = 1; n <= dage; n++) {
+    const dag = mnd + '-' + String(n).padStart(2, '0');
+    const ps = pr[dag] || [];
+    const farver = [...new Set(ps.map((p) => typeAf(p.type).farve))].slice(0, 4);
+    const cls = 'pd-c' + (ps.some((p) => p.type === 'roed') ? ' roed' : '') + (dag === valgtDag ? ' valgt' : '') + (dag === iDag() ? ' idag' : '');
+    h += '<button type="button" class="' + cls + '" data-dag="' + dag + '" aria-label="' + esc(dagTekst(dag)) + (ps.length ? ', ' + ps.length + ' i kalenderen' : '') + '"><span>' + n + '</span><span class="pd-prikker">' + farver.map((f) => '<i class="pd-prik" style="background:' + f + '"></i>').join('') + '</span></button>';
+  }
+  h += '</div><div class="pd-leg">' + data.typer.map((t) => '<span><i style="background:' + t.farve + '"></i>' + esc(t.navn) + '</span>').join('') + '</div>';
+  if (valgtDag && valgtDag.slice(0, 7) === mnd) {
+    const ps = pr[valgtDag] || [];
+    h += '<h3 class="pd-uge">' + esc(dagTekst(valgtDag)) + '</h3>' + (ps.length ? ps.map((p) => linje(p, false)).join('') : '<p class="hint">Intet denne dag.</p>');
+  }
+  $('maaned').innerHTML = h;
+  const skift = (d) => { const t = new Date(Date.UTC(aa, mm - 1 + d, 1)); mnd = t.toISOString().slice(0, 7); valgtDag = ''; tegnMaaned(); };
+  $('mFoer').addEventListener('click', () => skift(-1)); $('mEfter').addEventListener('click', () => skift(1));
+  $('maaned').querySelectorAll('.pd-c[data-dag]').forEach((b) => b.addEventListener('click', () => { valgtDag = b.dataset.dag; tegnMaaned(); }));
+}
+function tegnKalender() {
+  if (!data) return;
+  tegnFiltre(); tegnSnart();
+  $('nyKnap').classList.toggle('hidden', !erAdmin());
+  $('visListe').setAttribute('aria-pressed', String(visning === 'liste')); $('visMaaned').setAttribute('aria-pressed', String(visning === 'maaned'));
+  $('liste').classList.toggle('hidden', visning !== 'liste'); $('maaned').classList.toggle('hidden', visning !== 'maaned');
+  if (visning === 'liste') tegnListe(); else tegnMaaned();
+  $('aarshjulBoks').innerHTML = data.aarshjul ? '<button type="button" class="ghost small" id="pdfKnap">Årshjul 2027 (PDF)</button><span class="msg" id="pdfMsg"></span>' : '';
+  if (data.aarshjul) $('pdfKnap').addEventListener('click', hentPdf);
+  tegnAbonnement(); tegnPush();
+}
+$('visListe').addEventListener('click', () => { visning = 'liste'; tegnKalender(); });
+$('visMaaned').addEventListener('click', () => { visning = 'maaned'; tegnKalender(); });
+$('nyKnap').addEventListener('click', () => { location.hash = 'ny'; });
+
+async function hentPdf() {
+  besked($('pdfMsg'), 'Henter …');
+  // Vinduet åbnes med det samme, så telefonen ikke blokerer det
+  const vindue = window.open('', '_blank');
+  try {
+    const r = await motor('padel', 'pdf');
+    const bin = atob(r.data); const b = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) b[i] = bin.charCodeAt(i);
+    const url = URL.createObjectURL(new Blob([b], { type: 'application/pdf' }));
+    if (vindue) vindue.location.href = url; else location.href = url;
+    besked($('pdfMsg'), '');
+  } catch (err) { if (vindue) vindue.close(); besked($('pdfMsg'), err.message, 'err'); }
+}
+
+// ---------- Et punkt
+function visPunkt(id) {
+  const p = data.poster.find((x) => x.id === id);
+  vis('vPunkt');
+  if (!p) { $('vPunkt').innerHTML = '<a class="gr-tilbage" href="#kalender">&#8592; Kalender</a><p class="hint">Punktet findes ikke længere, eller du kan ikke se det.</p>'; return; }
+  const t = typeAf(p.type);
+  const tid = p.heldag ? (p.slutDag && p.slutDag !== p.dag ? dagTekst(p.dag) + ' til ' + dagTekst(p.slutDag) : dagTekst(p.dag) + ' ' + p.dag.slice(0, 4)) : dagTekst(p.dag) + ' ' + p.dag.slice(0, 4) + ' · kl. ' + kl(p.start) + (p.slut ? ' til ' + kl(p.slut) : '');
+  let h = '<a class="gr-tilbage" href="#kalender">&#8592; Kalender</a>';
+  h += '<p style="margin:12px 0 4px">' + tag(p.type) + (p.synlighed === 'intern' && erFuld() ? '<span class="pd-laas" style="display:inline">&#128274; Ikke Padelcircle</span>' : '') + '</p>';
+  h += '<h2 style="margin:0 0 4px">' + esc(p.titel) + '</h2>';
+  h += '<p class="hint" style="margin:0 0 12px">' + esc([tid, p.sted, p.baner ? p.baner + (p.baner === 1 ? ' bane' : ' baner') + (p.baner && !p.heldag && p.slut ? ' · ' + (p.baner * Math.round((Number(p.slut.slice(0, 2)) * 60 + Number(p.slut.slice(3)) - Number(p.start.slice(0, 2)) * 60 - Number(p.start.slice(3))) / 60)) + ' banetimer' : '') : ''].filter(Boolean).join(' · ')) + '</p>';
+  if (p.note) h += '<div class="card pd-boks"><b>Note</b><p style="margin:4px 0 0;white-space:pre-wrap">' + esc(p.note) + '</p></div>';
+  if (p.ansvarligNavn) h += '<p style="margin:0 0 10px">Ansvarlig: <b>' + esc(p.ansvarligNavn) + '</b></p>';
+  if (p.gjort) h += '<div class="tak" style="margin-bottom:12px"><b>Gjort</b>' + esc(p.gjort.tid) + (p.gjort.af ? ' af ' + esc(p.gjort.af) : '') + '</div>';
+  // Frigivelse hos PADELPIT: kun padel ser fristen og kvoten. Kun administratorer ændrer
+  if ((p.type === 'tr' || p.type === 'roed') && erFuld()) {
+    h += '<div class="card pd-boks"><b>Hvad bruger vi dagen til?</b>';
+    const brug = p.frigivet ? 'frigivet' : p.brug;
+    if (erAdmin()) h += '<div class="chips" style="margin-top:8px" id="brugValg">' + [['camp', 'Camp'], ['frigiv', 'Frigiv'], ['', p.type === 'tr' ? 'Træning som planlagt' : 'Ikke besluttet']].map(([v, n]) => '<button type="button" data-b="' + v + '" aria-pressed="' + (brug === v || (brug === 'frigivet' && v === 'frigiv')) + '">' + n + '</button>').join('') + '</div>';
+    else h += '<p style="margin:6px 0 0">' + (p.frigivet ? 'Frigivet' : p.brug === 'camp' ? 'Camp' : p.brug === 'frigiv' ? 'Skal frigives' : p.type === 'tr' ? 'Træning som planlagt' : 'Ikke besluttet') + '</p>';
+    if (p.frigivet) h += '<p class="pd-frist">Frigivet ' + esc(dagTekst(p.frigivet.dag)) + ' (' + (p.frigivet.baner === 1 ? 'halv dag, 1 bane' : 'hel dag, 2 baner') + ')</p>';
+    else h += '<p class="pd-frist">Sidste frist for at frigive: <b>' + esc(dagTekst(p.fristFrigiv)) + '</b> (' + omTekst(dageTil(p.fristFrigiv)).toLowerCase() + ')</p>';
+    h += '<p class="hint" style="margin:0">Frigivelse sker med skriftlig besked til PADELPIT mindst 4 uger før (aftalen punkt 4). '
+      + (p.type === 'roed' && p.dag < '2027-07-01' ? 'Frigivne timer, der ikke lejes ud, koster ikke noget på røde datoer i 1. halvår 2027.' : p.type === 'roed' ? 'Røde datoer tæller ikke med i kvoten.' : 'Frigivne timer, der ikke lejes ud, koster 100 kr. inkl. moms pr. banetime.') + '</p>';
+    if (erAdmin()) h += '<div class="pd-knapper">' + (p.frigivet ? '<button type="button" class="ghost small" id="fortrydFrigiv">Fortryd frigivet</button>' : '<button type="button" class="ghost small" id="frigivHel">Markér som frigivet: hel dag</button><button type="button" class="ghost small" id="frigivHalv">Halv dag (1 bane)</button>') + '</div>';
+    h += '<div class="msg" id="frigivMsg" aria-live="polite"></div></div>';
+    if (p.type === 'tr' && data.kvote) {
+      const hv = p.dag.slice(0, 4) + (Number(p.dag.slice(5, 7)) <= 6 ? '-1' : '-2');
+      const brugt = data.kvote.pr[hv] || 0;
+      h += '<div class="card pd-boks"><b>Frigivet i ' + (hv.endsWith('-1') ? '1.' : '2.') + ' halvår ' + hv.slice(0, 4) + '</b><div class="pd-kvote"><i style="width:' + Math.min(100, brugt / data.kvote.af * 100) + '%;' + (brugt > data.kvote.af ? 'background:var(--bad)' : '') + '"></i></div>'
+        + '<p class="hint" style="margin:6px 0 0">Træningsdage: ' + String(brugt).replace('.', ',') + ' af ' + data.kvote.af + ' hele dage. Røde datoer og julitimer tæller ikke med.</p></div>';
+    }
+  }
+  if (p.paamind.length && erFuld()) h += '<p class="hint">Påmindelse ' + p.paamind.map((k) => ({ '4u': '4 uger før', '2u': '2 uger før', '1u': '1 uge før', '2d': '2 dage før', '1d': 'dagen før', '0d': 'samme dag' }[k])).join(', ') + ' til ' + p.paamindTil.map((k) => k === 'ansvarlig' ? 'den ansvarlige' : k === 'fuld' ? 'Styregruppen og Padel Team' : k === 'alle' ? 'alle i padel' : (gruppeNavn(k) || 'en gruppe')).join(', ') + '.</p>';
+  h += '<div class="pd-knapper"><button type="button" class="ghost small" id="iKal">Læg i min kalender</button>';
+  if (erAdmin()) {
+    h += '<button type="button" class="ok small" id="retKnap">Ret</button>';
+    h += '<button type="button" class="ghost small" id="gjortKnap">' + (p.gjort ? 'Ikke gjort alligevel' : 'Markér som gjort') + '</button>';
+    h += '<button type="button" class="ghost small gr-farlig" id="sletKnap">Slet</button>';
+  }
+  h += '</div><div class="msg" id="punktMsg" aria-live="polite"></div>';
+  $('vPunkt').innerHTML = h;
+  $('iKal').addEventListener('click', () => hentIcs([p], p.titel));
+  if (!erAdmin()) return;
+  $('retKnap').addEventListener('click', () => { location.hash = 'ret/' + encodeURIComponent(p.id); });
+  $('gjortKnap').addEventListener('click', () => gemHandling('gjort', { id: p.id, ikke: !!p.gjort }, $('punktMsg'), p.gjort ? 'Ikke gjort' : 'Gjort. Der kommer ikke flere påmindelser.'));
+  let slet = false;
+  $('sletKnap').addEventListener('click', () => {
+    if (!slet) { slet = true; $('sletKnap').textContent = 'Tryk igen for at slette'; $('sletKnap').classList.add('fyldt'); return; }
+    gemHandling('slet', { id: p.id }, $('punktMsg'), 'Slettet', () => { location.hash = 'kalender'; });
+  });
+  const bv = $('brugValg');
+  if (bv) bv.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => gemHandling('brug', { id: p.id, brug: b.dataset.b }, $('frigivMsg'), 'Gemt')));
+  const fr = (baner) => gemHandling('frigivet', { id: p.id, baner }, $('frigivMsg'), 'Markeret som frigivet. Husk den skriftlige besked til PADELPIT.');
+  if ($('frigivHel')) $('frigivHel').addEventListener('click', () => fr(2));
+  if ($('frigivHalv')) $('frigivHalv').addEventListener('click', () => fr(1));
+  if ($('fortrydFrigiv')) $('fortrydFrigiv').addEventListener('click', () => gemHandling('frigivet', { id: p.id, fortryd: true }, $('frigivMsg'), 'Fortrudt'));
+}
+const gruppeNavn = (k) => { const g = chatData && chatData.grupper.find((x) => 'g:' + x.id === k); return g ? esc(g.navn) : ''; }; // escapes: navnet kan rettes af gruppen (gennemgangen 8. november, fund 3)
+async function gemHandling(handling, d, msgEl, ok, efter) {
+  besked(msgEl, 'Gemmer …');
+  try {
+    const r = await motor('padel', handling, d, nyId());
+    await hentStart();
+    if (efter) efter(); else rute();
+    const el = $(msgEl.id) || msgEl;
+    besked(el, ok + (r && r.advarsler && r.advarsler.length ? ' ' + r.advarsler.join(' ') : ''), r && r.advarsler && r.advarsler.length ? 'err' : 'okm');
+  } catch (err) { besked(msgEl, err.message, 'err'); }
+}
+
+// ---------- Læg i min kalender (en kalenderfil med alarm 1 dag før, Lars 06.04)
+function icsTekst(poster, navn) {
+  const e = (s) => String(s || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+  const utc = (ms) => new Date(ms).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+  const L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Roskilde Tennis Klub//Mit RTK padel//DA', 'METHOD:PUBLISH', 'X-WR-CALNAME:' + e(navn)];
+  poster.forEach((p) => {
+    L.push('BEGIN:VEVENT', 'UID:' + p.id + '@padel.mitrtk.dk', 'DTSTAMP:' + utc(Date.now()));
+    if (p.heldag) L.push('DTSTART;VALUE=DATE:' + p.dag.replace(/-/g, ''), 'DTEND;VALUE=DATE:' + plusDage(p.slutDag || p.dag, 1).replace(/-/g, ''));
+    else L.push('DTSTART:' + utc(p.ms), 'DTEND:' + utc(p.slutMs || p.ms + 3600000));
+    L.push('SUMMARY:' + e(p.titel), 'DESCRIPTION:' + e(typeAf(p.type).navn + (p.note ? '\n\n' + p.note : '')));
+    if (p.sted) L.push('LOCATION:' + e(p.sted));
+    L.push('BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + e(p.titel), 'TRIGGER:' + (p.heldag ? '-PT15H' : '-P1D'), 'END:VALARM', 'END:VEVENT');
+  });
+  L.push('END:VCALENDAR');
+  return L.join('\r\n') + '\r\n';
+}
+function hentIcs(poster, navn) {
+  const url = URL.createObjectURL(new Blob([icsTekst(poster, navn)], { type: 'text/calendar;charset=utf-8' }));
+  const a = document.createElement('a'); a.href = url; a.download = (navn || 'padel').replace(/[^\wæøåÆØÅ -]/g, '').slice(0, 40) + '.ics';
+  document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 30000);
+}
+
+// ---------- Abonnement på hele kalenderen eller en del af den (Lars 06.02, alarm 1 dag før 06.04)
+let abTyper = [], abMine = false, abUrl = '';
+function tegnAbonnement() {
+  const ab = data.abonnement;
+  let h = '<b>Din egen kalender</b><p class="hint" style="margin:4px 0 0">Abonnér på padelkalenderen i Google, Apple eller Outlook. Den opdaterer sig selv, og alt får en alarm 1 dag før. Google Kalender bruger sine egne påmindelser for et abonnement: slå dem til for kalenderen i Google.</p>';
+  if (abUrl) {
+    h += '<p style="margin:10px 0 0"><b>Dit personlige link</b> (vises kun nu):</p><div class="pd-url" id="abUrl">' + esc(abUrl) + '</div>'
+      + '<div class="pd-knapper"><button type="button" class="ok small" id="abKopi">Kopiér linket</button><a class="ghost small" style="display:inline-flex;align-items:center;border:1px solid var(--line2);border-radius:6px;padding:6px 12px;text-decoration:none;color:inherit;font-weight:600" href="' + esc(abUrl.replace(/^https:/, 'webcal:')) + '">Åbn i min kalender</a></div>'
+      + '<p class="hint">Del ikke linket. Den, der har det, kan se kalenderen. Lav et nyt link, hvis det er delt ved en fejl.</p>';
+  } else if (ab) {
+    h += '<p style="margin:10px 0 0">Du har et abonnement fra ' + esc(ab.oprettet) + ': ' + (ab.typer.length ? ab.typer.map((x) => typeAf(x).navn).join(', ') : 'alt') + (ab.kunMine ? ', kun det, du er ansvarlig for' : '') + '.</p>';
+  }
+  h += '<p style="margin:12px 0 4px;font-weight:500">Hvad skal med?</p><div class="chips" id="abValg">' + data.typer.map((t) => '<button type="button" data-t="' + t.id + '" aria-pressed="' + abTyper.includes(t.id) + '"><i class="pd-fp" style="background:' + t.farve + '"></i>' + esc(t.navn) + '</button>').join('') + '</div>'
+    + '<p class="hint" style="margin:6px 0 0">Vælger du ingen, kommer det hele med.</p>'
+    + (erFuld() ? '<label class="pd-chk"><input type="checkbox" id="abMine"' + (abMine ? ' checked' : '') + '> Kun det, jeg er ansvarlig for</label>' : '')
+    + '<div class="pd-knapper"><button type="button" class="' + (ab ? 'ghost' : 'ok') + ' small" id="abLav">' + (ab ? 'Lav et nyt link' : 'Lav mit link') + '</button>' + (ab ? '<button type="button" class="ghost small" id="abStop">Stop abonnementet</button>' : '') + '</div><div class="msg" id="abMsg" aria-live="polite"></div>';
+  $('abBoks').innerHTML = h;
+  $('abValg').querySelectorAll('button').forEach((b) => b.addEventListener('click', () => { const t = b.dataset.t; abTyper = abTyper.includes(t) ? abTyper.filter((x) => x !== t) : abTyper.concat([t]); b.setAttribute('aria-pressed', String(abTyper.includes(t))); }));
+  if ($('abMine')) $('abMine').addEventListener('change', (e) => { abMine = e.target.checked; });
+  if ($('abKopi')) $('abKopi').addEventListener('click', () => { navigator.clipboard.writeText(abUrl).then(() => besked($('abMsg'), 'Kopieret', 'okm')).catch(() => besked($('abMsg'), 'Markér linket og kopiér det', 'err')); });
+  $('abLav').addEventListener('click', async () => {
+    besked($('abMsg'), 'Laver linket …');
+    try { const r = await motor('padel', 'abonnement', { typer: abTyper, kunMine: abMine }, nyId()); abUrl = URL_MOTOR + '?modul=padel&handling=ics&n=' + r.noegle; await hentStart(); tegnAbonnement(); besked($('abMsg'), 'Linket er klar. Det gamle virker ikke længere.', 'okm'); }
+    catch (err) { besked($('abMsg'), err.message, 'err'); }
+  });
+  if ($('abStop')) $('abStop').addEventListener('click', async () => {
+    try { await motor('padel', 'abonnement', { slet: true }, nyId()); abUrl = ''; await hentStart(); tegnAbonnement(); besked($('abMsg'), 'Abonnementet er stoppet. Fjern også kalenderen i din kalender-app.', 'okm'); }
+    catch (err) { besked($('abMsg'), err.message, 'err'); }
+  });
+}
+
+// ---------- Notifikationer på denne telefon (påmindelser om frister). Samme som under Beskeder på medlemssiden
+let pushStatus = null;
+const pushKan = () => 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+const pushIos = () => /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const pushHjem = () => window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const pushId = () => hent('rtk.push.id') || '';
+function enhedsnavn() {
+  const ua = navigator.userAgent;
+  const hvad = /iPhone/.test(ua) ? 'iPhone' : /iPad/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ? 'iPad' : /Android/.test(ua) ? 'Android' : /Mac/.test(ua) ? 'Mac' : /Windows/.test(ua) ? 'Windows' : 'Computer';
+  const br = /Edg\//.test(ua) ? 'Edge' : /Firefox\//.test(ua) ? 'Firefox' : /Chrome\//.test(ua) ? 'Chrome' : /Safari\//.test(ua) ? 'Safari' : '';
+  return hvad === 'iPhone' || hvad === 'iPad' ? hvad : hvad + (br ? ', ' + br : '');
+}
+async function pushFirebase() {
+  const fb = 'https://www.gstatic.com/firebasejs/' + window.RTK_KONFIG.firebaseVersion + '/';
+  const [a, m] = await Promise.all([import(fb + 'firebase-app.js'), import(fb + 'firebase-messaging.js')]);
+  const app = a.getApps().find((x) => x.name === 'push') || a.initializeApp(window.RTK_KONFIG.firebase, 'push');
+  return { m, messaging: m.getMessaging(app) };
+}
+function tegnPush() {
+  let h = '<b>Påmindelser på denne telefon</b>';
+  const her = pushStatus && (pushStatus.enheder || []).some((e) => e.id === pushId() && Notification.permission === 'granted');
+  if (pushIos() && !pushHjem()) h += '<p class="hint" style="margin:4px 0 0">På iPhone skal personalesiden først lægges på hjemmeskærmen: tryk Del og "Føj til hjemmeskærm", og åbn den derfra. Så kan du slå påmindelser til her.</p>';
+  else if (!pushKan()) h += '<p class="hint" style="margin:4px 0 0">Denne browser kan ikke vise notifikationer. Påmindelser om frister, du er ansvarlig for, kommer så på mail.</p>';
+  else if (Notification.permission === 'denied') h += '<p class="hint" style="margin:4px 0 0">Notifikationer er slået fra for Mit RTK i telefonens indstillinger.</p>';
+  else if (her) h += '<p style="margin:4px 0 0">Slået til på denne telefon.</p><div class="pd-knapper"><button type="button" class="ghost small" id="pushProeve">Send en prøve</button></div>';
+  else h += '<p class="hint" style="margin:4px 0 0">Få en notifikation, når en frist eller et møde nærmer sig.</p><div class="pd-knapper"><button type="button" class="ok small" id="pushTil">Slå påmindelser til</button></div>';
+  h += '<div class="msg" id="pushMsg" aria-live="polite"></div>';
+  $('pushBoks').innerHTML = h;
+  if ($('pushTil')) $('pushTil').addEventListener('click', slaaPushTil);
+  if ($('pushProeve')) $('pushProeve').addEventListener('click', async () => { try { await motor('push', 'proeve', {}, nyId()); besked($('pushMsg'), 'Sendt', 'okm'); } catch (err) { besked($('pushMsg'), err.message, 'err'); } });
+}
+async function slaaPushTil() {
+  besked($('pushMsg'), 'Slår til …');
+  try {
+    const svar = await Notification.requestPermission();
+    if (svar !== 'granted') { besked($('pushMsg'), 'Telefonen sagde nej til notifikationer.', 'err'); return; }
+    const reg = await navigator.serviceWorker.register('../firebase-messaging-sw.js', { scope: '/' });
+    await navigator.serviceWorker.ready;
+    const fb = await pushFirebase();
+    const t = await fb.m.getToken(fb.messaging, { vapidKey: window.RTK_KONFIG.vapid, serviceWorkerRegistration: reg });
+    if (!t) throw new Error('ingen nøgle');
+    const r = await motor('push', 'registrer', { token: t, enhed: enhedsnavn() }, nyId());
+    gem('rtk.push.id', r.id);
+    pushStatus = Object.assign({}, pushStatus || {}, { enheder: r.enheder });
+    tegnPush(); besked($('pushMsg'), 'Påmindelser er slået til på denne telefon.', 'okm');
+  } catch (err) { console.warn('push', err); besked($('pushMsg'), /Log ind|forbindelse/.test(err.message) ? err.message : 'Det lykkedes ikke. Prøv igen om lidt.', 'err'); }
+}
+
+// ---------- Ny eller ret (kun administratorer)
+const PAAMIND = [['4u', '4 uger før'], ['2u', '2 uger før'], ['1u', '1 uge før'], ['2d', '2 dage før'], ['1d', 'Dagen før'], ['0d', 'Samme dag']];
+async function visForm(id, dag) {
+  vis('vForm');
+  const p = id ? data.poster.find((x) => x.id === id) : null;
+  if (id && !p) { $('vForm').innerHTML = '<a class="gr-tilbage" href="#kalender">&#8592; Kalender</a><p class="hint">Punktet findes ikke længere.</p>'; return; }
+  $('vForm').innerHTML = '<p class="hint">Henter personer og grupper …</p>';
+  try { if (!personerData) personerData = await motor('padel', 'personer'); if (!chatData) chatData = await motor('padel', 'chat'); }
+  catch (err) { $('vForm').innerHTML = '<a class="gr-tilbage" href="#kalender">&#8592; Kalender</a><p class="msg err">' + esc(err.message) + '</p>'; return; }
+  const f = p ? Object.assign({}, p) : { type: 'frist', titel: '', dag: dag || iDag(), heldag: true, start: '', slut: '', slutDag: '', sted: '', baner: 0, note: '', ansvarlig: '', synlighed: '', paamind: [], paamindTil: [], gentag: '' };
+  const til = [['ansvarlig', 'Den ansvarlige'], ['fuld', 'Styregruppen og Padel Team'], ['alle', 'Alle i padel']].concat((chatData.grupper || []).map((g) => ['g:' + g.id, g.navn]));
+  let h = '<a class="gr-tilbage" href="' + (p ? '#k/' + encodeURIComponent(p.id) : '#kalender') + '">&#8592; ' + (p ? 'Tilbage' : 'Kalender') + '</a><h2 style="margin:10px 0 6px">' + (p ? 'Ret i kalenderen' : 'Ny i kalenderen') + '</h2><form class="pd-form" id="form" novalidate>';
+  h += '<label>Hvad er det?</label><div class="chips" id="fType">' + data.typer.map((t) => '<button type="button" data-t="' + t.id + '" aria-pressed="' + (f.type === t.id) + '" style="border-color:' + t.farve + '"><i class="pd-fp" style="background:' + t.farve + '"></i>' + esc(t.navn) + '</button>').join('') + '</div>';
+  h += '<label for="fTitel">Titel</label><input id="fTitel" maxlength="80" value="' + esc(f.titel) + '">';
+  h += '<label class="pd-chk"><input type="checkbox" id="fHeldag"' + (f.heldag ? ' checked' : '') + '> Hele dagen</label>';
+  h += '<div class="pd-to"><div><label for="fDag">Dato</label><input type="date" id="fDag" value="' + esc(f.dag) + '"></div><div id="fSlutDagB"><label for="fSlutDag">Til og med (valgfri)</label><input type="date" id="fSlutDag" value="' + esc(f.slutDag && f.slutDag !== f.dag ? f.slutDag : '') + '"></div></div>';
+  h += '<div class="pd-to" id="fTider"><div><label for="fStart">Fra kl.</label><input type="time" id="fStart" value="' + esc(f.start) + '"></div><div><label for="fSlut">Til kl.</label><input type="time" id="fSlut" value="' + esc(f.slut) + '"></div></div>';
+  h += '<div class="pd-to"><div><label for="fSted">Sted</label><input id="fSted" maxlength="80" value="' + esc(f.sted) + '"></div><div><label for="fBaner">Baner hos PADELPIT</label><select id="fBaner"><option value="0">Ingen</option><option value="1"' + (f.baner === 1 ? ' selected' : '') + '>1 bane</option><option value="2"' + (f.baner === 2 ? ' selected' : '') + '>2 baner</option></select></div></div>';
+  h += '<label for="fAnsvarlig">Ansvarlig</label><select id="fAnsvarlig"><option value="">Ingen</option>' + personerData.map((x) => '<option value="' + esc(x.id) + '"' + (f.ansvarlig === x.id ? ' selected' : '') + '>' + esc(x.navn) + (x.kreds === 'circle' ? ' (Padelcircle)' : '') + '</option>').join('') + '</select>';
+  h += '<label>Hvem kan se den?</label><div class="chips" id="fSyn"><button type="button" data-s="alle">Alle i padel</button><button type="button" data-s="intern">&#128274; Ikke Padelcircle</button></div>';
+  h += '<label>Påmind</label><div class="chips" id="fPaamind">' + PAAMIND.map(([k, n]) => '<button type="button" data-k="' + k + '" aria-pressed="' + f.paamind.includes(k) + '">' + n + '</button>').join('') + '</div>';
+  h += '<label>Hvem får påmindelsen?</label><div class="chips" id="fTil">' + til.map(([k, n]) => '<button type="button" data-k="' + esc(k) + '" aria-pressed="' + f.paamindTil.includes(k) + '">' + esc(n) + '</button>').join('') + '</div>';
+  h += '<p class="hint" style="margin:6px 0 0">Påmindelserne kommer som notifikation. Den ansvarlige får en mail, hvis telefonen ikke har notifikationer slået til. Er den ikke for Padelcircle, får de den ikke.</p>';
+  h += '<label for="fNote">Note</label><textarea id="fNote" maxlength="1000" rows="3">' + esc(f.note) + '</textarea>';
+  h += '<button type="submit" style="width:100%;margin-top:14px">Gem</button><div class="msg" id="formMsg" aria-live="polite"></div></form>';
+  $('vForm').innerHTML = h;
+  let type = f.type, syn = f.synlighed, synRoert = !!p;
+  const synVis = () => { const s = syn || (data.typer.find((t) => t.id === type) || {}).syn || 'alle'; $('fSyn').querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.s === s))); };
+  $('fType').querySelectorAll('button').forEach((b) => b.addEventListener('click', () => { type = b.dataset.t; $('fType').querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); if (!synRoert) syn = ''; synVis(); }));
+  $('fSyn').querySelectorAll('button').forEach((b) => b.addEventListener('click', () => { syn = b.dataset.s; synRoert = true; synVis(); }));
+  ['fPaamind', 'fTil'].forEach((id) => $(id).querySelectorAll('button').forEach((b) => b.addEventListener('click', () => b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true')))));
+  const heldag = () => { const hd = $('fHeldag').checked; $('fTider').classList.toggle('hidden', hd); $('fSlutDagB').classList.toggle('hidden', !hd); };
+  $('fHeldag').addEventListener('change', heldag); heldag(); synVis();
+  const reg = nyId();
+  $('form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const valgte = (id) => [...$(id).querySelectorAll('button[aria-pressed="true"]')].map((b) => b.dataset.k);
+    const hd = $('fHeldag').checked;
+    const d = {
+      type, titel: $('fTitel').value, dag: $('fDag').value, start: hd ? '' : $('fStart').value, slut: hd ? '' : $('fSlut').value,
+      slutDag: hd ? $('fSlutDag').value : '', sted: $('fSted').value, baner: Number($('fBaner').value), ansvarlig: $('fAnsvarlig').value,
+      synlighed: syn || '', paamind: valgte('fPaamind'), paamindTil: valgte('fTil'), gentag: '', note: $('fNote').value
+    };
+    if (!hd && !d.start) { besked($('formMsg'), 'Vælg fra kl., eller sæt flueben ved Hele dagen', 'err'); return; }
+    if (p) d.id = p.id;
+    besked($('formMsg'), 'Gemmer …');
+    try {
+      const r = await motor('padel', p ? 'ret' : 'ny', d, p ? nyId() : reg);
+      await hentStart();
+      location.hash = 'k/' + encodeURIComponent(r.id);
+    } catch (err) { besked($('formMsg'), err.message, 'err'); }
+  });
+}
+
+// ---------- Chat: grupperne for personale og frivillige i padel. Selve chatten er den samme som i Grupper
+async function visChat(under) {
+  vis('vChat');
+  if (!chatData) $('vChat').innerHTML = '<p class="hint">Henter grupperne …</p>';
+  try { chatData = await motor('padel', 'chat'); } catch (err) { $('vChat').innerHTML = '<p class="msg err">' + esc(err.message) + '</p>'; return; }
+  if (under === 'ny' && chatData.kanOprette) return visNyGruppe();
+  const gr = chatData.grupper;
+  let h = gr.length ? '' : '<p class="hint">Du er ikke med i nogen grupper for padel endnu. Klubbens administratorer opretter grupperne og tager folk med.</p>';
+  gr.forEach((g) => {
+    h += '<div class="pd-g"><div class="pd-g-n"><b>' + esc(g.navn) + '</b>' + (g.mig ? '<a class="ok small" style="display:inline-flex;align-items:center;border:2px solid var(--pink);border-radius:6px;padding:4px 12px;text-decoration:none;color:inherit;font-weight:700;font-size:15px" href="../grupper.html?padel=1#g/' + encodeURIComponent(g.id) + '/chat">Åbn chatten</a>' : '<span class="hint" style="margin:0">Du er ikke med</span>') + '</div>'
+      + '<div class="pd-g-h">' + esc(g.medlemmer.map((x) => x.navn.replace(/^Test /, '').split(' ')[0]).join(', ')) + ' · ' + g.antal + (g.antal === 1 ? ' person' : ' personer') + '</div>'
+      + (g.beskrivelse ? '<p class="hint" style="margin:4px 0 0">' + esc(g.beskrivelse) + '</p>' : '')
+      + (chatData.kanOprette ? '<details style="margin-top:6px"><summary class="hint" style="cursor:pointer;margin:0">Medlemmer</summary><div data-g="' + esc(g.id) + '" class="pd-medl"></div></details>' : '') + '</div>';
+  });
+  if (chatData.kanOprette) h += '<div class="pd-knapper" style="margin-top:14px"><button type="button" class="ok small" id="nyGruppe">+ Ny gruppe</button></div><p class="hint">Kun klubbens administratorer kan oprette grupper og tage folk med. Grupperne kan ikke findes af andre og kommer ikke på spillerbørsen.</p>';
+  else h += '<p class="hint">Chatten er den samme som i Grupper: svar, reaktioner og notifikationer. Grupperne kan ikke findes af andre medlemmer.</p>';
+  h += '<div class="msg" id="chatMsg" aria-live="polite"></div>';
+  $('vChat').innerHTML = h;
+  if ($('nyGruppe')) $('nyGruppe').addEventListener('click', () => { location.hash = 'chat/ny'; });
+  if (chatData.kanOprette) $('vChat').querySelectorAll('.pd-medl').forEach((el) => el.closest('details').addEventListener('toggle', () => tegnMedlemmer(el), { once: true }));
+}
+async function tegnMedlemmer(el) {
+  const g = chatData.grupper.find((x) => x.id === el.dataset.g);
+  try { if (!personerData) personerData = await motor('padel', 'personer'); } catch (err) { el.innerHTML = '<p class="msg err">' + esc(err.message) + '</p>'; return; }
+  const med = new Set(g.medlemmer.map((x) => x.id));
+  el.innerHTML = g.medlemmer.map((x) => '<div class="linje" style="align-items:center;margin:6px 0"><span>' + esc(x.navn) + '</span><button type="button" class="ghost small" data-fjern="' + esc(x.id) + '">Fjern</button></div>').join('')
+    + '<div style="display:flex;gap:8px;margin-top:8px"><select data-tilfoej><option value="">Tag en med …</option>' + personerData.filter((x) => !med.has(x.id)).map((x) => '<option value="' + esc(x.id) + '">' + esc(x.navn) + (x.kreds === 'circle' ? ' (Padelcircle)' : '') + '</option>').join('') + '</select><button type="button" class="ok small" data-ok>Tilføj</button></div><div class="msg" aria-live="polite"></div>';
+  const msg = el.querySelector('.msg');
+  const gemMed = async (pid, tilf) => {
+    besked(msg, 'Gemmer …');
+    try { await motor('padel', 'gruppeMedlem', { gid: g.id, pid, til: tilf }, nyId()); chatData = await motor('padel', 'chat'); Object.assign(g, chatData.grupper.find((x) => x.id === g.id) || g); tegnMedlemmer(el); }
+    catch (err) { besked(msg, err.message, 'err'); }
+  };
+  el.querySelectorAll('[data-fjern]').forEach((b) => b.addEventListener('click', () => gemMed(b.dataset.fjern, false)));
+  el.querySelector('[data-ok]').addEventListener('click', () => { const v = el.querySelector('[data-tilfoej]').value; if (v) gemMed(v, true); });
+}
+async function visNyGruppe() {
+  try { if (!personerData) personerData = await motor('padel', 'personer'); } catch (err) { $('vChat').innerHTML = '<p class="msg err">' + esc(err.message) + '</p>'; return; }
+  let h = '<a class="gr-tilbage" href="#chat">&#8592; Chat</a><h2 style="margin:10px 0 6px">Ny gruppe</h2><form class="pd-form" id="gForm">';
+  h += '<label for="gNavn">Navn</label><input id="gNavn" maxlength="60" placeholder="Fx Styregruppen">';
+  h += '<label for="gBeskr">Beskrivelse (valgfri)</label><textarea id="gBeskr" maxlength="1000" rows="2"></textarea>';
+  h += '<label>Hvem skal være med?</label>' + personerData.filter((x) => x.id !== data.mig.id).map((x) => '<label class="pd-chk"><input type="checkbox" value="' + esc(x.id) + '"> ' + esc(x.navn) + (x.kreds === 'circle' ? ' (Padelcircle)' : '') + '</label>').join('');
+  h += '<p class="hint">Du kommer selv med som gruppeadministrator. Klubbens administratorer bliver også gruppeadministratorer.</p><button type="submit" style="width:100%;margin-top:12px">Opret gruppen</button><div class="msg" id="gMsg" aria-live="polite"></div></form>';
+  $('vChat').innerHTML = h;
+  const reg = nyId();
+  $('gForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    besked($('gMsg'), 'Opretter …');
+    try {
+      await motor('padel', 'gruppeOpret', { navn: $('gNavn').value, beskrivelse: $('gBeskr').value, medlemmer: [...$('gForm').querySelectorAll('input[type=checkbox]:checked')].map((x) => x.value) }, reg);
+      location.hash = 'chat';
+    } catch (err) { besked($('gMsg'), err.message, 'err'); }
+  });
+}
+
+// ---------- Holdet: profilkortene fra Grupper (ét kort pr. person, Lars 06.04)
+async function visHoldet() {
+  vis('vHoldet');
+  if (!holdData) $('vHoldet').innerHTML = '<p class="hint">Henter holdet …</p>';
+  try { holdData = await motor('padel', 'hold'); } catch (err) { $('vHoldet').innerHTML = '<p class="msg err">' + esc(err.message) + '</p>'; return; }
+  const ini = (n) => n.replace(/^Test /, '').split(/\s+/).filter(Boolean).map((x) => x[0]).join('').slice(0, 2).toUpperCase();
+  const fuld = holdData.personer.filter((x) => x.kreds === 'fuld'), circle = holdData.personer.filter((x) => x.kreds === 'circle');
+  const p = (x) => '<button type="button" class="pd-p" data-pid="' + esc(x.id) + '"><span class="pd-av" data-av="' + esc(x.id) + '">' + esc(ini(x.navn)) + '</span><span><b>' + esc(x.navn) + '</b><span class="u">' + esc((x.grupper.length ? x.grupper.join(', ') : x.kreds === 'circle' ? 'RTK Padelcircle' : 'Padel')) + '</span></span></button>';
+  let h = '<div class="pd-knapper" style="margin:0 0 10px"><a class="ok small" style="display:inline-flex;align-items:center;border:2px solid var(--pink);border-radius:6px;padding:6px 12px;text-decoration:none;color:inherit;font-weight:700" href="../grupper.html?padel=1#profil">Mit profilkort</a></div>';
+  h += '<p class="hint" style="margin:0 0 8px">Dit profilkort er det samme som i Grupper: billede, en kort tekst og niveau i tennis og padel, hvis du vil.</p>';
+  if (fuld.length) h += '<h3 class="pd-uge">Styregruppen og Padel Team</h3>' + fuld.map(p).join('');
+  if (circle.length) h += '<h3 class="pd-uge">RTK Padelcircle</h3>' + circle.map(p).join('');
+  $('vHoldet').innerHTML = h;
+  $('vHoldet').querySelectorAll('.pd-p').forEach((b) => b.addEventListener('click', () => visProfil(b.dataset.pid)));
+  // Små profilbilleder fra Firebase (profilMini)
+  if (!window.RTKV) return;
+  try {
+    const f = await RTKV.db(motor);
+    holdData.personer.forEach(async (x) => {
+      try {
+        const d = await f.fs.getDoc(f.fs.doc(f.db, 'profilMini', x.id));
+        const el = $('vHoldet').querySelector('[data-av="' + x.id + '"]');
+        if (el && d.exists() && d.data().mini) { el.style.backgroundImage = 'url("' + d.data().mini + '")'; el.textContent = ''; }
+      } catch (e) { /* intet billede */ }
+    });
+  } catch (e) { /* uden Firebase vises initialerne */ }
+}
+const NIV = (n) => String(n).replace('.', ',');
+async function visProfil(pid) {
+  const x = holdData.personer.find((y) => y.id === pid);
+  const m = $('modal');
+  m.innerHTML = '<div class="card"><h2 id="modalTitel" style="margin:0 0 6px">' + esc(x.navn) + '</h2><div id="profilIndhold"><p class="hint">Henter profilkortet …</p></div><button type="button" class="ghost small" id="lukModal" style="margin-top:12px">Luk</button></div>';
+  m.classList.remove('hidden'); $('lukModal').focus();
+  const luk = () => { m.classList.add('hidden'); m.innerHTML = ''; };
+  $('lukModal').addEventListener('click', luk);
+  m.addEventListener('click', (e) => { if (e.target === m) luk(); }, { once: true });
+  try {
+    const f = await RTKV.db(motor);
+    const d = await f.fs.getDoc(f.fs.doc(f.db, 'profiler', pid));
+    if (!$('profilIndhold')) return;
+    if (!d.exists()) { $('profilIndhold').innerHTML = '<p class="hint">' + esc(x.navn.replace(/^Test /, '').split(' ')[0]) + ' har ikke lavet et profilkort endnu.</p>'; return; }
+    const p = d.data();
+    let h = p.billede ? '<img class="pd-pbillede" src="' + esc(p.billede) + '" alt="">' : '';
+    if (p.tekst) h += '<p style="white-space:pre-wrap;margin:0 0 8px">' + esc(p.tekst) + '</p>';
+    const n = p.niveau || {};
+    const niv = [n.tennis ? 'Tennis ' + NIV(n.tennis) : '', n.padel ? 'Padel ' + NIV(n.padel) : ''].filter(Boolean).join(' · ');
+    if (niv) h += '<p class="hint" style="margin:0">' + esc(niv) + '</p>';
+    $('profilIndhold').innerHTML = h || '<p class="hint">Profilkortet er tomt.</p>';
+  } catch (e) { if ($('profilIndhold')) $('profilIndhold').innerHTML = '<p class="hint">Profilkortet kunne ikke hentes lige nu.</p>'; }
+}
+
+// ---------- Start
+function fraVis(x) {
+  if (!x || !x.laest || x.svar === undefined) return;
+  if (LAEST.start && x.laest <= LAEST.start) return;
+  LAEST.start = x.laest; data = x.svar; besked($('hentMsg'), ''); rute();
+}
+async function hentStart() {
+  const d = await motor('padel', 'start');
+  if (LAEST.start && SIDST.start < LAEST.start && data) return;
+  LAEST.start = SIDST.start; data = d;
+}
+function start() {
+  $('omraade').classList.remove('hidden');
+  $('hvem').textContent = 'Logget ind som ' + person.navn;
+  const r = person.roller || [];
+  if (!r.some((x) => x === 'admin' || x === 'padel' || x === 'padelcircle')) { besked($('hentMsg'), ''); $('faner').classList.add('hidden'); $('vKalender').classList.add('hidden'); $('ingenAdgang').classList.remove('hidden'); return; }
+  if (window.RTKV) RTKV.lyt(motor, 'padelStart', fraVis);
+  hentStart().then(() => { besked($('hentMsg'), ''); rute(); }).catch((err) => besked($('hentMsg'), err.message, 'err'));
+  motor('push', 'status').then((s) => { pushStatus = s; if (data) tegnPush(); }).catch(() => {});
+}
+function migHusket() { try { const m = JSON.parse(hent('rtk.mig') || 'null'); return m && token && m.t === token.slice(-16) ? m.p : null; } catch (e) { return null; } }
+function migHent() { return motor('kerne', 'mig').then((p) => { gem('rtk.mig', JSON.stringify({ t: token.slice(-16), p: p })); return p; }); }
+if (!token) location.replace('./?til=' + encodeURIComponent('padel.html' + location.hash));
+else { const husket = migHusket(); if (husket) { person = husket; start(); migHent().then((p) => { if (JSON.stringify(husket.roller || []) !== JSON.stringify(p.roller || [])) location.reload(); }).catch(() => {}); } else migHent().then((p) => { person = p; start(); }).catch(() => {}); }
+</script>
+<script src="../velkomst.js?v=0c6d2cc815a7"></script>
+<script src="../ace.js?v=eba7e744710b"></script>
+</body>
+</html>

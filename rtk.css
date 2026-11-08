@@ -1141,3 +1141,7 @@ a.ghost.small{display:inline-flex;align-items:center;text-decoration:none}
 .bs-laes{background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:14px;margin:0 0 12px}
 .bm-rul{overflow-x:auto;max-width:100%}
 .bm-rul table{margin:0}
+/* Grupper for personale og frivillige i padel (8. november 2026): ingen invitationer, ansøgninger, spillerbørs eller valg af synlighed */
+#vGruppe.personale #grOpslag,#vGruppe.personale #inviterDel,#vGruppe.personale #ansDel,#vGruppe.personale #omSynlighed,#vGruppe.personale .ab-vippe,#vGruppe.personale #omSoegerDel,#vGruppe.personale #omInvitation{display:none !important}
+/* Grupper åbnet fra Padel (?padel=1): ingen faner til Mine grupper, Find en gruppe og Spillerbørs */
+.padel .sb-faner,.padel #nyKnap,.padel .gr-mig{display:none !important}
