@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="5342bfeb6f99">
+<meta name="rtk-version" content="e7c4fc5218b5">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -1182,7 +1182,7 @@ async function visBeg(eid) {
   $('vBil').querySelectorAll('.pd-gr3s button').forEach((k) => k.addEventListener('click', () => RTKPK.fuld({
     navn: b.navn, billeder: liste, i: Number(k.dataset.i), sprog: 'da', vedLuk: () => { if (slettet) visBeg(eid); },
     hentStort: async (x) => { const d = await f.fs.getDoc(f.fs.doc(f.db, 'padelStor', x.id)); return d.exists() ? d.data().data : null; },
-    info: (x) => 'Lagt op af ' + fornavn(navne[x.af] || '') + (tsMs(x.tid) ? ' · ' + tidTekst(tsMs(x.tid)) : ''),
+    info: (x) => 'Lagt op af ' + (fornavn(navne[x.af] || '') || 'en, der ikke længere er i padel') + (tsMs(x.tid) ? ' · ' + tidTekst(tsMs(x.tid)) : ''),
     knapper: [
       { tekst: 'Hent', fn: (x, styr) => hentBillede(styr.stort(), b.navn, liste.indexOf(x) + 1) },
       { tekst: 'Slet', klasse: 'slet', vis: (x) => x.af === mig || f.admin, fn: async (x, styr, knap) => {
@@ -1246,7 +1246,7 @@ async function visBilNy(eid) {
   const valgt = eid || (bilBeg[0] ? bilBeg[0].id : (kal[0] ? 'k:' + kal[0].id : '_ny'));
   let h = '<a class="gr-tilbage" href="' + (eid ? '#bil/' + encodeURIComponent(eid) : '#billeder') + '">&#8592; ' + (eid ? 'Tilbage' : 'Billeder') + '</a><h2 class="lille" style="margin:6px 0 8px">Læg billeder op</h2><form id="nForm" novalidate>';
   h += '<label for="nBeg">Begivenhed</label><select id="nBeg">';
-  if (bilBeg.length) h += '<optgroup label="Har billeder">' + bilBeg.map((b) => '<option value="' + esc(b.id) + '"' + (b.id === valgt ? ' selected' : '') + '>' + esc(b.navn + ', ' + kortDag(b.dag)) + '</option>').join('') + '</optgroup>';
+  if (bilBeg.length) h += '<optgroup label="Begivenheder">' + bilBeg.map((b) => '<option value="' + esc(b.id) + '"' + (b.id === valgt ? ' selected' : '') + '>' + esc(b.navn + ', ' + kortDag(b.dag)) + '</option>').join('') + '</optgroup>';
   if (kal.length) h += '<optgroup label="Fra kalenderen">' + kal.map((p) => '<option value="k:' + esc(p.id) + '"' + ('k:' + p.id === valgt ? ' selected' : '') + '>' + esc(p.titel + ', ' + kortDag(p.dag)) + '</option>').join('') + '</optgroup>';
   h += '<option value="_ny"' + (valgt === '_ny' ? ' selected' : '') + '>Ny begivenhed …</option></select>';
   h += '<div id="nNy" class="hidden"><label for="nNavn">Navn</label><input id="nNavn" maxlength="80" placeholder="Fx Americano med pizza"><label for="nDag">Dato</label><input id="nDag" type="date" value="' + iDag() + '"></div>';
