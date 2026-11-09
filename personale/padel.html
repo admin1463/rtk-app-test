@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="64075e823fa5">
+<meta name="rtk-version" content="734ae93c2e7f">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -258,9 +258,19 @@ function gemmerPaa() {
   (el.closest('label') || el).insertAdjacentElement('afterend', t);
   return () => { t.remove(); if (el.isConnected) slip(); };
 }
+// Efter en vellykket gemning bliver "Gemmer …" stående, til siden har hentet og vist resultatet (Lars 9. november 2026 kl. 12.21:
+// "Gemmer" forsvandt, før kommentaren var flyttet fra feltet op til de andre). Ved en fejl slippes knappen med det samme.
+let iGang = 0;
+function slipBagefter(slip) {
+  const start = Date.now();
+  setTimeout(function tjek() { if (iGang > 0 && Date.now() - start < 20000) setTimeout(tjek, 100); else slip(); }, 60);
+}
 async function motor(modul, handling, data, id) {
   const slip = id ? gemmerPaa() : null;
-  try { return await motorKald(modul, handling, data, id); } finally { if (slip) slip(); }
+  let ok = false;
+  iGang++;
+  try { const r = await motorKald(modul, handling, data, id); ok = true; return r; }
+  finally { iGang--; if (slip) { if (ok) slipBagefter(slip); else slip(); } }
 }
 async function motorKald(modul, handling, data, id) {
   let res;
@@ -886,7 +896,7 @@ async function visFormaal(ret) {
       + '<div class="pd-knapper"><button type="button" class="ok" id="fGem">Gem</button><a class="ghost" style="display:inline-flex;align-items:center;padding:6px 14px;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:6px" href="#formaal">Annullér</a></div><div class="msg" id="fMsg" aria-live="polite"></div>';
     $('fGem').addEventListener('click', async () => {
       besked($('fMsg'), '');
-      try { await motor('padel', 'formaalRet', { id: a.id, tekst: $('fTekst').value }, nyId()); location.hash = 'formaal'; } catch (err) { besked($('fMsg'), err.message, 'err'); }
+      try { await motor('padel', 'formaalRet', { id: a.id, tekst: $('fTekst').value }, nyId()); projData = null; location.hash = 'formaal'; } catch (err) { besked($('fMsg'), err.message, 'err'); }
     });
     return;
   }
