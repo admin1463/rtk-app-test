@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="734ae93c2e7f">
+<meta name="rtk-version" content="ddbf46665fe0">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -1157,10 +1157,14 @@ function visIdeNy() {
   });
   $('iTitel').focus();
 }
-async function visIde(id) {
+/** svar: svaret fra en skrivende handling. Har motoren sendt idéen med (visning), tegnes den uden et nyt kald (Lars 9. november 2026 kl. 12.37). */
+async function visIde(id, svar) {
   vis('vIde');
-  if (!ideData || !ideData.ideer.find((x) => x.id === id && x.kommentarer)) $('vIde').innerHTML = '<p class="hint">Henter …</p>';
-  try { await hentIdeer(id); } catch (err) { $('vIde').innerHTML = fejlHtml(err); return; }
+  if (svar && svar.visning && svar.visning.ideer) { ideData = svar.visning; LAEST.ideer = Math.max(LAEST.ideer || 0, SIDST.ideer || 0); }
+  else {
+    if (!ideData || !ideData.ideer.find((x) => x.id === id && x.kommentarer)) $('vIde').innerHTML = '<p class="hint">Henter …</p>';
+    try { await hentIdeer(id); } catch (err) { $('vIde').innerHTML = fejlHtml(err); return; }
+  }
   const i = ideData.ideer.find((x) => x.id === id);
   if (!i) { $('vIde').innerHTML = '<a class="gr-tilbage" href="#ideer">&#8592; Idéboks</a><p class="hint">Idéen findes ikke længere.</p>'; return; }
   let h = '<a class="gr-tilbage" href="#ideer">&#8592; Idéboks</a><h2 class="lille" style="margin:8px 0 4px">' + esc(i.titel) + '</h2><p class="hint" style="margin:0 0 8px">' + esc(i.afNavn) + ' · ' + esc(omTid(i.tid, true)) + (i.emne ? ' · ' + esc(i.emne) : '') + '</p>';
@@ -1172,14 +1176,14 @@ async function visIde(id) {
   if (erAdmin()) h += '<div class="pd-adm"><b>For administratorer</b><label for="iStatus">Status</label><select id="iStatus">' + ideData.status.map((s) => '<option' + (s === i.status ? ' selected' : '') + '>' + esc(s) + '</option>').join('') + '</select></div>';
   if (i.kanSlette) h += '<div class="pd-knapper"><button type="button" class="ghost small" id="iSlet">Slet idéen</button></div>';
   $('vIde').innerHTML = h;
-  $('iTommel').addEventListener('click', async () => { try { await motor('padel', 'ideTommel', { id, fjern: i.minTommel }, nyId()); visIde(id); } catch (err) { besked($('iMsg'), err.message, 'err'); } });
+  $('iTommel').addEventListener('click', async () => { try { visIde(id, await motor('padel', 'ideTommel', { id, fjern: i.minTommel, vis: id }, nyId())); } catch (err) { besked($('iMsg'), err.message, 'err'); } });
   const regId = nyId();
   $('kForm').addEventListener('submit', async (e) => {
     e.preventDefault(); if (!$('kTekst').value.trim()) return;
-    try { await motor('padel', 'ideKommenter', { id, tekst: $('kTekst').value }, regId); visIde(id); } catch (err) { besked($('iMsg'), err.message, 'err'); }
+    try { visIde(id, await motor('padel', 'ideKommenter', { id, tekst: $('kTekst').value, vis: id }, regId)); } catch (err) { besked($('iMsg'), err.message, 'err'); }
   });
-  $('vIde').querySelectorAll('[data-k]').forEach((b) => b.addEventListener('click', async () => { try { await motor('padel', 'ideSlet', { kommentar: b.dataset.k }, nyId()); visIde(id); } catch (err) { besked($('iMsg'), err.message, 'err'); } }));
-  if ($('iStatus')) $('iStatus').addEventListener('change', async () => { try { await motor('padel', 'ideStatus', { id, status: $('iStatus').value }, nyId()); visIde(id); } catch (err) { besked($('iMsg'), err.message, 'err'); } });
+  $('vIde').querySelectorAll('[data-k]').forEach((b) => b.addEventListener('click', async () => { try { visIde(id, await motor('padel', 'ideSlet', { kommentar: b.dataset.k, vis: id }, nyId())); } catch (err) { besked($('iMsg'), err.message, 'err'); } }));
+  if ($('iStatus')) $('iStatus').addEventListener('change', async () => { try { visIde(id, await motor('padel', 'ideStatus', { id, status: $('iStatus').value, vis: id }, nyId())); } catch (err) { besked($('iMsg'), err.message, 'err'); } });
   if ($('iSlet')) { let sikker = false; $('iSlet').addEventListener('click', async () => {
     if (!sikker) { sikker = true; $('iSlet').textContent = 'Tryk igen for at slette'; return; }
     try { await motor('padel', 'ideSlet', { id }, nyId()); ideData = null; location.hash = 'ideer'; } catch (err) { besked($('iMsg'), err.message, 'err'); }
