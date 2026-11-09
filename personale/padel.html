@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="e7c4fc5218b5">
+<meta name="rtk-version" content="b9e1a7d034f6">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -233,6 +233,8 @@ function besked(el, t, s) { el.textContent = t || ''; el.className = 'msg' + (s 
 
 // ---------- Motoren
 const SIDST = {}, LAEST = {};
+// Fanerne med en kopi i Firebase pr. person (Lars 9. november 2026 kl. 08.11): handlingen og navnet på kopien
+const KOPI = { projekt: 'padelProjekt', referater: 'padelRef', ideer: 'padelIdeer', hold: 'padelHold' };
 async function motor(modul, handling, data, id) {
   let res;
   try { res = await fetch(URL_MOTOR, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ modul, handling, data: data || {}, token, apin: (window.RTK_APIN ? RTK_APIN.bevis() : ''), id: id || '' }) }); }
@@ -243,13 +245,14 @@ async function motor(modul, handling, data, id) {
   if (!svar.ok && svar.igang) { await new Promise((r) => setTimeout(r, 1500)); return motor(modul, handling, data, id); }
   if (!svar.ok) { if (svar.login) logUd(true); throw new Error(svar.fejl || 'Noget gik galt'); }
   SIDST[handling] = svar.tid || 0;
-  if (id) LAEST.start = Math.max(LAEST.start || 0, svar.tidSlut || svar.tid || 0);
+  // En skrivning gør kopier og svar, der er læst før den, forældede (kalenderen og fanerne med kopi)
+  if (id) ['start'].concat(Object.keys(KOPI)).forEach((k) => { LAEST[k] = Math.max(LAEST[k] || 0, svar.tidSlut || svar.tid || 0); });
   return svar.data;
 }
 function logUd(udloebet) {
   if (window.RTK_UD) return; window.RTK_UD = true;
   if (!udloebet && token) motor('kerne', 'logud').catch(() => {});
-  token = ''; person = null; gem('rtk.token', null); gem('rtk.mig', null);
+  token = ''; person = null; gem('rtk.token', null); gem('rtk.mig', null); gem('rtk.padel.navne', null);
   (window.RTKV ? RTKV.logUd() : Promise.resolve()).then(() => location.replace(udloebet ? './?til=padel.html&igen=1' : './'));
 }
 $('logud').addEventListener('click', () => logUd(false));
@@ -746,8 +749,7 @@ function initialer(n) { return String(n || '').replace(/^Test /, '').split(/\s+/
 // Fanen hed Holdet. Lars 8. november 2026 kl. 09.02: "Personer". #holdet virker stadig
 async function visHoldet() {
   vis('vHoldet');
-  if (!holdData) $('vHoldet').innerHTML = '<p class="hint">Henter personerne …</p>';
-  try { holdData = await motor('padel', 'hold'); } catch (err) { $('vHoldet').innerHTML = '<p class="msg err">' + esc(err.message) + '</p>'; return; }
+  try { await sikr('hold', $('vHoldet'), 'Henter personerne …'); } catch (err) { $('vHoldet').innerHTML = '<p class="msg err">' + esc(err.message) + '</p>'; return; }
   const ini = (n) => initialer(n);
   const fuld = holdData.personer.filter((x) => x.kreds === 'fuld'), circle = holdData.personer.filter((x) => x.kreds === 'circle');
   const p = (x) => '<button type="button" class="pd-p" data-pid="' + esc(x.id) + '"><span class="pd-av" data-av="' + esc(x.id) + '">' + esc(ini(x.navn)) + '</span><span><b>' + esc(x.navn) + '</b><span class="u">' + esc((x.grupper.length ? x.grupper.join(', ') : x.kreds === 'circle' ? 'RTK Padelcircle' : 'Padel')) + '</span></span></button>';
@@ -786,13 +788,69 @@ function tekstHtml(t) {
   tom();
   return h;
 }
-async function hentProjekt() { projData = await motor('padel', 'projekt'); return projData; }
+// ---------- Kopierne i Firebase (Lars 9. november 2026 kl. 08.11, handoff afsnit 7 punkt 0)
+// Fanen vises med det, siden har (kopien fra Firebase eller sidste svar), og motoren spørges bagefter i baggrunden.
+// Formularer til at rette henter altid det nyeste fra motoren først.
+const FDATA = {
+  projekt: { faa: () => projData, saet: (d) => { projData = d; }, ruter: ['formaal', 'org'] },
+  referater: { faa: () => refData, saet: (d) => { refData = d; }, ruter: ['referater', 'r'] },
+  ideer: { faa: () => ideData, saet: (d) => { ideData = d; }, ruter: ['ideer'] },
+  hold: { faa: () => holdData, saet: (d) => { holdData = d; }, ruter: ['personer', 'holdet'] }
+};
+const HENTER = {};
+/** Det nyeste fra motoren. Et svar, der er læst før en skrivning eller en nyere kopi, bruges ikke. */
+function hentFane(k) {
+  if (HENTER[k]) return HENTER[k];
+  HENTER[k] = motor('padel', k).then((d) => {
+    if (LAEST[k] && SIDST[k] < LAEST[k] && FDATA[k].faa()) return FDATA[k].faa();
+    LAEST[k] = SIDST[k]; FDATA[k].saet(d); return d;
+  }).finally(() => { HENTER[k] = null; });
+  return HENTER[k];
+}
+let stille = false;
+/** Sørg for data til fanen k. Har siden noget, vises det med det samme, og motoren spørges bagefter i baggrunden. */
+async function sikr(k, el, tekst) {
+  if (FDATA[k].faa()) {
+    if (!stille && !HENTER[k]) {
+      const gl = JSON.stringify(FDATA[k].faa());
+      hentFane(k).then(() => { if (JSON.stringify(FDATA[k].faa()) !== gl) genTegn(k); }).catch(() => {});
+    }
+    return;
+  }
+  el.innerHTML = '<p class="hint">' + esc(tekst || 'Henter …') + '</p>';
+  await hentFane(k);
+}
+/** Tegn fanen igen, når der er kommet noget nyt, men kun hvis man står på den og ikke er i gang med at rette. */
+function genTegn(k) {
+  if (!data) return;
+  const h = location.hash.replace(/^#/, '').split('/');
+  if (!FDATA[k].ruter.includes(h[0]) || h[1] === 'ret' || h[1] === 'ny') return;
+  // Tegnes fanen igen på grund af nyt, spørges motoren ikke igen
+  stille = true;
+  try { rute(); } finally { stille = false; }
+}
+/** En kopi fra Firebase. Kun nyere end det, siden har. */
+function fraKopi(k) {
+  return (x) => {
+    if (!x || !x.laest || x.svar === undefined) return;
+    if (LAEST[k] && x.laest <= LAEST[k]) return;
+    const gl = FDATA[k].faa();
+    LAEST[k] = x.laest; FDATA[k].saet(x.svar);
+    if (!gl || JSON.stringify(gl) !== JSON.stringify(x.svar)) genTegn(k);
+  };
+}
+let lytter = false;
+/** Lyt på kopierne, når kalenderen står, så fanerne er klar ved første tryk. */
+function lytFaner() {
+  if (lytter || !window.RTKV) return;
+  lytter = true;
+  Object.keys(KOPI).forEach((k) => RTKV.lyt(motor, KOPI[k], fraKopi(k)));
+}
 const fejlHtml = (err) => '<p class="msg err">' + esc(err.message) + '</p>';
 
 async function visFormaal(ret) {
   vis('vFormaal');
-  if (!projData) $('vFormaal').innerHTML = '<p class="hint">Henter …</p>';
-  try { await hentProjekt(); } catch (err) { $('vFormaal').innerHTML = fejlHtml(err); return; }
+  try { if (ret) { if (!projData) $('vFormaal').innerHTML = '<p class="hint">Henter …</p>'; await hentFane('projekt'); } else await sikr('projekt', $('vFormaal')); } catch (err) { $('vFormaal').innerHTML = fejlHtml(err); return; }
   const a = ret && projData.formaal.find((x) => x.id === ret);
   if (a) {
     $('vFormaal').innerHTML = '<a class="gr-tilbage" href="#formaal">&#8592; Formål og plan</a><h2 class="lille" style="margin:8px 0">' + esc(a.navn) + '</h2>'
@@ -815,8 +873,7 @@ async function visFormaal(ret) {
 
 async function visOrg(ret) {
   vis('vOrg');
-  if (!projData) $('vOrg').innerHTML = '<p class="hint">Henter …</p>';
-  try { await hentProjekt(); } catch (err) { $('vOrg').innerHTML = fejlHtml(err); return; }
+  try { if (ret) { if (!projData) $('vOrg').innerHTML = '<p class="hint">Henter …</p>'; await hentFane('projekt'); } else await sikr('projekt', $('vOrg')); } catch (err) { $('vOrg').innerHTML = fejlHtml(err); return; }
   if (ret) return visOrgRet(ret);
   let h = erAdmin() ? '<div class="pd-knapper" style="margin:0 0 6px"><a class="pd-ret" href="#org/ret/ny">+ Ny gruppe</a></div>' : '';
   projData.org.forEach((g, i) => {
@@ -898,11 +955,9 @@ async function miniBilleder(rod, personer) {
 
 // ---------- Mødereferater
 const datoTekst = (dag) => dag ? dagTekst(dag).charAt(0).toUpperCase() + dagTekst(dag).slice(1) + ' ' + dag.slice(0, 4) : '';
-async function hentRef() { refData = await motor('padel', 'referater'); return refData; }
 async function visReferater() {
   vis('vRef');
-  if (!refData) $('vRef').innerHTML = '<p class="hint">Henter …</p>';
-  try { await hentRef(); } catch (err) { $('vRef').innerHTML = fejlHtml(err); return; }
+  try { await sikr('referater', $('vRef')); } catch (err) { $('vRef').innerHTML = fejlHtml(err); return; }
   let h = erAdmin() ? '<div class="pd-knapper" style="margin:0 0 8px"><a class="ok small" style="display:inline-flex;align-items:center;border:2px solid var(--pink);border-radius:6px;padding:6px 12px;text-decoration:none;color:inherit;font-weight:700" href="#referat/ny">+ Nyt referat</a></div>' : '';
   if (!refData.referater.length) h += '<p class="hint">Ingen referater endnu.</p>';
   h += refData.referater.map((r) => {
@@ -916,7 +971,7 @@ async function visReferater() {
 }
 async function visReferat(id) {
   vis('vRef');
-  if (!refData) { $('vRef').innerHTML = '<p class="hint">Henter …</p>'; try { await hentRef(); } catch (err) { $('vRef').innerHTML = fejlHtml(err); return; } }
+  try { await sikr('referater', $('vRef')); } catch (err) { $('vRef').innerHTML = fejlHtml(err); return; }
   const r = refData.referater.find((x) => x.id === id);
   if (!r) { $('vRef').innerHTML = '<a class="gr-tilbage" href="#referater">&#8592; Mødereferater</a><p class="hint">Referatet findes ikke, eller du kan ikke se det.</p>'; return; }
   let h = '<a class="gr-tilbage" href="#referater">&#8592; Mødereferater</a><h2 class="lille" style="margin:8px 0 6px">' + esc(r.titel) + '</h2>';
@@ -956,7 +1011,8 @@ function gemFil(f) {
 }
 async function visRefForm(id) {
   vis('vRef');
-  if (!refData) { $('vRef').innerHTML = '<p class="hint">Henter …</p>'; try { await hentRef(); } catch (err) { $('vRef').innerHTML = fejlHtml(err); return; } }
+  if (!refData) $('vRef').innerHTML = '<p class="hint">Henter …</p>';
+  try { await hentFane('referater'); } catch (err) { $('vRef').innerHTML = fejlHtml(err); return; }
   if (!personerData) { try { personerData = await motor('padel', 'personer'); } catch (err) { $('vRef').innerHTML = fejlHtml(err); return; } }
   const r = id ? refData.referater.find((x) => x.id === id) : null;
   if (id && !r) { location.hash = 'referater'; return; }
@@ -1025,8 +1081,7 @@ const STATUSFARVE = { 'Ny': '#4A5560', 'Tages op på næste møde': '#3B6E8F', '
 const statusTag = (s) => '<span class="pd-st" style="border-color:' + (STATUSFARVE[s] || '#4A5560') + ';color:' + (STATUSFARVE[s] || '#4A5560') + '">' + esc(s) + '</span>';
 async function visIdeer() {
   vis('vIde');
-  if (!ideData) $('vIde').innerHTML = '<p class="hint">Henter …</p>';
-  try { await hentIdeer(); } catch (err) { $('vIde').innerHTML = fejlHtml(err); return; }
+  try { await sikr('ideer', $('vIde')); } catch (err) { $('vIde').innerHTML = fejlHtml(err); return; }
   let h = '<div class="pd-knapper" style="margin:0 0 8px"><a class="ok small" style="display:inline-flex;align-items:center;border:2px solid var(--pink);border-radius:6px;padding:6px 12px;text-decoration:none;color:inherit;font-weight:700" href="#ide/ny">+ Ny idé</a></div>';
   h += '<div class="chips" id="iEmner" role="group" aria-label="Emne">' + [''].concat(ideData.emner).map((e) => '<button type="button" data-e="' + esc(e) + '" aria-pressed="' + (ideEmne === e) + '">' + esc(e || 'Alle') + '</button>').join('') + '</div>';
   const liste = ideData.ideer.filter((i) => !ideEmne || i.emne === ideEmne);
@@ -1092,18 +1147,49 @@ async function visIde(id) {
 // ---------- Billeder (Lars 8. november 2026 kl. 19.09 til 21.03, mockup padel_billeder.png)
 // Billederne ligger i Firestore (padelBeg, padelBilleder og padelStor) og ses kun af voksne i padel. Motoren giver adgangen
 // (padelAdgang). Alle kan lægge op og hente. Den, der lagde et billede op, og administratorerne kan slette det.
-let bilAdg = null, bilBeg = null;
+let bilAdg = null, bilBeg = null, bilOk = null;
 const BIL_MAKS = 20;
+/** Motoren giver adgangen (padelAdgang) og navnene. Kun når adgangen mangler, eller et navn er ukendt. */
+function bilAdgMotor() {
+  if (!bilAdg) bilAdg = motor('padel', 'billederAdgang').then((a) => { gem('rtk.padel.navne', JSON.stringify({ t: token.slice(-16), tid: Date.now(), n: a.navne || {} })); return a; })
+    .catch((e) => { bilAdg = null; throw e; });
+  return bilAdg;
+}
+/**
+ * Firebase til billederne uden at vente på motoren (Lars 9. november 2026 kl. 08.11). Adgangen står i padelAdgang/{pid}, som man
+ * selv kan læse. Mangler den, eller afviser Firebase, spørges motoren, der skriver den, og så prøves der igen.
+ */
 async function bilFB() {
   if (!window.RTKV) throw new Error('Billederne kan ikke hentes lige nu.');
-  if (!bilAdg) bilAdg = motor('padel', 'billederAdgang').catch((e) => { bilAdg = null; throw e; });
-  const a = await bilAdg;
   const f = await RTKV.db(motor);
-  return Object.assign({ admin: !!a.admin }, f);
+  if (bilOk) return Object.assign({ admin: bilOk.admin }, f);
+  let d = null;
+  try { d = await f.fs.getDoc(f.fs.doc(f.db, 'padelAdgang', RTKV.hvem() || data.mig.id)); }
+  catch (e) { if (!/permission/.test(String(e && e.code || e))) throw e; }
+  if (d && d.exists()) bilOk = { admin: !!d.data().admin };
+  else { const a = await bilAdgMotor(); bilOk = { admin: !!a.admin }; }
+  return Object.assign({ admin: bilOk.admin }, f);
 }
-async function bilNavne() {
-  const a = await bilAdg;
-  const n = Object.assign({}, (a && a.navne) || {}); if (data && data.mig) n[data.mig.id] = n[data.mig.id] || person.navn;
+/** Kør en læsning fra Firebase. Afvises den, fordi adgangen er væk eller ny, spørges motoren én gang, og der prøves igen. */
+async function bilProev(fn) {
+  try { return await fn(await bilFB()); }
+  catch (e) {
+    if (!/permission/.test(String(e && e.code || e))) throw e;
+    bilOk = null; bilAdg = null;
+    const a = await bilAdgMotor(); bilOk = { admin: !!a.admin };
+    return fn(await bilFB());
+  }
+}
+/** Navnene på dem, der har lagt billeder op: husket fra motoren (6 timer), Personer og en selv. Kun ved ukendte navne spørges motoren. */
+async function bilNavne(ider) {
+  const n = {};
+  let husk = null;
+  try { husk = JSON.parse(hent('rtk.padel.navne') || 'null'); } catch (e) { husk = null; }
+  const frisk = husk && husk.t === token.slice(-16) && Date.now() - husk.tid < 6 * 3600000;
+  if (husk && husk.t === token.slice(-16)) Object.assign(n, husk.n || {});
+  ((holdData && holdData.personer) || []).forEach((x) => { n[x.id] = n[x.id] || x.navn; });
+  if (data && data.mig) n[data.mig.id] = n[data.mig.id] || person.navn;
+  if ((ider || []).some((id) => !n[id]) && !frisk) { try { Object.assign(n, (await bilAdgMotor()).navne || {}); } catch (e) { /* navnene mangler bare */ } }
   return n;
 }
 const fornavn = (n) => String(n || '').replace(/^Test /, '').split(' ')[0];
@@ -1124,10 +1210,12 @@ async function visBilleder() {
   $('vBil').innerHTML = '<p class="hint">Henter billederne …</p>';
   let f, beg, senest;
   try {
-    f = await bilFB();
-    beg = (await hentBeg(f)).filter((b) => b.antal > 0);
-    const q = f.fs.query(f.fs.collection(f.db, 'padelBilleder'), f.fs.orderBy('tid', 'desc'), f.fs.limit(6));
-    senest = (await f.fs.getDocs(q)).docs.map((d) => Object.assign({ id: d.id }, d.data()));
+    await bilProev(async (x) => {
+      f = x;
+      beg = (await hentBeg(f)).filter((b) => b.antal > 0);
+      const q = f.fs.query(f.fs.collection(f.db, 'padelBilleder'), f.fs.orderBy('tid', 'desc'), f.fs.limit(6));
+      senest = (await f.fs.getDocs(q)).docs.map((d) => Object.assign({ id: d.id }, d.data()));
+    });
   } catch (err) { $('vBil').innerHTML = fejlHtml(err); return; }
   const forsider = {};
   await Promise.all(beg.map(async (b) => {
@@ -1152,13 +1240,17 @@ async function visBeg(eid) {
   $('vBil').innerHTML = '<p class="hint">Henter billederne …</p>';
   let f, b, bil, navne;
   try {
-    f = await bilFB();
-    const d = await f.fs.getDoc(f.fs.doc(f.db, 'padelBeg', eid));
+    let d;
+    await bilProev(async (x) => {
+      f = x;
+      d = await f.fs.getDoc(f.fs.doc(f.db, 'padelBeg', eid));
+      if (!d.exists()) return;
+      const snap = await f.fs.getDocs(f.fs.query(f.fs.collection(f.db, 'padelBilleder'), f.fs.where('beg', '==', eid)));
+      bil = snap.docs.map((x) => Object.assign({ id: x.id }, x.data())).sort((a, c) => tsMs(a.tid) - tsMs(c.tid));
+    });
     if (!d.exists()) { $('vBil').innerHTML = '<a class="gr-tilbage" href="#billeder">&#8592; Billeder</a><p class="hint">Begivenheden findes ikke længere.</p>'; return; }
     b = Object.assign({ id: d.id }, d.data());
-    const snap = await f.fs.getDocs(f.fs.query(f.fs.collection(f.db, 'padelBilleder'), f.fs.where('beg', '==', eid)));
-    bil = snap.docs.map((x) => Object.assign({ id: x.id }, x.data())).sort((a, c) => tsMs(a.tid) - tsMs(c.tid));
-    navne = await bilNavne();
+    navne = await bilNavne(bil.map((x) => x.af));
   } catch (err) { $('vBil').innerHTML = fejlHtml(err); return; }
   const mig = data.mig.id, kanRette = b.af === mig || f.admin;
   const fra = [...new Set(bil.map((x) => fornavn(navne[x.af] || '')).filter(Boolean))];
@@ -1240,7 +1332,7 @@ async function visBilNy(eid) {
   vis('vBil');
   $('vBil').innerHTML = '<p class="hint">Henter …</p>';
   let f;
-  try { f = await bilFB(); await hentBeg(f); } catch (err) { $('vBil').innerHTML = fejlHtml(err); return; }
+  try { await bilProev(async (x) => { f = x; await hentBeg(f); }); } catch (err) { $('vBil').innerHTML = fejlHtml(err); return; }
   const kendte = new Set(bilBeg.map((b) => b.kalId).filter(Boolean));
   const kal = (data.poster || []).filter((p) => p.dag && dageTil(p.dag) <= 1 && dageTil(p.dag) >= -120 && !kendte.has(p.id)).sort((a, b) => a.dag < b.dag ? 1 : -1).slice(0, 25);
   const valgt = eid || (bilBeg[0] ? bilBeg[0].id : (kal[0] ? 'k:' + kal[0].id : '_ny'));
@@ -1356,7 +1448,7 @@ function hentStort(pid) {
 function fraVis(x) {
   if (!x || !x.laest || x.svar === undefined) return;
   if (LAEST.start && x.laest <= LAEST.start) return;
-  LAEST.start = x.laest; data = x.svar; besked($('hentMsg'), ''); rute();
+  LAEST.start = x.laest; data = x.svar; besked($('hentMsg'), ''); rute(); lytFaner();
 }
 async function hentStart() {
   const d = await motor('padel', 'start');
@@ -1369,7 +1461,7 @@ function start() {
   const r = person.roller || [];
   if (!r.some((x) => x === 'admin' || x === 'padel' || x === 'padelcircle')) { besked($('hentMsg'), ''); $('faner').classList.add('hidden'); $('vKalender').classList.add('hidden'); $('ingenAdgang').classList.remove('hidden'); return; }
   if (window.RTKV) RTKV.lyt(motor, 'padelStart', fraVis);
-  hentStart().then(() => { besked($('hentMsg'), ''); rute(); }).catch((err) => besked($('hentMsg'), err.message, 'err'));
+  hentStart().then(() => { besked($('hentMsg'), ''); rute(); lytFaner(); }).catch((err) => besked($('hentMsg'), err.message, 'err'));
   motor('push', 'status').then((s) => { pushStatus = s; if (data) tegnPush(); }).catch(() => {});
 }
 function migHusket() { try { const m = JSON.parse(hent('rtk.mig') || 'null'); return m && token && m.t === token.slice(-16) ? m.p : null; } catch (e) { return null; } }
