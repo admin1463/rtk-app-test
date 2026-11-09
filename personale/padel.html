@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="fd4c47f62d28">
+<meta name="rtk-version" content="64075e823fa5">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -72,6 +72,7 @@
 .pd-ideb{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:5px;font-size:13px;color:var(--muted)}
 .pd-st{border:1px solid;border-radius:99px;padding:1px 8px;font-size:12px;font-weight:700}
 .pd-ko{font-size:15px;padding:7px 0;border-top:1px solid var(--line)}
+.pd-gemmer{display:inline-block;margin:6px 0 0 8px;font-size:14px;color:var(--muted)}
 .pd-koh{display:flex;gap:8px;align-items:baseline;margin-bottom:2px}.pd-koh span{font-size:13px;color:var(--muted)}.pd-koh .pd-mini{margin-left:auto}
 .pd-adm{margin-top:14px;padding:10px 12px;background:var(--soft);border-radius:8px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
@@ -236,14 +237,39 @@ function besked(el, t, s) { el.textContent = t || ''; el.className = 'msg' + (s 
 const SIDST = {}, LAEST = {};
 // Fanerne med en kopi i Firebase pr. person (Lars 9. november 2026 kl. 08.11): handlingen og navnet på kopien
 const KOPI = { projekt: 'padelProjekt', referater: 'padelRef', ideer: 'padelIdeer', hold: 'padelHold' };
+// "Gemmer …" alle steder (Lars 9. november 2026 kl. 11.29, mockup padel_gemmer.png godkendt 11.32): den knap, valgliste
+// eller afkrydsning, man sidst rørte, viser "Gemmer …" og er låst, mens motoren gemmer (kald med id).
+let sidstRoert = null;
+const roer = (el) => { if (el) sidstRoert = { el, t: Date.now() }; };
+document.addEventListener('click', (e) => roer(e.target.closest && e.target.closest('button')), true);
+document.addEventListener('change', (e) => roer(e.target.closest && e.target.closest('select, input[type="checkbox"], input[type="radio"]')), true);
+document.addEventListener('submit', (e) => roer(e.submitter || e.target.querySelector('button[type="submit"], button:not([type])')), true);
+function gemmerPaa() {
+  const r = sidstRoert; sidstRoert = null;
+  if (!r || Date.now() - r.t > 5000 || !r.el.isConnected || r.el.dataset.gemmer) return null;
+  const el = r.el, varLaast = el.disabled;
+  el.dataset.gemmer = '1'; el.disabled = true; el.setAttribute('aria-busy', 'true');
+  const slip = () => { el.disabled = varLaast; el.removeAttribute('aria-busy'); delete el.dataset.gemmer; };
+  if (el.tagName === 'BUTTON') {
+    const gl = el.innerHTML; el.textContent = 'Gemmer …';
+    return () => { if (el.isConnected && el.dataset.gemmer) { el.innerHTML = gl; slip(); } };
+  }
+  const t = document.createElement('span'); t.className = 'pd-gemmer'; t.setAttribute('role', 'status'); t.textContent = 'Gemmer …';
+  (el.closest('label') || el).insertAdjacentElement('afterend', t);
+  return () => { t.remove(); if (el.isConnected) slip(); };
+}
 async function motor(modul, handling, data, id) {
+  const slip = id ? gemmerPaa() : null;
+  try { return await motorKald(modul, handling, data, id); } finally { if (slip) slip(); }
+}
+async function motorKald(modul, handling, data, id) {
   let res;
   try { res = await fetch(URL_MOTOR, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ modul, handling, data: data || {}, token, apin: (window.RTK_APIN ? RTK_APIN.bevis() : ''), id: id || '' }) }); }
   catch (e) { throw new Error('Ingen forbindelse. Tjek net og prøv igen.'); }
   let svar;
   try { svar = await res.json(); } catch (e) { throw new Error('Ingen forbindelse. Tjek net og prøv igen.'); }
-  if (!svar.ok && svar.apin && window.RTK_APIN) { await RTK_APIN.spoerg(motor); return motor(modul, handling, data, id); }
-  if (!svar.ok && svar.igang) { await new Promise((r) => setTimeout(r, 1500)); return motor(modul, handling, data, id); }
+  if (!svar.ok && svar.apin && window.RTK_APIN) { await RTK_APIN.spoerg(motor); return motorKald(modul, handling, data, id); }
+  if (!svar.ok && svar.igang) { await new Promise((r) => setTimeout(r, 1500)); return motorKald(modul, handling, data, id); }
   if (!svar.ok) { if (svar.login) logUd(true); throw new Error(svar.fejl || 'Noget gik galt'); }
   SIDST[handling] = svar.tid || 0;
   // En skrivning gør kopier og svar, der er læst før den, forældede (kalenderen og fanerne med kopi)
@@ -524,7 +550,7 @@ function visPunkt(id) {
 }
 const gruppeNavn = (k) => { const g = chatData && chatData.grupper.find((x) => 'g:' + x.id === k); return g ? esc(g.navn) : ''; }; // escapes: navnet kan rettes af gruppen (gennemgangen 8. november, fund 3)
 async function gemHandling(handling, d, msgEl, ok, efter) {
-  besked(msgEl, 'Gemmer …');
+  besked(msgEl, '');
   try {
     const r = await motor('padel', handling, d, nyId());
     await hentStart();
@@ -680,7 +706,7 @@ async function visForm(id, dag) {
     };
     if (!hd && !d.start) { besked($('formMsg'), 'Vælg fra kl., eller sæt flueben ved Hele dagen', 'err'); return; }
     if (p) d.id = p.id;
-    besked($('formMsg'), 'Gemmer …');
+    besked($('formMsg'), '');
     try {
       const r = await motor('padel', p ? 'ret' : 'ny', d, p ? nyId() : reg);
       await hentStart();
@@ -718,7 +744,7 @@ async function tegnMedlemmer(el) {
     + '<div style="display:flex;gap:8px;margin-top:8px"><select data-tilfoej><option value="">Tag en med …</option>' + personerData.filter((x) => !med.has(x.id)).map((x) => '<option value="' + esc(x.id) + '">' + esc(x.navn) + (x.kreds === 'circle' ? ' (Padelcircle)' : '') + '</option>').join('') + '</select><button type="button" class="ok small" data-ok>Tilføj</button></div><div class="msg" aria-live="polite"></div>';
   const msg = el.querySelector('.msg');
   const gemMed = async (pid, tilf) => {
-    besked(msg, 'Gemmer …');
+    besked(msg, '');
     try { await motor('padel', 'gruppeMedlem', { gid: g.id, pid, til: tilf }, nyId()); chatData = await motor('padel', 'chat'); Object.assign(g, chatData.grupper.find((x) => x.id === g.id) || g); tegnMedlemmer(el); }
     catch (err) { besked(msg, err.message, 'err'); }
   };
@@ -859,7 +885,7 @@ async function visFormaal(ret) {
       + '<label for="fTekst">Tekst</label><textarea id="fTekst" rows="9" maxlength="3000">' + esc(a.tekst) + '</textarea>'
       + '<div class="pd-knapper"><button type="button" class="ok" id="fGem">Gem</button><a class="ghost" style="display:inline-flex;align-items:center;padding:6px 14px;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:6px" href="#formaal">Annullér</a></div><div class="msg" id="fMsg" aria-live="polite"></div>';
     $('fGem').addEventListener('click', async () => {
-      besked($('fMsg'), 'Gemmer …');
+      besked($('fMsg'), '');
       try { await motor('padel', 'formaalRet', { id: a.id, tekst: $('fTekst').value }, nyId()); location.hash = 'formaal'; } catch (err) { besked($('fMsg'), err.message, 'err'); }
     });
     return;
@@ -919,7 +945,7 @@ function visOrgRet(id) {
     b.setAttribute('aria-pressed', String(b.dataset.pid in valgt)); linjer();
   }));
   $('oGem').addEventListener('click', async () => {
-    besked($('oMsg'), 'Gemmer …');
+    besked($('oMsg'), '');
     try {
       await motor('padel', 'orgRet', { id: g.id, navn: $('oNavn').value, opgaver: $('oOpg').value, andre: $('oAndre').value, personer: Object.keys(valgt).map((pid) => ({ pid, linje: valgt[pid] })) }, nyId());
       projData = null; location.hash = 'org';
@@ -1064,7 +1090,7 @@ async function visRefForm(id) {
   const regId = nyId();
   $('rForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    besked($('rMsg'), fil ? 'Gemmer og lægger filen op …' : 'Gemmer …');
+    besked($('rMsg'), '');
     $('rGem').disabled = true;
     try {
       const svar = await motor('padel', 'referatGem', { id: r ? r.id : '', titel: $('rTitel').value, dag: $('rDag').value, kl: $('rKl').value, kalId: $('rKal').value, deltagere: [...valgt], andre: $('rAndre').value,
@@ -1115,7 +1141,7 @@ function visIdeNy() {
   $('iEmneValg').querySelectorAll('button').forEach((b) => b.addEventListener('click', () => { emne = emne === b.dataset.e ? '' : b.dataset.e; $('iEmneValg').querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.e === emne))); }));
   const regId = nyId();
   $('iForm').addEventListener('submit', async (e) => {
-    e.preventDefault(); besked($('iMsg'), 'Gemmer …'); $('iGem').disabled = true;
+    e.preventDefault(); besked($('iMsg'), '');
     try { const svar = await motor('padel', 'ideNy', { titel: $('iTitel').value, tekst: $('iTekst').value, emne }, regId); ideData = null; location.hash = 'ide/' + encodeURIComponent(svar.id); }
     catch (err) { besked($('iMsg'), err.message, 'err'); $('iGem').disabled = false; }
   });
@@ -1285,7 +1311,7 @@ async function visBeg(eid) {
       { tekst: 'Hent', fn: (x, styr) => hentBillede(styr.stort(), b.navn, liste.indexOf(x) + 1) },
       { tekst: 'Slet', klasse: 'slet', vis: (x) => x.af === mig || f.admin, fn: async (x, styr, knap) => {
         if (knap.dataset.sikker !== '1') { knap.dataset.sikker = '1'; knap.textContent = 'Tryk igen for at slette'; return; }
-        knap.disabled = true; knap.textContent = 'Sletter …';
+        knap.disabled = true; knap.textContent = 'Gemmer …';
         try {
           const rest = liste.filter((y) => y.id !== x.id);
           const w = f.fs.writeBatch(f.db);
