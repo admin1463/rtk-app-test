@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="ed70be1b693d">
+<meta name="rtk-version" content="7cc45fb77216">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -336,6 +336,6 @@ if (!token) { glemForrige(); visLogin(qs.get('igen') ? 'Log ind igen.' : ''); }
 else { const husket = migHusket(); if (husket) { visFelter(husket); migHent().then((p) => { if (JSON.stringify(p) !== JSON.stringify(husket)) visFelter(p); }).catch(() => {}); } else migHent().then(visFelter).catch(() => {}); }
 </script>
 <script src="../velkomst.js?v=0c6d2cc815a7"></script>
-<script src="../ace.js?v=eba7e744710b"></script>
+<script src="../ace.js?v=8c46fe7cee29"></script>
 </body>
 </html>
