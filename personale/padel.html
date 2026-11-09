@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="b9e1a7d034f6">
+<meta name="rtk-version" content="fd4c47f62d28">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -72,6 +72,7 @@
 .pd-ideb{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:5px;font-size:13px;color:var(--muted)}
 .pd-st{border:1px solid;border-radius:99px;padding:1px 8px;font-size:12px;font-weight:700}
 .pd-ko{font-size:15px;padding:7px 0;border-top:1px solid var(--line)}
+.pd-koh{display:flex;gap:8px;align-items:baseline;margin-bottom:2px}.pd-koh span{font-size:13px;color:var(--muted)}.pd-koh .pd-mini{margin-left:auto}
 .pd-adm{margin-top:14px;padding:10px 12px;background:var(--soft);border-radius:8px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .pd-mnd{display:flex;align-items:center;gap:10px;margin:6px 0}.pd-mnd b{min-width:150px;text-align:center}
@@ -1087,14 +1088,19 @@ async function visIdeer() {
   const liste = ideData.ideer.filter((i) => !ideEmne || i.emne === ideEmne);
   if (!liste.length) h += '<p class="hint">' + (ideData.ideer.length ? 'Ingen idéer om ' + esc(ideEmne.toLowerCase()) + ' endnu.' : 'Ingen idéer endnu. Skriv den første.') + '</p>';
   h += liste.map((i) => '<a class="pd-ide" href="#ide/' + encodeURIComponent(i.id) + '"><b>' + esc(i.titel) + '</b><span class="u">' + esc(i.afNavn) + ' · ' + esc(omTid(i.tid)) + (i.emne ? ' · ' + esc(i.emne) : '') + '</span>'
-    + '<span class="pd-ideb">' + statusTag(i.status) + '<span>&#128077; ' + i.tommel + '</span><span>&#128172; ' + i.antalKomm + '</span></span></a>').join('');
+    + '<span class="pd-ideb">' + statusTag(i.status) + '<span>&#128077; ' + i.tommel + '</span><span>&#128172; ' + i.antalKomm + '</span>' + (i.antalKomm && i.sidstKomm ? '<span>Seneste kommentar ' + esc(omTid(i.sidstKomm)) + '</span>' : '') + '</span></a>').join('');
   $('vIde').innerHTML = h;
   $('iEmner').querySelectorAll('button').forEach((b) => b.addEventListener('click', () => { ideEmne = b.dataset.e; visIdeer(); }));
 }
-function omTid(t) {
+/** Tidspunkt for idéer og kommentarer (Lars 9. november 2026 kl. 10.58): "i dag kl. 10.47", "i går kl. 21.15" eller "4. nov kl. 14.10".
+ *  lang giver ugedag, dato og år ("mandag 9. november 2026 kl. 10.47"). Året står også i den korte, når det ikke er i år. */
+function omTid(t, lang) {
   if (!t) return '';
-  const dag = String(t).slice(0, 10); const n = dageTil(dag);
-  return n === 0 ? 'i dag' : n === -1 ? 'i går' : kortDag(dag);
+  const dag = String(t).slice(0, 10), kl = String(t).slice(11, 16).replace(':', '.'), aar = dag.slice(0, 4);
+  const n = dageTil(dag);
+  const s = lang ? dagTekst(dag) + ' ' + aar
+    : n === 0 ? 'i dag' : n === -1 ? 'i går' : kortDag(dag) + (aar !== iDag().slice(0, 4) ? ' ' + aar : '');
+  return kl ? s + ' kl. ' + kl : s;
 }
 function visIdeNy() {
   vis('vIde');
@@ -1121,11 +1127,11 @@ async function visIde(id) {
   try { await hentIdeer(id); } catch (err) { $('vIde').innerHTML = fejlHtml(err); return; }
   const i = ideData.ideer.find((x) => x.id === id);
   if (!i) { $('vIde').innerHTML = '<a class="gr-tilbage" href="#ideer">&#8592; Idéboks</a><p class="hint">Idéen findes ikke længere.</p>'; return; }
-  let h = '<a class="gr-tilbage" href="#ideer">&#8592; Idéboks</a><h2 class="lille" style="margin:8px 0 4px">' + esc(i.titel) + '</h2><p class="hint" style="margin:0 0 8px">' + esc(i.afNavn) + ' · ' + esc(omTid(i.tid)) + (i.emne ? ' · ' + esc(i.emne) : '') + '</p>';
+  let h = '<a class="gr-tilbage" href="#ideer">&#8592; Idéboks</a><h2 class="lille" style="margin:8px 0 4px">' + esc(i.titel) + '</h2><p class="hint" style="margin:0 0 8px">' + esc(i.afNavn) + ' · ' + esc(omTid(i.tid, true)) + (i.emne ? ' · ' + esc(i.emne) : '') + '</p>';
   if (i.tekst) h += tekstHtml(i.tekst);
   h += '<div class="pd-ideb"><button type="button" class="ghost small" id="iTommel" aria-pressed="' + i.minTommel + '">&#128077; ' + (i.minTommel ? 'Du synes godt om den' : 'Godt') + ' · ' + i.tommel + '</button>' + statusTag(i.status) + '</div>';
-  h += '<h3 class="pd-sh">Kommentarer</h3>' + (i.kommentarer.length ? i.kommentarer.map((k) => '<div class="pd-ko"><b>' + esc(k.afNavn.replace(/^Test /, '')) + '</b> ' + esc(k.tekst)
-    + (k.kanSlette ? ' <button type="button" class="pd-mini" data-k="' + esc(k.id) + '" aria-label="Slet kommentaren">Slet</button>' : '') + '</div>').join('') : '<p class="hint">Ingen endnu.</p>');
+  h += '<h3 class="pd-sh">Kommentarer</h3>' + (i.kommentarer.length ? i.kommentarer.map((k) => '<div class="pd-ko"><div class="pd-koh"><b>' + esc(k.afNavn.replace(/^Test /, '')) + '</b><span>' + esc(omTid(k.tid)) + '</span>'
+    + (k.kanSlette ? '<button type="button" class="pd-mini" data-k="' + esc(k.id) + '" aria-label="Slet kommentaren">Slet</button>' : '') + '</div><div>' + esc(k.tekst) + '</div></div>').join('') : '<p class="hint">Ingen endnu.</p>');
   h += '<form id="kForm" novalidate><label for="kTekst" class="sr">Skriv en kommentar</label><textarea id="kTekst" rows="2" maxlength="1000" placeholder="Skriv en kommentar"></textarea><div class="pd-knapper"><button type="submit" class="ok small">Send</button></div></form><div class="msg" id="iMsg" aria-live="polite"></div>';
   if (erAdmin()) h += '<div class="pd-adm"><b>For administratorer</b><label for="iStatus">Status</label><select id="iStatus">' + ideData.status.map((s) => '<option' + (s === i.status ? ' selected' : '') + '>' + esc(s) + '</option>').join('') + '</select></div>';
   if (i.kanSlette) h += '<div class="pd-knapper"><button type="button" class="ghost small" id="iSlet">Slet idéen</button></div>';
