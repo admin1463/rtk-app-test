@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta name="rtk-version" content="ef9a1dc7d9bf">
+<script src="/opdater.js?v=f299a739b234" defer></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0B3D3A">
+<title>Padel hele året i Roskilde Tennis Klub · Venteliste 2027</title>
+<meta name="description" content="Padeltræning hver uge hele året for børn, unge og voksne. Indendørs hos PADELPIT og ude i Darup. Skriv dig på ventelisten senest 15. december.">
+<meta property="og:title" content="Padel hele året. Sammen.">
+<meta property="og:description" content="Træning hver uge fra januar 2027 i Roskilde Tennis Klub. Skriv dig på ventelisten senest 15. december.">
+<meta property="og:image" content="https://mitrtk.dk/billeder/padel/hero.jpg">
+<link rel="icon" type="image/png" href="ikon-medlem-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtk.css?v=2de082c9bdad">
+<style>
+/* Padelsiden: offentlig, uden login. Komposition godkendt af Lars 9. november 2026 (mockup padel_venteliste). */
+.pv{--court:#1E4FA8;--bold:#D4F03C;font-size:17px;line-height:1.55}
+.pv .w{max-width:1180px;margin:0 auto;padding:0 28px}
+.pv .knap{display:inline-block;background:var(--pink);color:#fff;font-weight:700;text-decoration:none;padding:16px 26px;border-radius:999px;font-size:17px;border:0;cursor:pointer;font-family:inherit}
+.pv .knap:focus-visible,.pv button:focus-visible,.pv input:focus-visible,.pv select:focus-visible,.pv textarea:focus-visible{outline:3px solid var(--ice);outline-offset:2px}
+.pv .kick{font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--pink);margin:0 0 6px}
+.pv h2{font-size:40px;line-height:1.08;font-weight:800;letter-spacing:-.02em;margin:0 0 14px}
+.pv .sek{padding:96px 0}
+.pv .graa{color:var(--muted)}
+/* top over billedet */
+.pv-top{position:absolute;left:0;right:0;top:0;z-index:3}
+.pv-top .w{display:flex;align-items:center;justify-content:space-between;height:78px}
+.pv-top img{height:42px;display:block}
+.pv-top a.op{color:#fff;font-size:14px;font-weight:600;text-decoration:none;border:1px solid var(--ice);padding:9px 16px;border-radius:999px}
+/* forsiden */
+.pv-hero{position:relative;min-height:720px;background:var(--teal);color:#fff;display:flex;align-items:flex-end;overflow:hidden}
+.pv-hero .bill{position:absolute;right:0;top:0;bottom:0;width:62%;background:url(billeder/padel/hero.jpg) center 30%/cover}
+.pv-hero .bill:before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,var(--teal) 0%,rgba(11,61,58,.55) 14%,rgba(11,61,58,0) 34%),linear-gradient(0deg,rgba(11,61,58,.55),rgba(11,61,58,0) 30%)}
+.pv-hero .w{position:relative;z-index:1;width:100%;padding-bottom:70px}
+.pv-hero .kick{color:var(--ice)}
+.pv-hero h1{font-size:72px;line-height:.98;font-weight:900;letter-spacing:-.03em;margin:14px 0 18px;max-width:640px;color:#fff}
+.pv-hero h1 em{font-style:normal;color:var(--ice)}
+.pv-hero p{font-size:20px;max-width:520px;margin:0 0 28px;color:#EAF2F1}
+.pv-hero .smaa{font-size:14px;color:var(--sub);margin-top:16px;max-width:560px}
+.pv-frist{position:absolute;right:28px;top:110px;z-index:2;background:#fff;color:var(--teal);border-radius:16px;padding:16px 20px;text-align:center;line-height:1.1}
+.pv-frist b{display:block;font-size:40px;font-weight:900}
+.pv-frist span{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+/* fakta */
+.pv-fakta{background:var(--frost);color:#fff}
+.pv-fakta .w{display:grid;grid-template-columns:repeat(4,1fr)}
+.pv-fakta .w>div{padding:26px 18px 26px 0;border-right:1px solid rgba(143,184,222,.3);margin-right:18px}
+.pv-fakta .w>div:last-child{border:0}
+.pv-fakta b{display:block;font-size:26px;font-weight:800;color:var(--ice);line-height:1.1}
+.pv-fakta span{font-size:14px;color:var(--sub)}
+/* to kolonner */
+.pv-to{display:grid;grid-template-columns:1.05fr 1fr;gap:64px;align-items:center}
+.pv-foto{border-radius:20px;background-size:cover;background-position:center;min-height:560px;position:relative;overflow:hidden}
+.pv-foto .maerke{position:absolute;left:18px;bottom:18px;background:rgba(11,61,58,.9);color:#fff;border-radius:12px;padding:12px 16px;font-size:14px;max-width:70%}
+.pv-foto .maerke b{display:block;font-size:18px}
+.pv-liste{list-style:none;margin:22px 0 0;padding:0}
+.pv-liste li{padding:14px 0 14px 34px;border-top:1px solid var(--line);position:relative}
+.pv-liste li:before{content:'';position:absolute;left:4px;top:21px;width:14px;height:14px;border-radius:50%;background:var(--bold);box-shadow:inset -3px -3px 0 rgba(0,0,0,.12)}
+.pv-liste b{display:block}
+.pv-liste span{color:var(--muted);font-size:15px}
+/* bånd */
+.pv-baand{height:620px;background:var(--teal) url(billeder/padel/flok.jpg) center 28%/cover;position:relative;display:flex;align-items:flex-end}
+.pv-baand:before{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(11,61,58,.92) 0%,rgba(11,61,58,.55) 26%,rgba(11,61,58,0) 52%)}
+.pv-baand .w{position:relative;width:100%;padding-bottom:48px}
+.pv-baand p{color:#fff;font-size:44px;font-weight:800;letter-spacing:-.02em;line-height:1.08;max-width:680px;margin:0}
+.pv-baand p em{font-style:normal;color:var(--ice)}
+/* hold */
+.pv-hold{background:var(--soft)}
+.pv-kort3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:34px}
+.pv-kort{background:#fff;border-radius:18px;padding:26px;border:1px solid var(--line)}
+.pv-kort .alder{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--court)}
+.pv-kort h3{font-size:30px;margin:6px 0 2px;font-weight:800;color:#000;letter-spacing:0;text-transform:none}
+.pv-kort .pris{font-size:44px;font-weight:900;letter-spacing:-.02em;margin:14px 0 0;color:var(--teal)}
+.pv-kort .pris small{font-size:16px;font-weight:600;color:var(--muted)}
+.pv-kort ul{margin:16px 0 0;padding:0;list-style:none;font-size:15px;color:var(--muted)}
+.pv-kort li{padding:7px 0;border-top:1px solid var(--line)}
+.pv-note{margin-top:22px;font-size:15px;color:var(--muted);max-width:820px}
+/* steder og kort */
+.pv-steder{display:grid;grid-template-columns:1.35fr 1fr;gap:40px;align-items:start;margin-top:34px}
+.pv-kortbill{border-radius:20px;overflow:hidden;border:1px solid var(--line)}
+.pv-kortbill img{display:block;width:100%;height:auto}
+.pv-sted{display:flex;gap:16px;padding:20px 0;border-top:1px solid var(--line)}
+.pv-sted:first-child{border-top:0;padding-top:0}
+.pv-sted .nr{flex:0 0 40px;height:40px;border-radius:50%;background:var(--pink);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:18px}
+.pv-sted b{display:block;font-size:20px}
+.pv-sted .adr{color:var(--muted);font-size:15px;margin:2px 0 8px}
+.pv-sted p{margin:0 0 10px;font-size:15px}
+.pv-sted a{font-size:15px;font-weight:700;color:var(--teal);text-underline-offset:3px}
+/* trin */
+.pv-trin{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:34px}
+.pv-trin>div{border-top:4px solid var(--teal);padding-top:16px}
+.pv-trin>div.nu{border-color:var(--pink)}
+.pv-trin i{font-style:normal;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--court)}
+.pv-trin b{display:block;font-size:20px;margin:4px 0 6px}
+.pv-trin span{font-size:15px;color:var(--muted)}
+/* fællesskab */
+.pv-faelles{background:var(--teal);color:#fff}
+.pv-faelles .pv-to{grid-template-columns:1fr 1.05fr}
+.pv-faelles p{color:#DCE8E6}
+.pv-faelles .kick{color:var(--ice)}
+.pv-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.pv-chips span{border:1px solid var(--ice);border-radius:999px;padding:9px 15px;font-size:15px}
+/* tilmelding */
+.pv-tilm .pv-to{grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+.pv-form{background:#fff;border:1px solid var(--line);border-radius:20px;padding:30px}
+.pv-form h3{font-size:22px;font-weight:800;margin:0 0 4px;color:#000;letter-spacing:0;text-transform:none}
+.pv-form .lb,.pv-form legend{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:16px 0 6px;padding:0}
+.pv-form fieldset{border:0;margin:0;padding:0;min-width:0}
+.pv-form input[type=text],.pv-form input[type=email],.pv-form input[type=tel],.pv-form input[type=date],.pv-form select,.pv-form textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:12px 14px;font-size:16px;background:#fff;color:#000}
+.pv-form textarea{min-height:90px;resize:vertical}
+.pv-vg{display:flex;flex-wrap:wrap;gap:8px}
+.pv-vg label{position:relative}
+.pv-vg input{position:absolute;opacity:0;width:1px;height:1px}
+.pv-vg span{display:inline-block;border:1px solid var(--line2);border-radius:999px;padding:9px 14px;font-size:15px;cursor:pointer;user-select:none}
+.pv-vg input:checked+span{background:var(--teal);color:#fff;border-color:var(--teal)}
+.pv-vg input:focus-visible+span{outline:3px solid var(--ice);outline-offset:2px}
+.pv-to2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pv-trinbar{display:flex;gap:6px;margin-bottom:18px}
+.pv-trinbar i{flex:1;height:5px;border-radius:9px;background:var(--line)}
+.pv-trinbar i.on{background:var(--pink)}
+.pv-spiller{border:1px solid var(--line);border-radius:14px;padding:4px 16px 16px;margin-top:16px;position:relative}
+.pv-spiller .hold{margin-top:10px;font-size:14px;font-weight:600;color:var(--court)}
+.pv-spiller .hold.fejl{color:var(--bad)}
+.pv-spiller .fjern{position:absolute;right:12px;top:12px;background:none;border:0;color:var(--muted);font-size:14px;text-decoration:underline;cursor:pointer;font-family:inherit}
+.pv-tilfoej{background:none;border:0;padding:0;margin-top:14px;color:var(--pink);font-weight:700;font-size:15px;cursor:pointer;font-family:inherit}
+.pv-cb{display:flex;gap:10px;align-items:flex-start;margin:10px 0;font-size:15px}
+.pv-cb input{width:20px;height:20px;margin:2px 0 0;flex:none;accent-color:var(--teal)}
+.pv-form .knap{width:100%;text-align:center;margin-top:24px}
+.pv-tilbage{background:none;border:0;padding:12px 0 0;color:var(--muted);font-size:15px;text-decoration:underline;cursor:pointer;font-family:inherit;width:100%}
+.pv-fejl{color:var(--bad);font-size:14px;margin-top:6px}
+.pv-kvit{background:var(--okbg);color:var(--ok);border-radius:14px;padding:16px;margin-top:6px}
+.pv-kvit b{font-size:18px}
+.pv-nummer{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line2);border-radius:10px;padding:10px 14px;margin-top:6px}
+.pv-nummer b{font-size:22px;letter-spacing:.02em}
+.pv-nummer button{background:none;border:0;color:var(--pink);font-weight:700;cursor:pointer;font-family:inherit;font-size:15px}
+.pv-betal{background:var(--waitbg);color:var(--wait);border-radius:14px;padding:16px;margin-top:16px}
+.pv-test{font-size:13px;color:var(--muted);margin-top:14px;border-top:1px dashed var(--line2);padding-top:10px}
+.pv-honning{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+/* spørgsmål */
+.pv-faq{background:var(--soft)}
+.pv-faq .gitter{display:grid;grid-template-columns:1fr 1fr;gap:0 40px}
+.pv-faq .gitter>div{border-top:1px solid var(--line);padding:16px 0}
+.pv-faq .gitter b{display:block;margin-bottom:4px}
+.pv-faq .gitter span{color:var(--muted);font-size:15px}
+.pv-partnere{padding-top:28px}
+.pv-cta{display:none}
+@media (max-width:760px){
+ .pv .w{padding:0 20px}
+ .pv-top img{height:34px} .pv-top a.op{display:none}
+ .pv-hero{min-height:700px}
+ .pv-hero .bill{width:100%;bottom:auto;height:430px;background-position:center 20%}
+ .pv-hero .bill:before{background:linear-gradient(0deg,var(--teal) 0%,rgba(11,61,58,.4) 25%,rgba(11,61,58,0) 50%,rgba(11,61,58,.45) 100%)}
+ .pv-hero .w{padding-top:380px;padding-bottom:36px}
+ .pv-hero h1{font-size:46px} .pv-hero p{font-size:17px}
+ .pv-frist{right:20px;top:230px;padding:10px 14px} .pv-frist b{font-size:28px}
+ .pv-fakta .w{grid-template-columns:1fr 1fr} .pv-fakta .w>div{padding:18px 10px 18px 0;margin-right:10px} .pv-fakta .w>div:nth-child(2){border:0} .pv-fakta b{font-size:21px}
+ .pv .sek{padding:60px 0} .pv h2{font-size:31px}
+ .pv-to,.pv-faelles .pv-to,.pv-tilm .pv-to,.pv-steder,.pv-faq .gitter{grid-template-columns:1fr;gap:28px}
+ .pv-foto{min-height:380px}
+ .pv-baand{height:460px;background-position:58% 25%} .pv-baand p{font-size:28px} .pv-baand .w{padding-bottom:28px}
+ .pv-kort3,.pv-trin{grid-template-columns:1fr} .pv-kort .pris{font-size:38px}
+ .pv-form{padding:20px}
+ .pv-cta{display:block;position:sticky;bottom:0;z-index:5;background:rgba(255,255,255,.96);padding:12px 20px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
+ .pv-cta .knap{display:block;text-align:center}
+ .pv-cta.skjult{display:none}
+}
+</style>
+</head>
+<body>
+<main class="side pv">
+<header class="pv-top"><div class="w">
+  <a href="https://roskildetennisklub.dk" target="_blank" rel="noopener" aria-label="Roskilde Tennis Klubs hjemmeside (åbner i ny fane)"><img src="ikoner/rtk-hvid.png" alt="Roskilde Tennis Klub"></a>
+  <a class="op" href="#tilmeld">Skriv dig op</a>
+</div></header>
+
+<section class="pv-hero">
+  <div class="bill" role="img" aria-label="To padelspillere giver hånd og griner på en blå bane"></div>
+  <div class="pv-frist"><span>Lukker</span><b>15.12</b><span>2026</span></div>
+  <div class="w">
+    <div class="kick">Nyt i Roskilde Tennis Klub · fra januar 2027</div>
+    <h1>Padel hele året. <em>Sammen.</em></h1>
+    <p>Træning hver uge med trænere, gode makkere og masser af grin. Indendørs hos PADELPIT om vinteren og ude i Darup om sommeren. For børn, unge og voksne.</p>
+    <a class="knap" href="#tilmeld">Skriv mig på ventelisten</a>
+    <div class="smaa">Det tager 3 minutter · 500 kr. i depositum pr. spiller, som trækkes fra prisen eller betales tilbage</div>
+  </div>
+</section>
+
+<section class="pv-fakta"><div class="w">
+  <div><b>Hver uge</b><span>34 til 40 træninger om året</span></div>
+  <div><b>8 til 80 år</b><span>Junior, Junior+ og voksen</span></div>
+  <div><b>Ude og inde</b><span>PADELPIT og Darup</span></div>
+  <div><b>Fra 595 kr.</b><span>pr. kvartal for juniorer</span></div>
+</div></section>
+
+<section class="sek"><div class="w pv-to">
+  <div class="pv-foto" style="background-image:url(billeder/padel/aktion.jpg)" role="img" aria-label="En spiller slår en smash indendørs"><div class="maerke"><b>Onsdag og lørdag</b>Faste baner hele sæsonen. Ingen kamp om tiderne.</div></div>
+  <div>
+    <div class="kick">Derfor er det noget særligt</div>
+    <h2>Et rigtigt klubtilbud i padel. Til en pris, hvor alle kan være med.</h2>
+    <p>Padel er sjovt fra første bold. Man er altid fire på banen, bolden er i spil, og man griner mere end i de fleste andre sportsgrene. Nu kan du spille det hele året i en klub, med faste hold og en træner, der kender dig.</p>
+    <ul class="pv-liste">
+      <li><b>Træning hele året, inde og ude</b><span>Faste baner hos PADELPIT og klubbens egne baner i Darup om sommeren.</span></li>
+      <li><b>PADELPIT-medlemskab med i prisen</b><span>Som medlem af RTK får du fuldt medlemskab hos PADELPIT uden deres gebyr på 59 kr. om måneden, med gode priser på baneleje i Roskilde og Karlslunde.</span></li>
+      <li><b>Gratis adgang til udebanerne i Darup</b><span>Spil med dine nye makkere, når det passer jer.</span></li>
+      <li><b>Camps i ferierne</b><span>Vinter, påske og efterår for juniorerne.</span></li>
+      <li><b>Et fællesskab, ikke et kursus</b><span>Du bliver en del af Roskilde Tennis Klub med alt, hvad det giver.</span></li>
+    </ul>
+  </div>
+</div></section>
+
+<section class="pv-baand" role="img" aria-label="En flok venner holder om hinanden i solnedgangen"><div class="w"><p>Fire på banen. Én bold. <em>Og en ny flok at spille med hver uge.</em></p></div></section>
+
+<section class="sek pv-hold"><div class="w">
+  <div class="kick">Hold og priser</div>
+  <h2>Find dit hold</h2>
+  <p class="graa" style="max-width:700px">Holdene lægges efter alder, niveau og de dage, I kan. Nybegyndere er velkomne på alle hold.</p>
+  <div class="pv-kort3">
+    <div class="pv-kort"><div class="alder">8 til 12 år</div><h3>Junior</h3><div class="pris">595 kr. <small>pr. kvartal</small></div>
+      <ul><li>1 time om ugen</li><li>Onsdag eftermiddag eller lørdag formiddag</li><li>Lønnet træner og en frivillig hjælper</li><li>8 til 10 spillere på 2 baner</li></ul></div>
+    <div class="pv-kort"><div class="alder">10 til 18 år</div><h3>Junior+</h3><div class="pris">875 kr. <small>pr. kvartal</small></div>
+      <ul><li>1,5 time om ugen</li><li>Delt i to aldersgrupper</li><li>Camps i vinter-, påske- og efterårsferien</li><li>Dygtige 16 til 18-årige kan spille med de voksne</li></ul></div>
+    <div class="pv-kort"><div class="alder">18 år og op</div><h3>Voksen</h3><div class="pris">1.195 kr. <small>pr. kvartal</small></div>
+      <ul><li>1,5 time om ugen, onsdag sidst på eftermiddagen</li><li>Træner hver anden gang, americano de andre</li><li>Let øvede til øvede</li><li>Lørdagshold, hvis der er interesse</li></ul></div>
+  </div>
+  <p class="pv-note">Er du ikke medlem af RTK i forvejen, kommer kontingentet oveni: 144 kr. pr. kvartal (3 til 10 år), 214 kr. (11 til 24 år) eller 383 kr. (25 år og op) og et indmeldelsesgebyr på 250 kr. Til gengæld får du PADELPIT-medlemskabet og Darup med.</p>
+</div></section>
+
+<section class="sek" id="steder"><div class="w">
+  <div class="kick">Her spiller vi</div>
+  <h2>Inde om vinteren. Ude om sommeren.</h2>
+  <div class="pv-steder">
+    <div class="pv-kortbill"><img src="billeder/padel/kort.jpg" width="1800" height="1120" loading="lazy" alt="Kort over Roskilde med PADELPIT på Københavnsvej (1) og klubbens udebaner på Darupvej (2)"></div>
+    <div>
+      <div class="pv-sted"><span class="nr">1</span><div>
+        <b>PADELPIT Roskilde</b><div class="adr">Københavnsvej 136B, 4000 Roskilde</div>
+        <p>Indendørs baner. Onsdagsholdene træner her hele året undtagen i sommerferien. Lørdagsholdene træner her fra september til april.</p>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=K%C3%B8benhavnsvej+136B%2C+4000+Roskilde" target="_blank" rel="noopener">Find vej</a>
+      </div></div>
+      <div class="pv-sted"><span class="nr">2</span><div>
+        <b>RTK's baner i Darup</b><div class="adr">Darupvej 52, 4000 Roskilde</div>
+        <p>Klubbens egne udendørs baner. Lørdagsholdene træner her fra maj til august, og som medlem spiller du gratis, når I har lyst.</p>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=Darupvej+52%2C+4000+Roskilde" target="_blank" rel="noopener">Find vej</a>
+      </div></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="sek" style="padding-top:0"><div class="w">
+  <div class="kick">Sådan foregår det</div>
+  <h2>Fra venteliste til første træning</h2>
+  <div class="pv-trin">
+    <div class="nu"><i>Nu</i><b>Skriv jer op her</b><span>Spillere, dage og hvordan I vil give en hånd. Du får et nummer på ventelisten.</span></div>
+    <div><i>Samme dag</i><b>Betal 500 kr. pr. spiller</b><span>I ForeningLet med MobilePay. Først da gælder pladsen på listen.</span></div>
+    <div><i>15. december</i><b>Vi sætter holdene</b><span>Efter alder, niveau, dage og frivillighed. Ikke efter hvem der var hurtigst.</span></div>
+    <div><i>Før jul</i><b>I får svar</b><span>Får I plads, trækkes depositummet fra første kvartal. Ellers får I pengene tilbage.</span></div>
+  </div>
+</div></section>
+
+<section class="sek pv-faelles"><div class="w pv-to">
+  <div>
+    <div class="kick">Et fælles projekt</div>
+    <h2>Vi bygger det sammen</h2>
+    <p>Vi holder prisen nede, så alle kan være med. Det kan vi, fordi vi hjælper hinanden. Derfor spørger vi alle, hvordan de kan give en hånd, hvis de får plads. Det kan være spilleren selv, en forælder eller en anden i familien. Det behøver ikke være meget, men alle giver lidt.</p>
+    <div class="pv-chips"><span>Hjælpe ved arrangementer og camps</span><span>Være hjælpetræner</span><span>Forælder på holdet som støtte for træneren</span><span>Kørsel og praktisk</span><span>Foto og sociale medier</span><span>Sponsorer og netværk</span><span>RTK Padelcircle</span></div>
+  </div>
+  <div class="pv-foto" style="background-image:url(billeder/padel/hold.jpg);min-height:560px;background-position:center 30%" role="img" aria-label="Spillere og træner slår ketsjerne sammen over nettet hos PADELPIT"><div class="maerke"><b>Hos PADELPIT</b>RTK på banen, november 2026</div></div>
+</div></section>
+
+<section class="sek pv-tilm" id="tilmeld"><div class="w pv-to">
+  <div>
+    <div class="kick">Venteliste 2027</div>
+    <h2>Skriv jer op</h2>
+    <p class="graa">Ventelisten lukker 15. december 2026. Du kan skrive flere spillere op på én gang, fx dig selv og dine børn. Det er ikke først til mølle, så tag den tid, du skal bruge.</p>
+    <div class="pv-foto" style="background-image:url(billeder/padel/junior.jpg);min-height:300px;margin-top:26px" role="img" aria-label="En junior returnerer bolden, mens træneren ser på, hos PADELPIT"></div>
+  </div>
+
+  <form class="pv-form" id="form" novalidate>
+    <div class="pv-trinbar" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+
+    <div data-trin="1">
+      <h3>1. Spillerne</h3>
+      <fieldset><legend>Hvem skriver du op?</legend>
+        <div class="pv-vg" id="hvem">
+          <label><input type="radio" name="hvem" value="mig"><span>Mig selv</span></label>
+          <label><input type="radio" name="hvem" value="barn" checked><span>Mit barn</span></label>
+          <label><input type="radio" name="hvem" value="begge"><span>Os begge</span></label>
+        </div>
+      </fieldset>
+      <div id="spillere"></div>
+      <button type="button" class="pv-tilfoej" id="tilfoej">+ Tilføj en spiller mere</button>
+      <fieldset><legend>Hvilke dage kan I?</legend>
+        <div class="pv-vg">
+          <label><input type="checkbox" name="dag" value="onsdag" checked><span>Onsdag 15 til 19</span></label>
+          <label><input type="checkbox" name="dag" value="loerdag" checked><span>Lørdag 9 til 13</span></label>
+        </div>
+        <div class="graa" style="font-size:13px;margin-top:6px">Vælg gerne begge. Det øger chancen for en plads.</div>
+      </fieldset>
+      <div class="pv-fejl" id="fejl1" role="alert"></div>
+      <button type="button" class="knap" data-videre="2">Videre</button>
+    </div>
+
+    <div data-trin="2" hidden>
+      <h3>2. Kontakt og frivillighed</h3>
+      <label class="lb" for="kNavn" id="kNavnLb">Dit navn</label><input type="text" id="kNavn" autocomplete="name">
+      <div class="pv-to2">
+        <div><label class="lb" for="kMail">Mail</label><input type="email" id="kMail" autocomplete="email" placeholder="navn@eksempel.dk"></div>
+        <div><label class="lb" for="kMobil">Mobil</label><input type="tel" id="kMobil" autocomplete="tel" placeholder="20 00 00 00"></div>
+      </div>
+      <fieldset><legend>Er I medlem af RTK?</legend>
+        <div class="pv-vg">
+          <label><input type="radio" name="medlem" value="ja"><span>Ja</span></label>
+          <label><input type="radio" name="medlem" value="nej"><span>Nej</span></label>
+          <label><input type="radio" name="medlem" value="vedikke"><span>Ved ikke</span></label>
+        </div>
+      </fieldset>
+      <fieldset><legend>Hvordan kan I give en hånd, hvis I får plads?</legend>
+        <label class="pv-cb"><input type="checkbox" name="hjaelp" value="arrangementer">Hjælpe ved arrangementer og camps</label>
+        <label class="pv-cb"><input type="checkbox" name="hjaelp" value="hjaelpetraener">Være hjælpetræner</label>
+        <label class="pv-cb"><input type="checkbox" name="hjaelp" value="foraelder">Forælder på holdet som støtte for træneren</label>
+        <label class="pv-cb"><input type="checkbox" name="hjaelp" value="praktisk">Kørsel og praktisk (bolde, baner i Darup)</label>
+        <label class="pv-cb"><input type="checkbox" name="hjaelp" value="kommunikation">Foto, sociale medier og kommunikation</label>
+        <label class="pv-cb"><input type="checkbox" name="hjaelp" value="sponsorer">Sponsorer og netværk</label>
+        <label class="pv-cb"><input type="checkbox" name="hjaelp" value="padelcircle">Være med i RTK Padelcircle</label>
+      </fieldset>
+      <fieldset><legend>Hvem giver hånden?</legend>
+        <div class="pv-vg">
+          <label><input type="checkbox" name="hvemHjaelper" value="spiller"><span>Spilleren</span></label>
+          <label><input type="checkbox" name="hvemHjaelper" value="foraelder"><span>Forælder</span></label>
+          <label><input type="checkbox" name="hvemHjaelper" value="anden"><span>Anden voksen</span></label>
+        </div>
+      </fieldset>
+      <fieldset><legend>Hvor ofte, cirka?</legend>
+        <div class="pv-vg">
+          <label><input type="radio" name="hyppighed" value="halvaar"><span>Et par gange pr. halvår</span></label>
+          <label><input type="radio" name="hyppighed" value="maaned"><span>Månedligt</span></label>
+          <label><input type="radio" name="hyppighed" value="uge"><span>Ugentligt</span></label>
+        </div>
+      </fieldset>
+      <label class="lb" for="kAndet">Andet, eller fortæl lidt mere</label>
+      <textarea id="kAndet" maxlength="600" placeholder="Fx noget I er gode til, eller et ønske til holdet"></textarea>
+      <div class="pv-honning" aria-hidden="true"><label>Lad dette felt være tomt <input type="text" id="kWeb" tabindex="-1" autocomplete="off"></label></div>
+      <div style="margin-top:18px">
+        <label class="pv-cb"><input type="checkbox" id="kForpligt">Vi forpligter os til at bidrage frivilligt, hvis vi får plads</label>
+        <label class="pv-cb"><input type="checkbox" id="kPrivat">Jeg har læst, <a href="privatliv.html" target="_blank" rel="noopener">hvordan RTK bruger oplysningerne</a></label>
+        <label class="pv-cb"><input type="checkbox" id="kCamps">Fortæl mig om camps og andre tilbud, hvis der ikke er plads</label>
+      </div>
+      <div class="pv-fejl" id="fejl2" role="alert"></div>
+      <button type="submit" class="knap" id="send">Skriv mig på ventelisten</button>
+      <button type="button" class="pv-tilbage" data-videre="1">Tilbage</button>
+    </div>
+
+    <div data-trin="3" hidden>
+      <h3 id="takH">Tak</h3>
+      <div class="pv-kvit" id="takT"></div>
+      <div class="lb">Dit nummer på ventelisten</div>
+      <div class="pv-nummer"><b id="nummer">PV-0000</b><button type="button" id="kopi">Kopiér</button></div>
+      <div class="pv-betal"><b style="display:block;font-size:17px">Sidste trin: depositum</b><span id="beloeb"></span> Pladsen på listen gælder først, når der er betalt. Skriv dit nummer i feltet "Ventelistenummer".</div>
+      <a class="knap" id="betal" href="#" target="_blank" rel="noopener">Betal i ForeningLet</a>
+      <div class="graa" style="font-size:14px;margin-top:10px">Det tager et minut. Du skal kun skrive navn, mail og mobil. Linket står også i den mail, du får.</div>
+      <div class="pv-test" id="testnote">Testversion. Tilmeldingen er ikke gemt, og linket til ForeningLet kommer, når arrangementet er oprettet.</div>
+    </div>
+  </form>
+</div></section>
+
+<section class="sek pv-faq"><div class="w">
+  <h2>Spørgsmål og svar</h2>
+  <div class="gitter">
+    <div><b>Skal jeg være medlem af RTK?</b><span>Nej, alle kan skrive sig op. Får du plads, bliver du medlem, og så følger PADELPIT-medlemskabet og Darup med.</span></div>
+    <div><b>Hvad hvis vi ikke får plads?</b><span>Så får I de 500 kr. tilbage. I kan også vælge at blive stående på listen, hvis der bliver en plads senere.</span></div>
+    <div><b>Skal man kunne spille i forvejen?</b><span>Nej. Nybegyndere er velkomne, og holdene lægges efter niveau.</span></div>
+    <div><b>Hvorfor et depositum?</b><span>Så vi ved, hvem der mener det, og kan sætte holdene, før træningen starter i januar.</span></div>
+    <div><b>Kan vi vælge dag?</b><span>I fortæller, hvilke dage I kan. Kan I begge dage, er chancen større.</span></div>
+    <div><b>Hvad sker der med vores oplysninger?</b><span>De bruges kun til at sætte holdene og slettes, hvis I ikke får plads. Læs mere i <a href="privatliv.html">privatlivsteksten</a>.</span></div>
+  </div>
+</div></section>
+
+<div class="wrap partnere pv-partnere">
+  <img class="p-babolat" src="ikoner/babolat.png" alt="Babolat">
+  <span>Officielle partnere</span>
+  <a class="p-racketlife" href="https://racketlife.dk" target="_blank" rel="noopener" aria-label="Racketlife (åbner i ny fane)"><img src="ikoner/racketlife.png" alt=""></a>
+</div>
+<div class="pv-cta" id="cta"><a class="knap" href="#tilmeld">Skriv mig på ventelisten</a></div>
+</main>
+
+<footer class="bund">
+  <div class="wrap">
+    <span class="klub">
+      <a href="https://roskildetennisklub.dk" target="_blank" rel="noopener" aria-label="Roskilde Tennis Klubs hjemmeside (åbner i ny fane)"><img src="ikoner/rtk-hvid.png" alt=""></a>
+      <span><b>Roskilde Tennis Klub</b> · Padel i samarbejde med PADELPIT</span>
+    </span>
+    <span class="hoejre">
+      <span>Testversion. Data er opdigtede.</span>
+      <a class="privat" href="privatliv.html">Privatliv</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var PRIS = 500, START = new Date(2027, 0, 1);
+  var form = document.getElementById('form'), liste = document.getElementById('spillere');
+  var kilde = (new URLSearchParams(location.search).get('kilde') || '').slice(0, 60);
+  var n = 0;
+
+  function alder(d) {
+    var a = START.getFullYear() - d.getFullYear();
+    if (START < new Date(START.getFullYear(), d.getMonth(), d.getDate())) a--;
+    return a;
+  }
+  function holdFor(a) {
+    if (a < 8) return { fejl: true, t: 'Holdene er for spillere fra 8 år. Skriv til os, hvis I alligevel er interesserede.' };
+    if (a <= 9) return { t: 'Hold: Junior (8 til 12 år)' };
+    if (a <= 12) return { t: 'Hold: Junior eller Junior+ (vi finder det rigtige)' };
+    if (a <= 17) return { t: 'Hold: Junior+ (10 til 18 år)' };
+    return { t: 'Hold: Voksen' };
+  }
+  function nySpiller() {
+    n++;
+    var d = document.createElement('fieldset');
+    d.className = 'pv-spiller'; d.dataset.nr = n;
+    d.innerHTML =
+      '<legend class="lb">Spiller ' + n + '</legend>' +
+      (n > 1 ? '<button type="button" class="fjern">Fjern</button>' : '') +
+      '<label class="lb" for="sNavn' + n + '">Navn</label><input type="text" id="sNavn' + n + '" data-f="navn" autocomplete="off">' +
+      '<div class="pv-to2"><div><label class="lb" for="sFoed' + n + '">Fødselsdato</label><input type="date" id="sFoed' + n + '" data-f="foed" min="1930-01-01" max="2019-12-31"></div>' +
+      '<div><label class="lb" for="sKoen' + n + '">Køn</label><select id="sKoen' + n + '" data-f="koen"><option value="">Vælg</option><option value="k">Pige eller kvinde</option><option value="m">Dreng eller mand</option><option value="x">Ønsker ikke at oplyse</option></select></div></div>' +
+      '<div class="lb">Har spilleren prøvet padel?</div><div class="pv-vg">' +
+      ['Aldrig', 'Lidt', 'Spiller jævnligt'].map(function (t, i) {
+        return '<label><input type="radio" name="erf' + n + '" value="' + i + '"' + (i === 0 ? ' checked' : '') + '><span>' + t + '</span></label>';
+      }).join('') + '</div><div class="hold" aria-live="polite"></div>';
+    liste.appendChild(d);
+    var foed = d.querySelector('[data-f=foed]'), hold = d.querySelector('.hold');
+    foed.addEventListener('change', function () {
+      if (!foed.value) { hold.textContent = ''; return; }
+      var h = holdFor(alder(new Date(foed.value)));
+      hold.textContent = h.t; hold.classList.toggle('fejl', !!h.fejl);
+    });
+    var fj = d.querySelector('.fjern');
+    if (fj) fj.addEventListener('click', function () { d.remove(); omnummerer(); });
+  }
+  function omnummerer() {
+    var alle = liste.querySelectorAll('.pv-spiller');
+    alle.forEach(function (s, i) { s.querySelector('legend').textContent = 'Spiller ' + (i + 1); });
+  }
+  function spillere() {
+    return Array.prototype.map.call(liste.querySelectorAll('.pv-spiller'), function (s) {
+      var erf = s.querySelector('input[type=radio]:checked');
+      return { navn: s.querySelector('[data-f=navn]').value.trim(), foed: s.querySelector('[data-f=foed]').value,
+        koen: s.querySelector('[data-f=koen]').value, erfaring: erf ? +erf.value : 0 };
+    });
+  }
+  function vis(t) {
+    form.querySelectorAll('[data-trin]').forEach(function (el) { el.hidden = el.dataset.trin !== String(t); });
+    form.querySelectorAll('.pv-trinbar i').forEach(function (el, i) { el.classList.toggle('on', i < t); });
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function valgt(navn) { return Array.prototype.map.call(form.querySelectorAll('input[name=' + navn + ']:checked'), function (i) { return i.value; }); }
+
+  nySpiller();
+  document.getElementById('tilfoej').addEventListener('click', nySpiller);
+  document.getElementById('hvem').addEventListener('change', function () {
+    var v = valgt('hvem')[0];
+    if (v === 'begge' && liste.children.length < 2) nySpiller();
+    document.getElementById('kNavnLb').textContent = v === 'mig' ? 'Dit navn' : 'Dit navn (forælder eller den, der skriver op)';
+  });
+
+  form.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-videre]'); if (!b) return;
+    if (b.dataset.videre === '2') {
+      var f = document.getElementById('fejl1'), sp = spillere();
+      if (sp.some(function (s) { return !s.navn || !s.foed; })) { f.textContent = 'Skriv navn og fødselsdato på alle spillere.'; return; }
+      if (sp.some(function (s) { return alder(new Date(s.foed)) < 8; })) { f.textContent = 'Holdene er for spillere fra 8 år.'; return; }
+      if (!valgt('dag').length) { f.textContent = 'Vælg mindst én dag.'; return; }
+      f.textContent = '';
+      if (valgt('hvem')[0] === 'mig' && !document.getElementById('kNavn').value) document.getElementById('kNavn').value = sp[0].navn;
+    }
+    vis(+b.dataset.videre);
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var f = document.getElementById('fejl2');
+    var navn = document.getElementById('kNavn').value.trim(), mail = document.getElementById('kMail').value.trim(), mobil = document.getElementById('kMobil').value.replace(/\s/g, '');
+    if (!navn) { f.textContent = 'Skriv dit navn.'; return; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) { f.textContent = 'Skriv en mail, vi kan svare på.'; return; }
+    if (!/^(\+45)?\d{8}$/.test(mobil)) { f.textContent = 'Skriv et dansk mobilnummer med 8 cifre.'; return; }
+    if (!document.getElementById('kPrivat').checked) { f.textContent = 'Sæt flueben ved, at du har læst, hvordan RTK bruger oplysningerne.'; return; }
+    f.textContent = '';
+    var data = {
+      hvem: valgt('hvem')[0], spillere: spillere(), dage: valgt('dag'),
+      kontakt: { navn: navn, mail: mail, mobil: mobil }, medlem: valgt('medlem')[0] || '',
+      hjaelp: valgt('hjaelp'), hvemHjaelper: valgt('hvemHjaelper'), hyppighed: valgt('hyppighed')[0] || '',
+      andet: document.getElementById('kAndet').value.trim(), forpligter: document.getElementById('kForpligt').checked,
+      camps: document.getElementById('kCamps').checked, kilde: kilde, web: document.getElementById('kWeb').value
+    };
+    // Motoren (handlingen ventelisteNy) er ikke bygget endnu. Indtil da vises kvitteringen med et testnummer.
+    var nr = 'PV-T' + String(Math.floor(Math.random() * 900) + 100);
+    var antal = data.spillere.length;
+    document.getElementById('takH').textContent = 'Tak, ' + navn.split(' ')[0];
+    document.getElementById('takT').innerHTML = '<b>' + data.spillere.map(function (s) { return s.navn.split(' ')[0]; }).join(' og ').replace(/&/g, '&amp;').replace(/</g, '&lt;') + '</b> ' + (antal > 1 ? 'står' : 'står') + ' nu på ventelisten.';
+    document.getElementById('nummer').textContent = nr;
+    document.getElementById('beloeb').textContent = antal + (antal > 1 ? ' spillere' : ' spiller') + ' × 500 kr. = ' + (antal * PRIS).toLocaleString('da-DK') + ' kr.';
+    window.__venteliste = data;
+    vis(3);
+  });
+
+  document.getElementById('kopi').addEventListener('click', function () {
+    var t = document.getElementById('nummer').textContent, b = this;
+    (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { b.textContent = 'Kopieret'; }, function () { b.textContent = 'Kopiér selv'; });
+  });
+
+  // den faste knap på telefonen skjules, når formularen er i syne
+  if ('IntersectionObserver' in window) {
+    var cta = document.getElementById('cta');
+    new IntersectionObserver(function (es) { es.forEach(function (x) { cta.classList.toggle('skjult', x.isIntersecting); }); })
+      .observe(document.getElementById('tilmeld'));
+  }
+})();
+</script>
+</body>
+</html>
