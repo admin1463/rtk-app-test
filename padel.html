@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="5dd525eae810">
+<meta name="rtk-version" content="2a466747019b">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -288,7 +288,7 @@
     <div class="pv-kort"><div class="alder">10 til 17 år</div><h3>Junior+</h3><div class="tid">1,5 time om ugen</div><div class="pris">875 kr. <small>pr. kvartal</small></div>
       <ul><li>Onsdag mellem 15 og 19 eller lørdag mellem 9 og 13</li><li>Træner med hver gang</li><li>Delt i to aldersgrupper</li><li>Dygtige 16 og 17-årige kan efter aftale spille med de voksne</li></ul></div>
     <div class="pv-kort"><div class="alder">18 år og op</div><h3>Voksen</h3><div class="tid">1,5 time om ugen</div><div class="pris">1.195 kr. <small>pr. kvartal</small></div>
-      <ul><li>Onsdag fra kl. 17</li><li>Træner med hver anden gang. De andre gange spiller I frit, fx americano med skiftende makkere. Sådan kan de fleste voksne bedst lide at spille padel</li><li>Let øvede til øvede. Er du helt ny, så se <a href="#andre">listen for nybegyndere</a></li><li>8 til 10 spillere på 2 baner</li><li>Lørdagshold, hvis der er interesse</li></ul></div>
+      <ul><li>Onsdag fra kl. 17</li><li>Træner med hver anden gang. De andre gange spiller I frit, fx americano med skiftende makkere. Sådan kan de fleste voksne bedst lide at spille padel.</li><li>Let øvede til øvede. Er du helt ny, så se <a href="#andre" data-liste="nybegynder">listen for nybegyndere</a></li><li>8 til 10 spillere på 2 baner</li><li>Lørdagshold, hvis der er interesse</li></ul></div>
   </div>
   <p class="pv-note">Træningsafgiften betales pr. kalenderkvartal i ForeningLet, klubbens medlems- og betalingssystem. Man binder sig for et halvt år ad gangen. Derefter kan man opsige til udgangen af et kvartal med mindst 3 måneders varsel. Første kvartal koster fuld pris, selv om vi starter 13. januar. Når I får tildelt en plads, har I to dage til at betale. Ellers går pladsen videre til en anden på listen.</p>
   <p class="pv-note" style="margin-top:10px">For at gå på et hold skal du være medlem af RTK. Er du ikke medlem i forvejen, skal du have et udemedlemskab oveni, altså et medlemskab af RTK med udendørs tennis: 144 kr. pr. kvartal (3 til 10 år), 214 kr. (11 til 24 år) eller 383 kr. (25 år og op) og et indmeldelsesgebyr på 250 kr. pr. person. Satserne gælder frem til generalforsamlingen i marts 2027. Udemedlemskabet giver også adgang til at spille tennis udendørs på klubbens to anlæg i Roskilde, og du får medlemskabet af PadelPit Roskilde og gratis adgang til udebanerne i Darup med.</p>
@@ -345,7 +345,7 @@
       <li class="nu"><i>Nu</i><b>Skriv jer op her</b><span>Spillere, dage og hvordan I vil give en hånd. Du får et ventelistenummer, som vi bruger til at finde jeres betaling.</span></li>
       <li><i>Samme dag</i><b>Betal 500 kr. pr. spiller</b><span>I ForeningLet, klubbens medlems- og betalingssystem, med MobilePay. Brug samme mail og mobilnummer som her, og skriv ventelistenummeret. Er der ikke betalt inden for 48 timer, tager vi tilmeldingen af listen.</span></li>
       <li><i>15. december</i><b>Vi sætter holdene</b><span>Primært efter alder, niveau, dage og frivillighed.</span></li>
-      <li><i>Før jul</i><b>I får svar</b><span>Får I plads, får I det præcise tidspunkt og har to dage til at betale første kvartal i ForeningLet. Depositummet trækkes fra. Ellers går pladsen videre til en anden på listen. Får I ikke plads, får I depositummet tilbage og kan blive stående på ventelisten.</span></li>
+      <li><i>Før jul</i><b>I får svar</b><span>Får I plads, får I det præcise tidspunkt og har to dage til at betale første kvartal i ForeningLet. Depositummet trækkes fra. Ellers går pladsen videre til en anden på listen. Får I ikke plads, får I depositummet tilbage senest to uger efter svaret og kan blive stående på ventelisten.</span></li>
     </ol>
     <p class="graa" style="font-size:15px;margin-top:18px">I tvivl om holdet? <a href="#hold">Se hold, tider og priser igen</a>.</p>
   </div>
@@ -432,7 +432,7 @@
       <div class="pv-kvit" id="takT"></div>
       <div id="nrBoks"><div class="lb">Dit nummer på ventelisten</div>
       <div class="pv-nummer"><b id="nummer">PV-0000</b><button type="button" id="kopi">Kopiér</button></div></div>
-      <div class="pv-betal"><b style="display:block;font-size:17px">Sidste trin: betal depositum i dag</b><span id="beloeb"></span> Tilmeldingen gælder først, når der er betalt. Betal i dag. Er der ikke betalt inden for 48 timer, tager vi tilmeldingen af listen og sender en mail om det.<div class="pv-match">Skriv præcis dette i ForeningLet, så vi kan finde jeres betaling:<div><span>Ventelistenummer</span><b id="mNr"></b></div><div><span>Mail</span><b id="mMail"></b></div><div><span>Mobil</span><b id="mMobil"></b></div></div></div>
+      <div class="pv-betal"><b style="display:block;font-size:17px">Sidste trin: betal depositum i dag</b><span id="beloeb"></span> Betal i dag. Er der ikke betalt inden for 48 timer, tager vi tilmeldingen af listen og sender en mail om det.<div class="pv-match">Skriv præcis dette i ForeningLet, så vi kan finde jeres betaling:<div><span>Navn</span><b id="mNavn"></b></div><div><span>Ventelistenummer</span><b id="mNr"></b></div><div><span>Mail</span><b id="mMail"></b></div><div><span>Mobil</span><b id="mMobil"></b></div></div></div>
       <a class="knap" id="betal" href="#" target="_blank" rel="noopener">Betal i ForeningLet</a>
       <div class="graa" style="font-size:14px;margin-top:10px">Det tager et minut. Skriv navn, mail, mobil og ventelistenummeret. Linket står også i den mail, du får.</div>
       <div class="pv-test" id="testnote" hidden>Arrangementet i ForeningLet er ikke oprettet endnu. Du får linket på mail, så snart det er klar.</div>
@@ -446,7 +446,7 @@
   <p class="graa" style="max-width:720px">Skriv dig på en af de to lister. Det koster ikke noget, og du binder dig ikke. Er der nok, der melder sig, laver vi et tilbud til jer og vender tilbage.</p>
   <div class="pv-andre-g">
     <button type="button" class="pv-andre-k" data-liste="nybegynder"><b>Voksen og helt ny</b><p>Du har aldrig, eller næsten aldrig, spillet padel og vil gerne i gang sammen med andre nybegyndere.</p><span class="pv-vaelg">Skriv mig på listen</span></button>
-    <button type="button" class="pv-andre-k" data-liste="senior"><b>Seniorpadel (60+) i dagtimerne</b><p>Du er 60 år eller mere og vil gerne træne og spille på hverdage om formiddagen og frem til kl. 15.</p><span class="pv-vaelg">Skriv mig på listen</span></button>
+    <button type="button" class="pv-andre-k" data-liste="senior"><b>Seniorpadel (60+) i dagtimerne</b><p>Du er født i 1967 eller før og vil gerne træne og spille på hverdage om formiddagen og frem til kl. 15.</p><span class="pv-vaelg">Skriv mig på listen</span></button>
   </div>
   <form class="pv-form pv-iform" id="iform" novalidate>
     <div data-itrin="1">
@@ -502,7 +502,7 @@
     <div><b>Træner I i ferierne?</b><span>Ikke i skolernes ferier. Til gengæld kan der være camps i vinter-, påske- og efterårsferien med delvis egenbetaling.</span></div>
     <div><b>Skal vi have eget udstyr?</b><span>Ja. Tag dit eget padelbat med og sko, der passer til banen, inde eller ude. Har du ikke et bat endnu, kan du låne et i starten, så langt de rækker. Proshoppen i RTK-hallen har et udvalg af padelbat og andet padeludstyr, og hos klubbens partner Racketlife får du rabat på padeludstyr som medlem.</span></div>
     <div><b>Hvad er Seniorpadel (60+)?</b><span>Padel for dig på 60 år og op, der vil spille på hverdage i dagtimerne frem til kl. 15. Skriv dig på <a href="#andre" data-liste="senior">listen for Seniorpadel (60+)</a>. Den koster ikke depositum, og du binder dig ikke. Er der nok, laver vi et tilbud.</span></div>
-    <div><b>Hvad sker der med vores oplysninger?</b><span>De bruges kun til ventelisten, til at sætte holdene og til at finde jeres betaling. Kun Styregruppen, Padel Team og klubbens administratorer ser dem. Får I ikke plads, sletter vi dem senest 12 måneder efter. Læs mere i <a href="privatliv.html?sprog=da#padel">privatlivsteksten</a>.</span></div>
+    <div><b>Hvad sker der med vores oplysninger?</b><span>De bruges kun til ventelisten, til at sætte holdene og til at finde jeres betaling. Kun Styregruppen, Padel Team og klubbens administratorer ser dem. Får I ikke plads, sletter vi dem senest 12 måneder efter, at holdene er sat. Læs mere i <a href="privatliv.html?sprog=da#padel">privatlivsteksten</a>.</span></div>
   </div>
   <p class="pv-kontakt">Har du et spørgsmål, du ikke fik svar på? Skriv til <a href="mailto:sportschef@roskildetennisklub.dk">sportschef@roskildetennisklub.dk</a>.</p>
 </div></section>
@@ -560,7 +560,7 @@
   function holdFor(a) {
     if (a < 8) return { fejl: true, t: 'Holdene er for spillere fra 8 år. Skriv til sportschef@roskildetennisklub.dk, hvis I alligevel er interesserede.' };
     if (a <= 9) return { t: 'Hold: Junior, 1 time om ugen' };
-    if (a <= 12) return { t: 'Hold: Junior (1 time) eller Junior+ (1,5 time). Vi finder det rigtige' };
+    if (a <= 12) return { t: 'Hold: Junior (1 time) eller Junior+ (1,5 time). Vi finder det rigtige.' };
     if (a <= 17) return { t: 'Hold: Junior+, 1,5 time om ugen' };
     return { t: 'Hold: Voksen, 1,5 time om ugen' };
   }
@@ -597,10 +597,11 @@
       vp.hidden = !(a >= 16 && a <= 17);
       if (vp.hidden) vp.querySelector('input').checked = false;
       niv.hidden = !((erf && erf.value !== '0') || vp.querySelector('input').checked);
-      sh.hidden = !(a !== null && a >= 60);
+      // Samme grænse som seniorlisten: født i 1967 eller før (fylder 60 i 2027)
+      sh.hidden = !(foed.value && +foed.value.slice(0, 4) <= 1967);
       if (a === null) { hold.textContent = ''; return; }
       var h = holdFor(a);
-      if (vp.querySelector('input').checked) h = { t: 'Junior+, 1,5 time om ugen. Vi ser på, om voksenholdet passer. Fortæl om dit niveau ovenfor.' };
+      if (vp.querySelector('input').checked) h = { t: 'Hold: Junior+, 1,5 time om ugen. Vi ser på, om voksenholdet passer. Fortæl om dit niveau ovenfor.' };
       if (a >= 18 && erf && erf.value === '0') h = { t: 'Voksenholdet er for let øvede. Du kommer på listen for voksne nybegyndere og betaler ikke depositum.' };
       hold.textContent = h.t; hold.classList.toggle('fejl', !!h.fejl);
     }
@@ -682,14 +683,14 @@
     document.getElementById('takT').innerHTML = (vl.length ? '<b>' + fornavne(vl) + '</b> står nu på ventelisten.' : '') +
       (il.length ? (vl.length ? '<br>' : '') + '<b>' + fornavne(il) + '</b> står på listen for voksne nybegyndere og skal ikke betale noget.' : '');
     document.getElementById('nummer').textContent = nr;
-    document.getElementById('mNr').textContent = nr; document.getElementById('mMail').textContent = mail.toLowerCase(); document.getElementById('mMobil').textContent = mobil.replace(/^\+45/, '');
+    document.getElementById('mNavn').textContent = navn; document.getElementById('mNr').textContent = nr; document.getElementById('mMail').textContent = mail.toLowerCase(); document.getElementById('mMobil').textContent = mobil.replace(/^\+45/, '');
     document.getElementById('beloeb').textContent = antal + (antal > 1 ? ' spillere' : ' spiller') + ' × 500 kr. = ' + svar.beloeb.toLocaleString('da-DK') + ' kr.';
     var betaling = antal > 0, betal = document.getElementById('betal');
     document.querySelector('.pv-betal').hidden = !betaling; document.getElementById('nrBoks').hidden = !betaling;
-    betal.hidden = !(betaling && svar.betal); betal.nextElementSibling.hidden = !betaling;
+    betal.hidden = !(betaling && svar.betal); betal.nextElementSibling.hidden = !(betaling && svar.betal);
     if (svar.betal) betal.href = svar.betal;
     document.getElementById('testnote').hidden = !(betaling && !svar.betal);
-    if (!betaling) document.getElementById('takT').innerHTML += ' Vi vender tilbage, når vi har et tilbud.';
+    if (il.length) document.getElementById('takT').innerHTML += (vl.length ? '<br>' : ' ') + 'På den liste er der intet at betale, og du binder dig ikke. Er der nok, der melder sig, laver vi et tilbud og skriver til dig. Har du spørgsmål, så skriv til <a href="mailto:sportschef@roskildetennisklub.dk">sportschef@roskildetennisklub.dk</a>.';
     window.__venteliste = data;
     vis(3);
   });
