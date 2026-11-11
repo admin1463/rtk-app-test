@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="d047f11c8455">
+<meta name="rtk-version" content="dbc89bd89618">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -329,12 +329,12 @@
     <div data-trin="3" hidden>
       <h3 id="takH">Tak</h3>
       <div class="pv-kvit" id="takT"></div>
-      <div class="lb">Dit nummer på ventelisten</div>
-      <div class="pv-nummer"><b id="nummer">PV-0000</b><button type="button" id="kopi">Kopiér</button></div>
+      <div id="nrBoks"><div class="lb">Dit nummer på ventelisten</div>
+      <div class="pv-nummer"><b id="nummer">PV-0000</b><button type="button" id="kopi">Kopiér</button></div></div>
       <div class="pv-betal"><b style="display:block;font-size:17px">Sidste trin: betal depositum i dag</b><span id="beloeb"></span> Tilmeldingen gælder først, når der er betalt, og det skal ske i dag. Er der ikke betalt inden for 48 timer, tager vi tilmeldingen af listen og sender en mail om det.<div class="pv-match">Skriv præcis dette i ForeningLet, så vi kan finde jeres betaling:<div><span>Ventelistenummer</span><b id="mNr"></b></div><div><span>Mail</span><b id="mMail"></b></div><div><span>Mobil</span><b id="mMobil"></b></div></div></div>
       <a class="knap" id="betal" href="#" target="_blank" rel="noopener">Betal i ForeningLet</a>
       <div class="graa" style="font-size:14px;margin-top:10px">Det tager et minut. Du skal kun skrive navn, mail og mobil. Linket står også i den mail, du får.</div>
-      <div class="pv-test" id="testnote">Testversion. Tilmeldingen er ikke gemt, og linket til ForeningLet kommer, når arrangementet er oprettet.</div>
+      <div class="pv-test" id="testnote" hidden>Arrangementet i ForeningLet er ikke oprettet endnu. Du får linket på mail, så snart det er klar.</div>
     </div>
   </form>
 </div></section>
@@ -376,7 +376,7 @@
     </div>
     <div data-itrin="2" hidden>
       <div class="pv-kvit" id="iTak"></div>
-      <div class="pv-test">Testversion. Tilmeldingen er ikke gemt.</div>
+      
     </div>
   </form>
 </div></section>
@@ -512,10 +512,26 @@
   </div>
 </footer>
 
+<script src="konfig.js?v=5d3b61fda9e3"></script>
 <script>
 (function () {
   'use strict';
   var PRIS = 500, START = new Date(2027, 0, 1);
+  var URL_MOTOR = (window.RTK_KONFIG && window.RTK_KONFIG.motor) || '';
+  function nyId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 10); }
+  /** Ét kald til motoren. Samme id ved et nyt forsøg, så et dobbelttryk ikke gemmer to gange. */
+  async function motor(handling, data, id) {
+    for (var forsoeg = 0; forsoeg < 3; forsoeg++) {
+      var res = await fetch(URL_MOTOR, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ modul: 'padel', handling: handling, id: id, data: data }) });
+      var j = await res.json();
+      if (j.ok) return j.data;
+      if (!j.igang) throw new Error(j.fejl || 'Noget gik galt. Prøv igen.');
+      await new Promise(function (r) { setTimeout(r, 2000); });
+    }
+    throw new Error('Det tager lang tid. Prøv igen om et øjeblik.');
+  }
+  var vlId = nyId(), ilId = nyId();
   var form = document.getElementById('form'), liste = document.getElementById('spillere');
   var kilde = (new URLSearchParams(location.search).get('kilde') || '').slice(0, 60);
   var n = 0;
@@ -614,9 +630,10 @@
     vis(+b.dataset.videre);
   });
 
-  form.addEventListener('submit', function (e) {
+  form.addEventListener('submit', async function (e) {
     e.preventDefault();
-    var f = document.getElementById('fejl2');
+    var f = document.getElementById('fejl2'), knap = document.getElementById('send');
+    if (knap.disabled) return;
     var navn = document.getElementById('kNavn').value.trim(), mail = document.getElementById('kMail').value.trim(), mobil = document.getElementById('kMobil').value.replace(/\s/g, '');
     if (!navn) { f.textContent = 'Skriv dit navn.'; return; }
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) { f.textContent = 'Skriv en mail, vi kan svare på.'; return; }
@@ -627,26 +644,31 @@
       hvem: valgt('hvem')[0], spillere: spillere(), dage: valgt('dag'),
       kontakt: { navn: navn, mail: mail, mobil: mobil }, medlem: valgt('medlem')[0] || '',
       hjaelp: valgt('hjaelp'), hvemHjaelper: valgt('hvemHjaelper'), hyppighed: valgt('hyppighed')[0] || '',
-      andet: document.getElementById('kAndet').value.trim(), forpligter: document.getElementById('kForpligt').checked,
-      camps: document.getElementById('kCamps').checked, kilde: kilde, web: document.getElementById('kWeb').value
+      andet: document.getElementById('kAndet').value.trim(), forventning: document.getElementById('kForpligt').checked,
+      camps: document.getElementById('kCamps').checked, privat: true, kilde: kilde, web: document.getElementById('kWeb').value
     };
-    // Motoren (handlingen ventelisteNy) er ikke bygget endnu. Indtil da vises kvitteringen med et testnummer.
-    var nr = 'PV-T' + String(Math.floor(Math.random() * 900) + 100);
+    window.__venteliste = data;
+    var svar;
+    knap.disabled = true; knap.textContent = 'Sender …';
+    try { svar = await motor('ventelisteNy', data, vlId); }
+    catch (err) { f.textContent = err.message; knap.disabled = false; knap.textContent = 'Skriv mig på ventelisten'; return; }
+    vlId = nyId(); knap.disabled = false; knap.textContent = 'Skriv mig på ventelisten';
+    var nr = svar.nr, antal = svar.antal;
     var erNyb = function (x) { return alder(new Date(x.foed)) >= 18 && x.erfaring === 0; };
     var esc = function (t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;'); };
     var fornavne = function (l) { return esc(l.map(function (x) { return x.navn.split(' ')[0]; }).join(' og ')); };
     var vl = data.spillere.filter(function (x) { return !erNyb(x); }), il = data.spillere.filter(erNyb);
-    var antal = vl.length;
     document.getElementById('takH').textContent = 'Tak, ' + navn.split(' ')[0];
     document.getElementById('takT').innerHTML = (vl.length ? '<b>' + fornavne(vl) + '</b> står nu på ventelisten.' : '') +
       (il.length ? (vl.length ? '<br>' : '') + '<b>' + fornavne(il) + '</b> står på listen for voksne nybegyndere og skal ikke betale noget.' : '');
     document.getElementById('nummer').textContent = nr;
-    document.getElementById('mNr').textContent = nr; document.getElementById('mMail').textContent = mail; document.getElementById('mMobil').textContent = mobil.replace(/^\+45/, '');
-    var nyb = data.spillere.length - antal;
-    document.getElementById('beloeb').textContent = antal + (antal > 1 ? ' spillere' : ' spiller') + ' × 500 kr. = ' + (antal * PRIS).toLocaleString('da-DK') + ' kr.';
-    var betaling = antal > 0;
-    document.querySelector('.pv-betal').hidden = !betaling; document.getElementById('betal').hidden = !betaling;
-    document.getElementById('betal').nextElementSibling.hidden = !betaling;
+    document.getElementById('mNr').textContent = nr; document.getElementById('mMail').textContent = mail.toLowerCase(); document.getElementById('mMobil').textContent = mobil.replace(/^\+45/, '');
+    document.getElementById('beloeb').textContent = antal + (antal > 1 ? ' spillere' : ' spiller') + ' × 500 kr. = ' + svar.beloeb.toLocaleString('da-DK') + ' kr.';
+    var betaling = antal > 0, betal = document.getElementById('betal');
+    document.querySelector('.pv-betal').hidden = !betaling; document.getElementById('nrBoks').hidden = !betaling;
+    betal.hidden = !(betaling && svar.betal); betal.nextElementSibling.hidden = !betaling;
+    if (svar.betal) betal.href = svar.betal;
+    document.getElementById('testnote').hidden = !(betaling && !svar.betal);
     if (!betaling) document.getElementById('takT').innerHTML += ' Vi vender tilbage, når vi har et tilbud.';
     window.__venteliste = data;
     vis(3);
@@ -662,8 +684,10 @@
   iform.addEventListener('change', function () {
     iform.querySelector('.iErf').hidden = (iform.querySelector('input[name=liste]:checked').value !== 'senior');
   });
-  iform.addEventListener('submit', function (e) {
+  iform.addEventListener('submit', async function (e) {
     e.preventDefault();
+    var iknap = iform.querySelector('button[type=submit]');
+    if (iknap.disabled) return;
     var f = document.getElementById('ifejl'), g = function (id) { return document.getElementById(id).value.trim(); };
     var liste = iform.querySelector('input[name=liste]:checked').value, mobil = g('iMobil').replace(/\s/g, ''), aar = +g('iFoed');
     if (!g('iNavn')) { f.textContent = 'Skriv dit navn.'; return; }
@@ -673,7 +697,12 @@
     if (!document.getElementById('iPrivat').checked) { f.textContent = 'Sæt flueben ved, at du har læst, hvordan RTK bruger oplysningerne.'; return; }
     f.textContent = '';
     window.__interesse = { liste: liste, navn: g('iNavn'), foedselsaar: aar, mail: g('iMail'), mobil: mobil,
-      erfaring: liste === 'senior' ? +iform.querySelector('input[name=iErf]:checked').value : 0, andet: g('iAndet'), kilde: kilde };
+      erfaring: liste === 'senior' ? +iform.querySelector('input[name=iErf]:checked').value : 0, andet: g('iAndet'), kilde: kilde,
+      privat: true, web: document.getElementById('kWeb').value };
+    iknap.disabled = true; iknap.textContent = 'Sender …';
+    try { await motor('interesseNy', window.__interesse, ilId); }
+    catch (err) { f.textContent = err.message; iknap.disabled = false; iknap.textContent = 'Skriv mig på listen'; return; }
+    ilId = nyId(); iknap.disabled = false; iknap.textContent = 'Skriv mig på listen';
     document.getElementById('iTak').innerHTML = '<b>Tak, ' + g('iNavn').split(' ')[0].replace(/&/g, '&amp;').replace(/</g, '&lt;') + '.</b> Du står nu på listen ' +
       (liste === 'senior' ? 'for seniorpadel i dagtimerne' : 'for voksne nybegyndere') + '. Der er intet at betale. Vi vender tilbage, hvis der er nok til et tilbud.';
     iform.querySelector('[data-itrin="1"]').hidden = true; iform.querySelector('[data-itrin="2"]').hidden = false;
