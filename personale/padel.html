@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="de06cd54d91a">
+<meta name="rtk-version" content="c940d7f7fdf5">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -1151,6 +1151,13 @@ const vlMaerke = (sp) => sp.status === 'Betalt' ? '<span class="vl-m ok">' + (sp
   : sp.status === 'Venter på betaling' ? '<span class="vl-m">Venter ' + Math.max(0, Math.round((Date.now() - new Date(sp.tid.replace(' ', 'T')).getTime()) / 3600000)) + ' t</span>'
   : '<span class="vl-m af">' + esc(sp.status) + '</span>';
 const vlHoldNavn = (h) => h.indexOf('Junior+') === 0 ? 'Junior+' : h.indexOf('Junior') === 0 ? 'Junior' : h;
+// Lukkedatoen kommer som tekst eller som en dato fra arket. Vises som "15. december kl. 23.59".
+function vlDato(v) {
+  const t = String(v || ''), d = new Date(/^\d{4}-\d\d-\d\d \d/.test(t) ? t.replace(' ', 'T') : t);
+  if (isNaN(d.getTime())) return t;
+  return d.toLocaleDateString('da-DK', { day: 'numeric', month: 'long', timeZone: 'Europe/Copenhagen' }) + ' kl. '
+    + d.toLocaleTimeString('da-DK', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Copenhagen' }).replace(':', '.');
+}
 async function vlHent() { vlData = await motor('padel', 'vl', {}); return vlData; }
 function vlCsv(raekker, navn) {
   const csv = raekker.map((r) => r.map((v) => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"').join(';')).join('\r\n');
@@ -1164,7 +1171,7 @@ async function visVl(del) {
   try { await vlHent(); } catch (err) { $('vVl').innerHTML = fejlHtml(err); return; }
   const d = vlData, sp = d.spillere, adm = d.admin;
   const nyb = d.interesse.filter((x) => x.liste === 'Voksne nybegyndere').length, sen = d.interesse.length - nyb;
-  let h = '<p class="hint" style="margin:0 0 8px">&#128274; Kun Styregruppen og Padel Team. Lukker ' + esc(d.lukker) + '.</p>';
+  let h = '<p class="hint" style="margin:0 0 8px">&#128274; Kun Styregruppen og Padel Team. Listen lukker ' + esc(vlDato(d.lukker)) + '.</p>';
   h += '<div class="pd-skift" role="group" aria-label="Venteliste" style="display:flex;margin:0 0 10px">'
     + [['liste', 'Venteliste · ' + sp.length], ['tvivl', 'Tvivl'], ['uden', 'Uden depositum · ' + d.interesse.length]]
       .map((x) => '<button type="button" style="flex:1" data-vldel="' + x[0] + '" aria-pressed="' + (del === x[0]) + '">' + esc(x[1]) + '</button>').join('') + '</div>';
