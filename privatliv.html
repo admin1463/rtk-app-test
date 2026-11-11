@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="13246241aea5">
+<meta name="rtk-version" content="779b3abad9e8">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -21,7 +21,11 @@
 .indlejret .top,.indlejret .bund,.indlejret .partnere,.indlejret .monster{display:none !important}
 .indlejret body{min-height:0}
 .indlejret .indhold{padding-top:20px;padding-bottom:24px}
+/* Fra mitrtk.dk/padel (?side=padel): kun det, der gælder padelsiden (Lars 11. november 2026 kl. 15.25) */
+.kun-padel .afsnit:not([data-padel]),.kun-padel .opbevaring .card:not([data-padel]),.kun-padel .card.kontakt b,.kun-padel .card.kontakt a{display:none !important}
+html:not(.kun-padel) .kun-padel-vis{display:none !important}
 </style>
+<script>if (/[?&]side=padel\b/.test(location.search)) document.documentElement.classList.add('kun-padel');</script>
 </head>
 <body>
 <header class="top">
@@ -66,7 +70,7 @@
     </section>
 
     <!-- Venteliste til padel på mitrtk.dk/padel (Lars 11. november 2026 kl. 14.06). Skjules i produktionen, indtil padelsiden går live -->
-    <section class="afsnit" id="padel">
+    <section class="afsnit" id="padel" data-padel>
       <h2 data-t="padelH"></h2>
       <p data-t="padelIntro"></p>
       <ul>
@@ -79,8 +83,9 @@
         <li data-t="padel7"></li>
         <li data-t="padel8"></li>
         <li data-t="padel9"></li>
+        <li data-t="padel10"></li>
       </ul>
-      <p><span data-t="padelSpm"></span> <a href="mailto:sportschef@roskildetennisklub.dk">sportschef@roskildetennisklub.dk</a></p>
+      <p><span data-t="padelSpm"></span> <a href="padel.html#skriv" data-t="padelSpmLink">Spørg os på padelsiden</a>.</p>
     </section>
 
     <section class="afsnit">
@@ -111,7 +116,7 @@
       </ul>
     </section>
 
-    <section class="afsnit">
+    <section class="afsnit" data-padel>
       <h2 data-t="laengeH"></h2>
       <div class="opbevaring">
         <div class="card">
@@ -149,12 +154,12 @@
           <span><span data-t="kanSes"></span><span data-t="o7a"></span></span>
           <span><span data-t="slettet"></span><span data-t="o7b"></span></span>
         </div>
-        <div class="card">
+        <div class="card" data-padel>
           <b data-t="o8"></b>
           <span><span data-t="gaelder"></span><span data-t="o8a"></span></span>
           <span><span data-t="slettet"></span><span data-t="o8b"></span></span>
         </div>
-        <div class="card">
+        <div class="card" data-padel>
           <b data-t="o9"></b>
           <span><span data-t="gaelder"></span><span data-t="o9a"></span></span>
           <span><span data-t="slettet"></span><span data-t="o9b"></span></span>
@@ -163,7 +168,7 @@
       <p class="hint" data-t="kopier"></p>
     </section>
 
-    <section class="afsnit">
+    <section class="afsnit" data-padel>
       <h2 data-t="hjaelpH"></h2>
       <p data-t="hjaelp"></p>
     </section>
@@ -173,7 +178,8 @@
       <p data-t="telefon"></p>
     </section>
 
-    <section class="afsnit">
+    <section class="afsnit" data-padel>
+      <p class="kun-padel-vis"><a href="privatliv.html" data-t="heleTeksten">Læs hele teksten om privatliv i Mit RTK</a></p>
       <div class="card kontakt">
         <b data-t="spmH">Spørgsmål til privatliv</b>
         <a href="mailto:privatliv@mitrtk.dk">privatliv@mitrtk.dk</a>
@@ -268,11 +274,12 @@ window.TEKSTER = {
     padel3: 'Hvorfor: for at holde styr på ventelisten, sætte holdene, finde jeres betaling af depositum og skrive til jer om pladsen. Depositummet betales i klubbens medlems- og betalingssystem, og vi finder betalingen ud fra ventelistenummeret, mailen og mobilnummeret.',
     padel4: 'Hvem ser det: kun Styregruppen for padel, Padel Team og klubbens administratorer. Oplysningerne gives ikke videre, heller ikke til klubbens partnere. Når nogen ændrer en tilmelding, fx sætter en spiller på et hold, gemmes det med navnet på den, der gjorde det.',
     padel5: 'Mails: du får en kvittering med det samme og senere en mail om pladsen. Bliver depositummet ikke betalt, får du en mail om, at tilmeldingen er taget af listen. Har du sat flueben ved camps og andre tilbud, kan vi skrive til dig om dem, hvis der ikke er plads.',
+    padel10: 'Spørg os: skriver du til os på padelsiden, sendes dit navn, din mail, dit mobilnummer (hvis du skriver det) og dit spørgsmål til klubbens sportschef, så vi kan svare dig. Det gemmes som andre henvendelser og slettes efter 12 måneder.',
     padel6: 'Listerne uden depositum (Voksen og helt ny og Seniorpadel (60+)): navn, fødselsår, mail, mobilnummer, hvor meget du har spillet, og det, du skriver. Vi bruger det kun til at skrive til dig, når der bliver en plads ledig, eller når vi starter noget nyt, du kan passe ind i.',
     padel7: 'Hvor du kom fra: har linket til siden et kampagnenavn, gemmer vi det med tilmeldingen. Vi bruger det kun til at se, hvilke opslag der virker. Siden bruger ingen cookies. For at stoppe misbrug tæller vi i en time, hvor mange tilmeldinger der kommer fra den samme mail, ud fra en forkortet kode af mailen.',
     padel8: 'Hvor længe: ventelisten slettes senest 12 måneder efter, at holdene er sat. Indtil da kan I blive stående på ventelisten uden depositum, hvis der bliver en plads senere. På listerne uden depositum står du, så længe du vil. Beder du om at komme af listen, sletter vi dig senest en måned efter. Får I plads og melder jer ind, gælder klubbens privatlivspolitik for medlemskabet.',
     padel9: 'Betalinger: depositummet, og at det er betalt tilbage, står i klubbens regnskab. Det gemmes efter bogføringsreglerne, også efter at ventelisten er slettet.',
-    padelSpm: 'Spørgsmål om ventelisten:',
+    padelSpm: 'Spørgsmål om ventelisten? Skriv til os under', padelSpmLink: 'Spørg os på padelsiden',
     o8: 'Venteliste til padel', o8a: 'så længe I står på ventelisten, også hvis I bliver stående uden plads', o8b: 'senest 12 måneder efter, at holdene er sat',
     o9: 'Lister uden depositum til padel', o9a: 'så længe du vil stå på listen', o9b: 'senest en måned efter, at du har bedt om at komme af listen',
     partnere: 'Officielle partnere', test: 'Testversion. Data er opdigtede.', privatliv: 'Privatliv'
@@ -339,11 +346,12 @@ window.TEKSTER = {
     padel3: 'Why: to keep track of the waiting list, set the teams, find your deposit payment and write to you about the place. The deposit is paid in the club’s membership and payment system, and we find the payment from the waiting list number, the email and the mobile number.',
     padel4: 'Who can see it: only the padel steering group, Padel Team and the club administrators. The data is not passed on, not even to the club’s partners. When someone changes a sign-up, for example puts a player on a team, this is saved with the name of the person who did it.',
     padel5: 'Emails: you get a receipt straight away and later an email about the place. If the deposit is not paid, you get an email saying that the sign-up has been taken off the list. If you have ticked camps and other offers, we may write to you about them if there is no place.',
+    padel10: 'Ask us: if you write to us on the padel page, your name, email, mobile number (if you give it) and question are sent to the club’s head of sport so we can answer you. It is kept like other enquiries and deleted after 12 months.',
     padel6: 'The lists without a deposit (Adult and completely new, and Senior padel (60+)): name, year of birth, email, mobile number, how much you have played and what you write. We only use it to write to you when a place becomes available or when we start something new that might suit you.',
     padel7: 'Where you came from: if the link to the page has a campaign name, we save it with the sign-up. We only use it to see which posts work. The page uses no cookies. To stop misuse, we count for one hour how many sign-ups come from the same email, using a shortened code of the email.',
     padel8: 'How long: the waiting list is deleted within 12 months after the teams have been set. Until then you can stay on the waiting list without a deposit in case a place opens up later. You stay on the lists without a deposit for as long as you want. If you ask to be taken off, we delete you within one month. If you get a place and join, the club’s privacy policy applies to the membership.',
     padel9: 'Payments: the deposit and any refund are recorded in the club’s accounts. They are kept according to the bookkeeping rules, also after the waiting list has been deleted.',
-    padelSpm: 'Questions about the waiting list:',
+    padelSpm: 'Questions about the waiting list? Write to us under', padelSpmLink: 'Ask us on the padel page',
     o8: 'Padel waiting list', o8a: 'as long as you are on the waiting list, also if you stay on it without a place', o8b: 'within 12 months after the teams are set',
     o9: 'Padel lists without a deposit', o9a: 'as long as you want to be on the list', o9b: 'within one month after you ask to be taken off',
     partnere: 'Official partners', test: 'Test version. All data is fictitious.', privatliv: 'Privacy'
@@ -382,6 +390,28 @@ if (window.RTK_KONFIG && window.RTK_KONFIG.miljoe === 'produktion') {
     if (k) { k.href = 'mailto:kontakt@roskildetennisklub.dk'; k.textContent = 'kontakt@roskildetennisklub.dk'; }
   });
 }
+</script>
+<script>
+// Visningen fra padelsiden (?side=padel): egen overskrift, indledning og tekst om databehandlere, så den, der kommer fra
+// en kampagne, kun læser det, der gælder padelsiden, og ikke moduler, der ikke er i brug (Lars 11. november 2026 kl. 15.25)
+(function () {
+  var T = window.TEKSTER;
+  T.da.heleTeksten = 'Læs hele teksten om privatliv i Mit RTK';
+  T.en.heleTeksten = 'Read the full privacy text for Mit RTK';
+  if (!/[?&]side=padel\b/.test(location.search)) return;
+  Object.assign(T.da, {
+    titel: 'Privatliv på padelsiden · Mit RTK', h1: 'Privatliv på padelsiden',
+    introA: 'Her står, hvordan Roskilde Tennis Klub bruger det, du skriver på mitrtk.dk/padel. Klubbens',
+    introB: 'gælder også: hvem der er dataansvarlig, dine rettigheder, og hvordan du klager.',
+    hjaelp: 'Klubben bruger databehandlere til at opbevare oplysningerne og sende mails. De må kun bruge oplysningerne efter klubbens anvisning, og klubben har databehandleraftaler med dem. Nogle af dem kan behandle oplysninger uden for EU. Det sker kun med de garantier, databeskyttelsesreglerne kræver.'
+  });
+  Object.assign(T.en, {
+    titel: 'Privacy on the padel page · Mit RTK', h1: 'Privacy on the padel page',
+    introA: 'This is how Roskilde Tennis Klub uses what you write on mitrtk.dk/padel. The club’s',
+    introB: 'also applies: who the data controller is, your rights and how to complain.',
+    hjaelp: 'The club uses data processors to store the data and send emails. They may only use the data as instructed by the club, and the club has data processing agreements with them. Some of them may process data outside the EU. This only happens with the safeguards that data protection rules require.'
+  });
+})();
 </script>
 <script src="sprog.js?v=03cdff900c4f"></script>
 <script src="ace.js?v=8c46fe7cee29"></script>

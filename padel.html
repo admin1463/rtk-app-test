@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="f82bc9f395f7">
+<meta name="rtk-version" content="a54662aa5efb">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -176,8 +176,8 @@
 .pv-rtk-g p{margin:6px 0 0;font-size:15px;color:var(--muted)}
 /* spørgsmål */
 .pv-faq{background:#fff;border-top:1px solid var(--line)}
-.pv-kontakt{margin:28px 0 0;font-size:17px}
-.pv-kontakt a{color:var(--teal);font-weight:700}
+.pv-skriv{display:grid;grid-template-columns:.8fr 1.2fr;gap:48px;align-items:start;margin-top:56px}
+.pv-skriv h2{margin:6px 0 10px}
 .pv-faq .gitter{display:grid;grid-template-columns:1fr 1fr;gap:0 40px}
 .pv-faq .gitter>div{border-top:1px solid var(--line);padding:16px 0}
 .pv-faq .gitter b{display:block;margin-bottom:4px}
@@ -195,7 +195,7 @@
  .pv-frist{right:20px;top:230px;padding:10px 14px} .pv-frist b{font-size:28px}
  .pv-fakta .w{grid-template-columns:1fr 1fr} .pv-fakta .w>div{padding:18px 10px 18px 0;margin-right:10px} .pv-fakta .w>div:nth-child(2){border:0} .pv-fakta b{font-size:21px}
  .pv .sek{padding:60px 0} .pv h2{font-size:31px}
- .pv-to,.pv-faelles .pv-to,.pv-tilm .pv-to,.pv-steder,.pv-faq .gitter{grid-template-columns:1fr;gap:28px}
+ .pv-to,.pv-faelles .pv-to,.pv-tilm .pv-to,.pv-steder,.pv-faq .gitter,.pv-skriv{grid-template-columns:1fr;gap:28px}
  .pv-foto{min-height:380px}
  .pv-baand{height:460px;background-position:58% 25%} .pv-baand p{font-size:28px} .pv-baand .w{padding-bottom:28px}
  .pv-kort3,.pv-trin,.pv-andre-g,.pv-rtk-g{grid-template-columns:minmax(0,1fr)}
@@ -261,8 +261,10 @@
 
 <section class="sek pv-rtk" id="rtk"><div class="w">
   <div class="kick">Det er Roskilde Tennis Klub</div>
-  <h2>En bred klub med plads til alle</h2>
-  <p class="pv-rtk-intro">Vi er en klub for hele familien, med fokus på bredden og et stærkt fællesskab, hvor nye er meget velkomne. Der er hold for børn og juniorer, motionister og konkurrencespillere, holdkampe helt op til 1. division og sociale arrangementer året rundt. Og medlemmerne hjælper selv med at gøre banerne klar til sæsonen.</p>
+  <!-- Tennis og padel på lige fod, og synergien mellem dem (Lars 11. november 2026 kl. 15.27) -->
+  <h2>Tennis og padel i samme klub. Det bedste fra begge verdener.</h2>
+  <p class="pv-rtk-intro">I Roskilde Tennis Klub står tennis og padel på lige fod. De to sportsgrene hører naturligt sammen: begge er ketsjersport, meget af det, du lærer i den ene, kan du bruge i den anden, og mange får glæde af begge dele. Når de ligger i samme klub, deler de anlæg, frivillige og fællesskab, og du kan spille den ene om sommeren og den anden om vinteren, eller begge hele året.</p>
+  <p class="pv-rtk-intro">Vi er en bred klub for hele familien, med et stærkt fællesskab, hvor nye er meget velkomne. Der er hold for børn og juniorer, motionister og konkurrencespillere, holdkampe og sociale arrangementer året rundt. Og medlemmerne hjælper selv med at gøre banerne klar til sæsonen.</p>
   <div class="pv-tal4">
     <div><b>2</b><span>anlæg i Roskilde</span></div>
     <div><b>13</b><span>udendørs grusbaner til tennis</span></div>
@@ -419,7 +421,7 @@
       <div class="pv-honning" aria-hidden="true"><label>Lad dette felt være tomt <input type="text" id="kWeb" tabindex="-1" autocomplete="off"></label></div>
       <div style="margin-top:18px">
         <label class="pv-cb"><input type="checkbox" id="kForpligt">Vi vil gerne give en hånd, hvis vi får plads</label>
-        <label class="pv-cb"><input type="checkbox" id="kPrivat">Jeg har læst, <a href="privatliv.html?sprog=da#padel" target="_blank" rel="noopener">hvordan RTK bruger oplysningerne</a></label>
+        <label class="pv-cb"><input type="checkbox" id="kPrivat">Jeg har læst, <a href="privatliv.html?side=padel&amp;sprog=da" target="_blank" rel="noopener">hvordan RTK bruger oplysningerne</a></label>
         <label class="pv-cb"><input type="checkbox" id="kCamps">Fortæl mig om camps og andre tilbud, hvis der ikke er plads</label>
       </div>
       <div class="pv-fejl" id="fejl2" role="alert"></div>
@@ -471,7 +473,7 @@
       </fieldset>
       <label class="lb" for="iAndet">Vil du fortælle lidt mere? (valgfrit)</label>
       <textarea id="iAndet" maxlength="400" placeholder="Fx hvilke dage og tider der passer dig"></textarea>
-      <label class="pv-cb" style="margin-top:14px"><input type="checkbox" id="iPrivat">Jeg har læst, <a href="privatliv.html?sprog=da#padel" target="_blank" rel="noopener">hvordan RTK bruger oplysningerne</a></label>
+      <label class="pv-cb" style="margin-top:14px"><input type="checkbox" id="iPrivat">Jeg har læst, <a href="privatliv.html?side=padel&amp;sprog=da" target="_blank" rel="noopener">hvordan RTK bruger oplysningerne</a></label>
       <div class="pv-fejl" id="ifejl" role="alert"></div>
       <button type="submit" class="knap">Skriv mig på listen</button>
     </div>
@@ -502,9 +504,31 @@
     <div><b>Træner I i ferierne?</b><span>Ikke i skolernes ferier. Til gengæld kan der være camps i vinter-, påske- og efterårsferien med delvis egenbetaling.</span></div>
     <div><b>Skal vi have eget udstyr?</b><span>Ja. Tag dit eget padelbat med og sko, der passer til banen, inde eller ude. Har du ikke et bat, kan du låne et til træningen, så langt de rækker. Du afleverer det igen, når træningen er slut. Proshoppen i RTK-hallen har et udvalg af padelbat og andet padeludstyr, og hos klubbens partner Racketlife får du rabat på padeludstyr som medlem.</span></div>
     <div><b>Hvad er Seniorpadel (60+)?</b><span>Padel for dig på 60 år og op, der vil spille på hverdage i dagtimerne frem til kl. 15. Skriv dig på <a href="#andre" data-liste="senior">listen for Seniorpadel (60+)</a>. Det koster ikke noget at stå på listen, og du binder dig ikke. Vi skriver til dig, så snart der bliver en plads ledig, eller når vi starter noget nyt, du kan passe ind i. Du bestemmer selv, om du vil blive stående på listen eller af den.</span></div>
-    <div><b>Hvad sker der med vores oplysninger?</b><span>De bruges kun til ventelisten, til at sætte holdene og til at finde jeres betaling. Kun Styregruppen, Padel Team og klubbens administratorer ser dem. Får I ikke plads, sletter vi dem senest 12 måneder efter, at holdene er sat. Læs mere i <a href="privatliv.html?sprog=da#padel">privatlivsteksten</a>.</span></div>
+    <div><b>Hvad sker der med vores oplysninger?</b><span>De bruges kun til ventelisten, til at sætte holdene og til at finde jeres betaling. Kun Styregruppen, Padel Team og klubbens administratorer ser dem. Får I ikke plads, sletter vi dem senest 12 måneder efter, at holdene er sat. Læs mere i <a href="privatliv.html?side=padel&amp;sprog=da">privatlivsteksten</a>.</span></div>
   </div>
-  <p class="pv-kontakt">Har du et spørgsmål, du ikke fik svar på? Skriv til <a href="mailto:sportschef@roskildetennisklub.dk">sportschef@roskildetennisklub.dk</a>.</p>
+  <!-- Spørg os (Lars 11. november 2026 kl. 15.24). Går til sportschefen via motoren, som Skriv til klubben -->
+  <div class="pv-skriv" id="skriv">
+    <div>
+      <div class="kick">Spørg os</div>
+      <h2>Fik du ikke svar på dit spørgsmål?</h2>
+      <p class="graa">Skriv det her, så går det direkte til klubbens sportschef. Du får svar på mail.</p>
+    </div>
+    <form class="pv-form" id="sform" novalidate>
+      <div data-strin="1">
+        <div class="pv-to2">
+          <div><label class="lb" for="qNavn">Navn</label><input type="text" id="qNavn" autocomplete="name"></div>
+          <div><label class="lb" for="qMail">Mail</label><input type="email" id="qMail" autocomplete="email" placeholder="navn@eksempel.dk"></div>
+        </div>
+        <label class="lb" for="qMobil">Mobil (valgfri)</label><input type="tel" id="qMobil" autocomplete="tel" placeholder="20 00 00 00">
+        <label class="lb" for="qTekst">Dit spørgsmål</label><textarea id="qTekst" maxlength="2000" placeholder="Fx om holdene, tiderne eller betalingen"></textarea>
+        <div class="pv-honning" aria-hidden="true"><label>Lad dette felt være tomt <input type="text" id="qWeb" tabindex="-1" autocomplete="off"></label></div>
+        <div class="graa" style="font-size:13px;margin-top:10px">Vi bruger kun dine oplysninger til at svare dig. <a href="privatliv.html?side=padel&amp;sprog=da" target="_blank" rel="noopener">Læs hvordan</a>.</div>
+        <div class="pv-fejl" id="qfejl" role="alert"></div>
+        <button type="submit" class="knap">Send spørgsmålet</button>
+      </div>
+      <div data-strin="2" hidden><h3 id="qTakH">Tak</h3><p class="pv-kvit" id="qTak"></p></div>
+    </form>
+  </div>
 </div></section>
 
 <div class="wrap partnere pv-partnere">
@@ -558,7 +582,7 @@
     return a;
   }
   function holdFor(a) {
-    if (a < 8) return { fejl: true, t: 'Holdene er for spillere fra 8 år. Skriv til sportschef@roskildetennisklub.dk, hvis I alligevel er interesserede.' };
+    if (a < 8) return { fejl: true, t: 'Holdene er for spillere fra 8 år. Skriv til os under Spørg os nederst på siden, hvis I alligevel er interesserede.' };
     if (a <= 9) return { t: 'Hold: Junior, 1 time om ugen' };
     if (a <= 12) return { t: 'Hold: Junior (1 time) eller Junior+ (1,5 time). Vi finder det rigtige.' };
     if (a <= 17) return { t: 'Hold: Junior+, 1,5 time om ugen' };
@@ -641,7 +665,7 @@
       var f = document.getElementById('fejl1'), sp = spillere();
       if (sp.some(function (s) { return !s.navn || !s.foed; })) { f.textContent = 'Skriv navn og fødselsdato på alle spillere.'; return; }
       if (sp.some(function (s) { var a = alder(new Date(s.foed)); return !(a >= 0 && a <= 100) || s.foed < '1925-01-01'; })) { f.textContent = 'Tjek fødselsdatoen på alle spillere.'; return; }
-      if (sp.some(function (s) { return alder(new Date(s.foed)) < 8; })) { f.textContent = 'Holdene er for spillere fra 8 år. Skriv til sportschef@roskildetennisklub.dk, hvis I alligevel er interesserede.'; return; }
+      if (sp.some(function (s) { return alder(new Date(s.foed)) < 8; })) { f.textContent = 'Holdene er for spillere fra 8 år. Skriv til os under Spørg os nederst på siden, hvis I alligevel er interesserede.'; return; }
       if (sp.some(function (s) { return s.erfaring === null; })) { f.textContent = 'Vælg, hvor meget hver spiller har prøvet padel.'; return; }
       if (!valgt('dag').length) { f.textContent = 'Vælg mindst én dag.'; return; }
       if (sp.some(function (s) { return s.proevVoksen && !s.niveau; })) { f.textContent = 'Fortæl lidt om niveauet, når en spiller vil prøve voksenholdet.'; return; }
@@ -690,7 +714,7 @@
     betal.hidden = !(betaling && svar.betal); betal.nextElementSibling.hidden = !(betaling && svar.betal);
     if (svar.betal) betal.href = svar.betal;
     document.getElementById('testnote').hidden = !(betaling && !svar.betal);
-    if (il.length) document.getElementById('takT').innerHTML += (vl.length ? '<br>' : ' ') + 'På den liste er der intet at betale, og du binder dig ikke. Vi skriver til dig, så snart der bliver en plads ledig, eller når vi starter noget nyt, du kan passe ind i. Du bestemmer selv, om du vil blive stående på listen eller af den. Har du spørgsmål eller vil af listen, så skriv til <a href="mailto:sportschef@roskildetennisklub.dk">sportschef@roskildetennisklub.dk</a>.';
+    if (il.length) document.getElementById('takT').innerHTML += (vl.length ? '<br>' : ' ') + 'På den liste er der intet at betale, og du binder dig ikke. Vi skriver til dig, så snart der bliver en plads ledig, eller når vi starter noget nyt, du kan passe ind i. Du bestemmer selv, om du vil blive stående på listen eller af den. Har du spørgsmål eller vil af listen, så <a href="#skriv">skriv til os</a>.';
     window.__venteliste = data;
     vis(3);
   });
@@ -741,8 +765,31 @@
     catch (err) { f.textContent = err.message; iknap.disabled = false; iknap.textContent = 'Skriv mig på listen'; return; }
     ilId = nyId(); iknap.disabled = false; iknap.textContent = 'Skriv mig på listen';
     document.getElementById('iTak').innerHTML = '<p><b>Tak, ' + g('iNavn').split(' ')[0].replace(/&/g, '&amp;').replace(/</g, '&lt;') + '.</b> Du står nu på listen ' +
-      (liste === 'senior' ? 'for Seniorpadel (60+) i dagtimerne' : 'for voksne nybegyndere') + '.</p><p>Du får en mail om det med det samme. Der er intet at betale, og du binder dig ikke. Vi skriver til dig, så snart der bliver en plads ledig, eller når vi starter noget nyt, du kan passe ind i. Du bestemmer selv, om du vil blive stående på listen eller af den. Har du spørgsmål eller vil af listen, så skriv til <a href="mailto:sportschef@roskildetennisklub.dk">sportschef@roskildetennisklub.dk</a>.</p>';
+      (liste === 'senior' ? 'for Seniorpadel (60+) i dagtimerne' : 'for voksne nybegyndere') + '.</p><p>Du får en mail om det med det samme. Der er intet at betale, og du binder dig ikke. Vi skriver til dig, så snart der bliver en plads ledig, eller når vi starter noget nyt, du kan passe ind i. Du bestemmer selv, om du vil blive stående på listen eller af den. Har du spørgsmål eller vil af listen, så <a href="#skriv">skriv til os</a>.</p>';
     iform.querySelector('[data-itrin="1"]').hidden = true; iform.querySelector('[data-itrin="2"]').hidden = false;
+  });
+
+  // Spørg os (Lars 11. november 2026 kl. 15.24)
+  var sform = document.getElementById('sform'), sId = nyId();
+  sform.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var knap = sform.querySelector('button[type=submit]'); if (knap.disabled) return;
+    var f = document.getElementById('qfejl'), g = function (id) { return document.getElementById(id).value.trim(); };
+    var mobil = g('qMobil').replace(/\s/g, '');
+    if (g('qNavn').length < 2) { f.textContent = 'Skriv dit navn.'; return; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(g('qMail'))) { f.textContent = 'Skriv en mail, vi kan svare på.'; return; }
+    if (mobil && !/^(\+45)?\d{8}$/.test(mobil)) { f.textContent = 'Skriv et dansk mobilnummer med 8 cifre, eller lad feltet stå tomt.'; return; }
+    if (g('qTekst').length < 3) { f.textContent = 'Skriv dit spørgsmål.'; return; }
+    f.textContent = '';
+    window.__spoerg = { navn: g('qNavn'), mail: g('qMail'), mobil: mobil, tekst: g('qTekst'), kilde: kilde, web: document.getElementById('qWeb').value };
+    knap.disabled = true; knap.textContent = 'Sender …';
+    try { await motor('spoerg', window.__spoerg, sId); }
+    catch (err) { f.textContent = err.message; knap.disabled = false; knap.textContent = 'Send spørgsmålet'; return; }
+    sId = nyId(); knap.disabled = false; knap.textContent = 'Send spørgsmålet';
+    var esc = function (t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;'); };
+    document.getElementById('qTakH').textContent = 'Tak, ' + g('qNavn').split(' ')[0];
+    document.getElementById('qTak').innerHTML = 'Dit spørgsmål er sendt til klubbens sportschef. Du får svar på <b>' + esc(g('qMail').toLowerCase()) + '</b>.';
+    sform.querySelector('[data-strin="1"]').hidden = true; sform.querySelector('[data-strin="2"]').hidden = false;
   });
 
   // den faste knap på telefonen skjules, når formularen er i syne
@@ -752,7 +799,7 @@
       es.forEach(function (x) { synlig[x.target.className] = x.isIntersecting; });
       cta.classList.toggle('skjult', Object.keys(synlig).some(function (k) { return synlig[k]; }));
     });
-    ['pv-hero', 'sek pv-tilm', 'sek pv-andre'].forEach(function (c) { var el = document.querySelector('[class="' + c + '"]'); if (el) io.observe(el); });
+    ['pv-hero', 'sek pv-tilm', 'sek pv-andre', 'pv-skriv'].forEach(function (c) { var el = document.querySelector('[class="' + c + '"]'); if (el) io.observe(el); });
   }
 })();
 </script>
