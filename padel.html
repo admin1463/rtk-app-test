@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="aa5565fca562">
+<meta name="rtk-version" content="a9e087a6bd18">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -44,6 +44,12 @@
 .pv-frist{position:absolute;right:28px;top:110px;z-index:2;background:#fff;color:var(--teal);border-radius:16px;padding:16px 20px;text-align:center;line-height:1.1}
 .pv-frist b{display:block;font-size:40px;font-weight:900}
 .pv-frist span{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+/* Nedtælling i boksen, variant B (Lars 11. november 2026 kl. 15.39, mockup padel_nedtaelling_B.png) */
+.pv-frist .ur{display:flex;gap:4px;justify-content:center;margin-top:10px;border-top:1px solid #E1E8EF;padding-top:10px}
+.pv-frist .ur div{min-width:38px}
+.pv-frist .ur b{font-size:20px;font-variant-numeric:tabular-nums}
+.pv-frist .ur span{display:block;font-size:9px;letter-spacing:.06em;color:#5A6672}
+.pv-frist .ur.slut{display:block;font-size:13px;font-weight:700;color:var(--pink)}
 /* fakta */
 .pv-fakta{background:var(--frost);color:#fff}
 .pv-fakta .w{display:grid;grid-template-columns:repeat(4,1fr)}
@@ -192,7 +198,7 @@
  .pv-hero .bill:before{background:linear-gradient(0deg,var(--teal) 0%,rgba(11,61,58,.4) 25%,rgba(11,61,58,0) 50%,rgba(11,61,58,.45) 100%)}
  .pv-hero .w{padding-top:380px;padding-bottom:36px}
  .pv-hero h1{font-size:46px} .pv-hero p{font-size:17px}
- .pv-frist{right:20px;top:230px;padding:10px 14px} .pv-frist b{font-size:28px}
+ .pv-frist{right:20px;top:150px;padding:10px 12px} .pv-frist b{font-size:28px} .pv-frist .ur b{font-size:17px} .pv-frist .ur div{min-width:32px}
  .pv-fakta .w{grid-template-columns:1fr 1fr} .pv-fakta .w>div{padding:18px 10px 18px 0;margin-right:10px} .pv-fakta .w>div:nth-child(2){border:0} .pv-fakta b{font-size:21px}
  .pv .sek{padding:60px 0} .pv h2{font-size:31px}
  .pv-to,.pv-faelles .pv-to,.pv-tilm .pv-to,.pv-steder,.pv-faq .gitter,.pv-skriv{grid-template-columns:1fr;gap:28px}
@@ -224,7 +230,8 @@
 
 <section class="pv-hero">
   <div class="bill" role="img" aria-label="To padelspillere giver hånd og griner på en blå bane"></div>
-  <div class="pv-frist"><span>Lukker</span><b>15.12</b><span>2026</span></div>
+  <div class="pv-frist"><span>Lukker</span><b>15.12</b><span>2026</span>
+    <div class="ur" id="ur" role="timer" aria-label="Tid til ventelisten lukker"><div><b data-n="d">&nbsp;</b><span>dage</span></div><div><b data-n="t">&nbsp;</b><span>timer</span></div><div><b data-n="m">&nbsp;</b><span>min</span></div><div><b data-n="s">&nbsp;</b><span>sek</span></div></div></div>
   <div class="w">
     <div class="kick">Nyt i Roskilde Tennis Klub · start 13. januar 2027</div>
     <h1>Padel hele året. <em>Sammen.</em></h1>
@@ -792,6 +799,22 @@
     document.getElementById('qTak').innerHTML = 'Dit spørgsmål er sendt til klubbens sportschef. Du får svar på <b>' + esc(g('qMail').toLowerCase()) + '</b>.';
     sform.querySelector('[data-strin="1"]').hidden = true; sform.querySelector('[data-strin="2"]').hidden = false;
   });
+
+  // Nedtælling til ventelisten lukker 15. december 2026 kl. 23.59 (samme som padel.vl.lukker i motoren)
+  (function () {
+    var ur = document.getElementById('ur'); if (!ur) return;
+    var SLUT = new Date('2026-12-15T23:59:00+01:00').getTime(), felter = {};
+    ur.querySelectorAll('[data-n]').forEach(function (b) { felter[b.dataset.n] = b; });
+    function tik() {
+      var t = Math.floor((SLUT - Date.now()) / 1000);
+      if (t <= 0) { ur.className = 'ur slut'; ur.textContent = 'Ventelisten er lukket'; return; }
+      var d = Math.floor(t / 86400), h = Math.floor(t % 86400 / 3600), m = Math.floor(t % 3600 / 60), s = t % 60;
+      var to = function (x) { return (x < 10 ? '0' : '') + x; };
+      felter.d.textContent = d; felter.t.textContent = to(h); felter.m.textContent = to(m); felter.s.textContent = to(s);
+      setTimeout(tik, 1000 - Date.now() % 1000 + 5);
+    }
+    tik();
+  })();
 
   // den faste knap på telefonen skjules, når formularen er i syne
   if ('IntersectionObserver' in window) {
