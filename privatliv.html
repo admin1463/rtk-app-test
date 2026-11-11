@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="1876e74ad3e2">
+<meta name="rtk-version" content="be283504d67f">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -24,6 +24,8 @@
 /* Fra mitrtk.dk/padel (?side=padel): kun det, der gælder padelsiden (Lars 11. november 2026 kl. 15.25) */
 .kun-padel .afsnit:not([data-padel]),.kun-padel .opbevaring .card:not([data-padel]),.kun-padel .card.kontakt b,.kun-padel .card.kontakt a,.kun-padel .udkast{display:none !important}
 html:not(.kun-padel) .kun-padel-vis{display:none !important}
+/* Fra padelsiden: ingen vej videre til forsiden, personalesiden eller hele teksten om Mit RTK (Lars 11. november 2026 kl. 16.56) */
+.kun-padel a.hjem,.kun-padel a[href="personale/"],.kun-padel a[href="privatliv.html"],.kun-padel .kun-padel-vis{display:none !important}
 </style>
 <script>if (/[?&]side=padel\b/.test(location.search)) document.documentElement.classList.add('kun-padel');</script>
 </head>
