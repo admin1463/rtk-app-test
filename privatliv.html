@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="779b3abad9e8">
+<meta name="rtk-version" content="1876e74ad3e2">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -22,7 +22,7 @@
 .indlejret body{min-height:0}
 .indlejret .indhold{padding-top:20px;padding-bottom:24px}
 /* Fra mitrtk.dk/padel (?side=padel): kun det, der gælder padelsiden (Lars 11. november 2026 kl. 15.25) */
-.kun-padel .afsnit:not([data-padel]),.kun-padel .opbevaring .card:not([data-padel]),.kun-padel .card.kontakt b,.kun-padel .card.kontakt a{display:none !important}
+.kun-padel .afsnit:not([data-padel]),.kun-padel .opbevaring .card:not([data-padel]),.kun-padel .card.kontakt b,.kun-padel .card.kontakt a,.kun-padel .udkast{display:none !important}
 html:not(.kun-padel) .kun-padel-vis{display:none !important}
 </style>
 <script>if (/[?&]side=padel\b/.test(location.search)) document.documentElement.classList.add('kun-padel');</script>
@@ -382,9 +382,11 @@ if (window.RTK_KONFIG && window.RTK_KONFIG.miljoe === 'produktion') {
     // Padel og Ace (8. november 2026) er ikke i produktion endnu. Version 4 med dem lægges ud, når de går live
     ['gem3', 'gem4', 'gem5', 'gem6', 'gem7', 'gem9'].forEach(function (k) { skjul(document.querySelector('[data-t="' + k + '"]')); });
     ['aceH', 'beskH', 'ungH'].forEach(function (k) { var h = document.querySelector('[data-t="' + k + '"]'); skjul(h && h.closest('section')); });
-    // Ventelisten til padel (11. november 2026) vises i produktionen, når mitrtk.dk/padel går live
-    skjul(document.getElementById('padel'));
-    ['o3', 'o4', 'o5', 'o7', 'o8', 'o9'].forEach(function (k) { var b = document.querySelector('b[data-t="' + k + '"]'); skjul(b && b.closest('.card')); });
+    // Ventelisten til padel (godkendt 11. november 2026 kl. 15.34): i produktionen vises den i visningen fra padelsiden
+    // (?side=padel). Når mitrtk.dk/padel går live, fjernes de to linjer herunder, så den også står i hele teksten
+    var padelVisning = /[?&]side=padel\b/.test(location.search);
+    if (!padelVisning) { skjul(document.getElementById('padel')); ['o8', 'o9'].forEach(function (k) { var b = document.querySelector('b[data-t="' + k + '"]'); skjul(b && b.closest('.card')); }); }
+    ['o3', 'o4', 'o5', 'o7'].forEach(function (k) { var b = document.querySelector('b[data-t="' + k + '"]'); skjul(b && b.closest('.card')); });
     skjul(document.querySelector('.udkast'));
     var k = document.querySelector('a[href="mailto:privatliv@mitrtk.dk"]');
     if (k) { k.href = 'mailto:kontakt@roskildetennisklub.dk'; k.textContent = 'kontakt@roskildetennisklub.dk'; }
@@ -403,13 +405,16 @@ if (window.RTK_KONFIG && window.RTK_KONFIG.miljoe === 'produktion') {
     titel: 'Privatliv på padelsiden · Mit RTK', h1: 'Privatliv på padelsiden',
     introA: 'Her står, hvordan Roskilde Tennis Klub bruger det, du skriver på mitrtk.dk/padel. Klubbens',
     introB: 'gælder også: hvem der er dataansvarlig, dine rettigheder, og hvordan du klager.',
-    hjaelp: 'Klubben bruger databehandlere til at opbevare oplysningerne og sende mails. De må kun bruge oplysningerne efter klubbens anvisning, og klubben har databehandleraftaler med dem. Nogle af dem kan behandle oplysninger uden for EU. Det sker kun med de garantier, databeskyttelsesreglerne kræver.'
+    hjaelp: 'Klubben bruger databehandlere til at opbevare oplysningerne og sende mails. De må kun bruge oplysningerne efter klubbens anvisning, og klubben har databehandleraftaler med dem. Nogle af dem kan behandle oplysninger uden for EU. Det sker kun med de garantier, databeskyttelsesreglerne kræver.',
+    // Godkendt af Lars som klubbens systemansvarlige 11. november 2026 kl. 15.34, så intet udkastmærke her
+    version: '11. november 2026. Godkendt af klubbens systemansvarlige.'
   });
   Object.assign(T.en, {
     titel: 'Privacy on the padel page · Mit RTK', h1: 'Privacy on the padel page',
     introA: 'This is how Roskilde Tennis Klub uses what you write on mitrtk.dk/padel. The club’s',
     introB: 'also applies: who the data controller is, your rights and how to complain.',
-    hjaelp: 'The club uses data processors to store the data and send emails. They may only use the data as instructed by the club, and the club has data processing agreements with them. Some of them may process data outside the EU. This only happens with the safeguards that data protection rules require.'
+    hjaelp: 'The club uses data processors to store the data and send emails. They may only use the data as instructed by the club, and the club has data processing agreements with them. Some of them may process data outside the EU. This only happens with the safeguards that data protection rules require.',
+    version: '11 November 2026. Approved by the club’s system owner.'
   });
 })();
 </script>
