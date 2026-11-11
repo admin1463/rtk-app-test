@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="767273f94784">
+<meta name="rtk-version" content="d047f11c8455">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -161,6 +161,15 @@
 .pv-andre-k b{font-size:20px}
 .pv-andre-k p{margin:6px 0 0;color:var(--muted);font-size:15px}
 .pv-iform{max-width:760px}
+.pv-rtk-intro{max-width:760px;font-size:18px}
+.pv-tal4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:30px 0}
+.pv-tal4>div{background:var(--teal);color:#fff;border-radius:16px;padding:20px}
+.pv-tal4 b{display:block;font-size:48px;font-weight:900;line-height:1;color:var(--ice)}
+.pv-tal4 span{font-size:15px;color:var(--sub)}
+.pv-rtk-g{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.pv-rtk-g>div{border-top:4px solid var(--pink);padding-top:12px}
+.pv-rtk-g b{font-size:18px}
+.pv-rtk-g p{margin:6px 0 0;font-size:15px;color:var(--muted)}
 /* spørgsmål */
 .pv-faq{background:var(--soft)}
 .pv-faq .gitter{display:grid;grid-template-columns:1fr 1fr;gap:0 40px}
@@ -183,7 +192,8 @@
  .pv-to,.pv-faelles .pv-to,.pv-tilm .pv-to,.pv-steder,.pv-faq .gitter{grid-template-columns:1fr;gap:28px}
  .pv-foto{min-height:380px}
  .pv-baand{height:460px;background-position:58% 25%} .pv-baand p{font-size:28px} .pv-baand .w{padding-bottom:28px}
- .pv-kort3,.pv-trin,.pv-andre-g{grid-template-columns:1fr} .pv-kort .tid{display:inline-block;margin-top:8px;background:#E6EEFA;color:var(--court);font-weight:700;font-size:15px;border-radius:999px;padding:5px 12px}
+ .pv-kort3,.pv-trin,.pv-andre-g,.pv-rtk-g{grid-template-columns:1fr}
+ .pv-tal4{grid-template-columns:1fr 1fr} .pv-tal4 b{font-size:38px} .pv-rtk-intro{font-size:17px} .pv-kort .tid{display:inline-block;margin-top:8px;background:#E6EEFA;color:var(--court);font-weight:700;font-size:15px;border-radius:999px;padding:5px 12px}
 .pv-kort .pris{font-size:38px}
  .pv-form{padding:20px}
  .pv-tilm{padding-top:44px}
@@ -388,6 +398,25 @@
 </div></section>
 
 <section class="pv-baand" role="img" aria-label="En flok venner holder om hinanden i solnedgangen"><div class="w"><p>Fire på banen. Én bold. <em>Og en ny flok at spille med hver uge.</em></p></div></section>
+
+<section class="sek pv-rtk" id="rtk"><div class="w">
+  <div class="kick">Det er Roskilde Tennis Klub</div>
+  <h2>En bred klub med plads til alle</h2>
+  <p class="pv-rtk-intro">Vi er en klub for hele familien, med fokus på bredden og et stærkt fællesskab, hvor nye er meget velkomne. Der er hold for børn og juniorer, motionister og konkurrencespillere, holdkampe helt op til 1. division og sociale arrangementer året rundt. Og medlemmerne hjælper selv med at gøre banerne klar til sæsonen.</p>
+  <div class="pv-tal4">
+    <div><b>2</b><span>anlæg i Roskilde</span></div>
+    <div><b>13</b><span>udendørs grusbaner til tennis</span></div>
+    <div><b>4</b><span>indendørs tennisbaner i RTK-hallen</span></div>
+    <div><b>2</b><span>udendørs padelbaner med lys</span></div>
+  </div>
+  <div class="pv-rtk-g">
+    <div><b>Dronning Sofies Vej</b><p>Centralt i byen ligger vores smukke gamle klubhus med 7 grusbaner.</p></div>
+    <div><b>Darupvej ved Dyrskuepladsen</b><p>6 grusbaner, 2 padelbaner med lys og den nyrenoverede RTK-hal med 4 indendørs tennisbaner, omklædning og caféen Sporvognen.</p></div>
+    <div><b>Babolat og Racketlife</b><p>Klubbens officielle partnere. Pro shoppen i RTK-hallen har udstyr fra Babolat, og vi strenger ketsjere i klubben. Som medlem får du rabat hos Racketlife.</p></div>
+    <div><b>Fællesskabet</b><p>Holdkampe, klubmesterskaber, sociale aftener og hjælp til at finde en makker. Det er her, de fleste finder deres nye spillevenner.</p></div>
+  </div>
+  <p class="graa" style="font-size:14px;margin-top:18px">Læs mere på <a href="https://roskildetennisklub.dk" target="_blank" rel="noopener">roskildetennisklub.dk</a>.</p>
+</div></section>
 
 <section class="sek pv-hold" id="hold"><div class="w">
   <div class="kick">Hold og priser</div>
