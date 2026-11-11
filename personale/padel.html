@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="b7df37885eb0">
+<meta name="rtk-version" content="de06cd54d91a">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -45,6 +45,17 @@
 .pd-valgt>span button{all:unset;position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;text-align:center;line-height:26px;font-size:17px;cursor:pointer}
 .pd-tilf{display:flex!important;flex-direction:column;align-items:center;justify-content:center;aspect-ratio:1;border:2px dashed var(--line);border-radius:4px;color:var(--teal);font-size:26px;font-weight:400;margin:0!important;cursor:pointer}.pd-tilf small{font-size:12px}
 .pd-filin{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+/* Venteliste (11. november 2026, mockup padel_venteliste_fane.png) */
+.vl-tal{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:0 0 10px}.vl-tal div{background:var(--soft);border-radius:10px;padding:8px;text-align:center}.vl-tal b{display:block;font-size:22px}.vl-tal span{font-size:12px;color:var(--muted)}
+.vl-send{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#FDE8F1;border-radius:12px;padding:10px 12px;margin:0 0 10px}.vl-send b{display:block;font-size:15px}.vl-send span{font-size:13px;color:var(--muted)}
+.vl-chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 8px}.vl-chips b{font-size:12px;color:var(--muted);width:40px}
+.vl-chips button{min-height:32px;padding:0 10px;font-size:13px;border-radius:99px;border:1px solid var(--line);background:#fff;color:var(--ink)}.vl-chips button[aria-pressed="true"]{background:var(--teal);color:#fff;border-color:var(--teal)}
+.vl-rk{all:unset;box-sizing:border-box;display:flex;justify-content:space-between;gap:10px;width:100%;padding:10px 0;border-top:1px solid var(--line);cursor:pointer}
+.vl-rk:focus-visible{outline:3px solid var(--teal)}.vl-rv b{display:block;font-size:15px}.vl-rv span{font-size:13px;color:var(--muted)}.vl-rv i{font-style:normal;font-weight:700;color:var(--teal)}
+.vl-rh{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex:0 0 auto;text-align:right}.vl-nr{font-size:12px;color:var(--muted)}.vl-st{color:#C08A00;font-size:14px;letter-spacing:1px}
+.vl-m{display:inline-block;font-size:12px;font-weight:700;border-radius:99px;padding:2px 8px;background:#F8EFDB;color:#7A5A12}.vl-m.ok{background:#E7F3EC;color:#1E6B45}.vl-m.af{background:var(--soft);color:var(--muted)}
+.vl-bok{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:10px}.vl-bh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 0 4px}.vl-bh b{font-size:16px}
+.vl-giv{display:flex;gap:8px;margin-top:8px}.vl-giv select{flex:1;min-width:0}
 /* Faner i to rækker og Om projektet (8. november 2026) */
 .pd-faner{margin:0 0 12px}.pd-fgr{margin:0 0 4px}.pd-fl{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:4px 0 4px}
 .pd-faner .tabs{flex-wrap:wrap;margin:0;gap:6px}
@@ -150,6 +161,7 @@
           <button type="button" role="tab" id="fane-billeder" aria-selected="false" data-fane="billeder">Billeder</button>
           <button type="button" role="tab" id="fane-ideer" aria-selected="false" data-fane="ideer">Idéboks</button>
           <button type="button" role="tab" id="fane-personer" aria-selected="false" data-fane="personer">Personer</button>
+          <button type="button" role="tab" id="fane-vl" aria-selected="false" data-fane="venteliste" class="hidden">Venteliste</button>
         </div></div>
       <div class="pd-fgr"><span class="pd-fl" id="flProjekt">Om projektet</span>
         <div class="tabs" role="tablist" aria-labelledby="flProjekt">
@@ -197,6 +209,8 @@
     <section id="vIde" class="hidden"></section>
     <section id="vBil" class="hidden"></section>
     <section id="vOek" class="hidden"></section>
+    <!-- Venteliste fra mitrtk.dk/padel (trin 2, Lars 11. november 2026, mockup padel_venteliste_fane.png) -->
+    <section id="vVl" class="hidden"></section>
   </div>
   </div>
   <div class="wrap partnere">
@@ -343,15 +357,16 @@ const iFilter = (p) => !FILTRE[filter] || !FILTRE[filter].typer || FILTRE[filter
 // ---------- Faner og ruter: #kalender  #k/<id>  #ny  #ret/<id>  #chat  #chat/ny  #personer (og det gamle #holdet)
 document.querySelectorAll('#faner button').forEach((b) => b.addEventListener('click', () => { location.hash = b.dataset.fane; }));
 window.addEventListener('hashchange', rute);
-const FANE_AF = { vChat: 'chat', vHoldet: 'personer', vFormaal: 'formaal', vOrg: 'org', vRef: 'referater', vIde: 'ideer', vBil: 'billeder', vOek: 'oekonomi' };
+const FANE_AF = { vChat: 'chat', vHoldet: 'personer', vFormaal: 'formaal', vOrg: 'org', vRef: 'referater', vIde: 'ideer', vBil: 'billeder', vOek: 'oekonomi', vVl: 'venteliste' };
 function vis(id) {
-  ['vKalender', 'vPunkt', 'vForm', 'vChat', 'vHoldet', 'vFormaal', 'vOrg', 'vRef', 'vIde', 'vBil', 'vOek'].forEach((v) => $(v).classList.toggle('hidden', v !== id));
+  ['vKalender', 'vPunkt', 'vForm', 'vChat', 'vHoldet', 'vFormaal', 'vOrg', 'vRef', 'vIde', 'vBil', 'vOek', 'vVl'].forEach((v) => $(v).classList.toggle('hidden', v !== id));
   const fane = FANE_AF[id] || 'kalender';
   document.querySelectorAll('#faner button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.fane === fane)));
 }
 function rute() {
   if (!data) return;
   $('fane-oek').classList.toggle('hidden', !erFuld());
+  $('fane-vl').classList.toggle('hidden', !erFuld());
   const h = location.hash.replace(/^#/, '').split('/').map((x) => { try { return decodeURIComponent(x); } catch (e) { return ''; } });
   if (h[0] === 'k' && h[1]) return visPunkt(h[1]);
   if (h[0] === 'ny' && erAdmin()) return visForm(null, h[1] || '');
@@ -369,6 +384,8 @@ function rute() {
   if (h[0] === 'ideer') return visIdeer();
   if (h[0] === 'ide' && h[1] === 'ny') return visIdeNy();
   if (h[0] === 'ide' && h[1]) return visIde(h[1]);
+  if (h[0] === 'venteliste') return visVl(h[1] || 'liste');
+  if (h[0] === 'vl' && h[1]) return visVlFam(h[1]);
   if (h[0] === 'oekonomi') return visOek(h[1] === 'filer' ? 'filer' : 'forud', h[1] === 'ret' && erAdmin() ? (h[2] || 'ny') : '');
   vis('vKalender'); tegnKalender();
 }
@@ -386,7 +403,7 @@ function tegnSnart() {
   const frigiv = erFuld() ? data.poster.filter((p) => p.brug === 'frigiv' && !p.frigivet && p.fristFrigiv && dageTil(p.fristFrigiv) >= -1 && dageTil(p.fristFrigiv) <= 30) : [];
   if (!vigtige.length && !frigiv.length) { $('snart').innerHTML = ''; return; }
   const linjer = vigtige.slice(0, 6).map((p) => '<a href="#k/' + encodeURIComponent(p.id) + '"><b>' + omTekst(dageTil(p.dag)) + '</b> · ' + esc(p.titel) + ' (' + kortDag(p.dag) + ')' + (p.ansvarligNavn ? ' · <i>' + esc(p.ansvarligNavn.split(' ').filter((x) => x !== 'Test')[0]) + '</i>' : '') + '</a>')
-    .concat(frigiv.map((p) => '<a href="#k/' + encodeURIComponent(p.id) + '"><b>' + omTekst(dageTil(p.fristFrigiv)) + '</b> · Frist: frigiv ' + esc(dagTekst(p.dag)) + ' hos PADELPIT</a>'));
+    .concat(frigiv.map((p) => '<a href="#k/' + encodeURIComponent(p.id) + '"><b>' + omTekst(dageTil(p.fristFrigiv)) + '</b> · Frist: frigiv ' + esc(dagTekst(p.dag)) + ' hos PadelPit Roskilde</a>'));
   $('snart').innerHTML = '<div class="pd-snart"><div class="pd-snart-t">Snart</div>' + linjer.join('') + '</div>';
 }
 function linje(p, medDag) {
@@ -532,7 +549,7 @@ function visPunkt(id) {
     else h += '<p style="margin:6px 0 0">' + (p.frigivet ? 'Frigivet' : p.brug === 'camp' ? 'Camp' : p.brug === 'frigiv' ? 'Skal frigives' : p.type === 'tr' ? 'Træning som planlagt' : 'Ikke besluttet') + '</p>';
     if (p.frigivet) h += '<p class="pd-frist">Frigivet ' + esc(dagTekst(p.frigivet.dag)) + ' (' + (p.frigivet.baner === 1 ? 'halv dag, 1 bane' : 'hel dag, 2 baner') + ')</p>';
     else h += '<p class="pd-frist">Sidste frist for at frigive: <b>' + esc(dagTekst(p.fristFrigiv)) + '</b> (' + omTekst(dageTil(p.fristFrigiv)).toLowerCase() + ')</p>';
-    h += '<p class="hint" style="margin:0">Frigivelse sker med skriftlig besked til PADELPIT mindst 4 uger før (aftalen punkt 4). '
+    h += '<p class="hint" style="margin:0">Frigivelse sker med skriftlig besked til PadelPit Roskilde mindst 4 uger før (aftalen punkt 4). '
       + (p.type === 'roed' && p.dag < '2027-07-01' ? 'Frigivne timer, der ikke lejes ud, koster ikke noget på røde datoer i 1. halvår 2027.' : p.type === 'roed' ? 'Røde datoer tæller ikke med i kvoten.' : 'Frigivne timer, der ikke lejes ud, koster 100 kr. inkl. moms pr. banetime.') + '</p>';
     if (erAdmin()) h += '<div class="pd-knapper">' + (p.frigivet ? '<button type="button" class="ghost small" id="fortrydFrigiv">Fortryd frigivet</button>' : '<button type="button" class="ghost small" id="frigivHel">Markér som frigivet: hel dag</button><button type="button" class="ghost small" id="frigivHalv">Halv dag (1 bane)</button>') + '</div>';
     h += '<div class="msg" id="frigivMsg" aria-live="polite"></div></div>';
@@ -563,7 +580,7 @@ function visPunkt(id) {
   });
   const bv = $('brugValg');
   if (bv) bv.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => gemHandling('brug', { id: p.id, brug: b.dataset.b }, $('frigivMsg'), 'Gemt')));
-  const fr = (baner) => gemHandling('frigivet', { id: p.id, baner }, $('frigivMsg'), 'Markeret som frigivet. Husk den skriftlige besked til PADELPIT.');
+  const fr = (baner) => gemHandling('frigivet', { id: p.id, baner }, $('frigivMsg'), 'Markeret som frigivet. Husk den skriftlige besked til PadelPit Roskilde.');
   if ($('frigivHel')) $('frigivHel').addEventListener('click', () => fr(2));
   if ($('frigivHalv')) $('frigivHalv').addEventListener('click', () => fr(1));
   if ($('fortrydFrigiv')) $('fortrydFrigiv').addEventListener('click', () => gemHandling('frigivet', { id: p.id, fortryd: true }, $('frigivMsg'), 'Fortrudt'));
@@ -698,7 +715,7 @@ async function visForm(id, dag) {
   h += '<label class="pd-chk"><input type="checkbox" id="fHeldag"' + (f.heldag ? ' checked' : '') + '> Hele dagen</label>';
   h += '<div class="pd-to"><div><label for="fDag">Dato</label><input type="date" id="fDag" value="' + esc(f.dag) + '"></div><div id="fSlutDagB"><label for="fSlutDag">Til og med (valgfri)</label><input type="date" id="fSlutDag" value="' + esc(f.slutDag && f.slutDag !== f.dag ? f.slutDag : '') + '"></div></div>';
   h += '<div class="pd-to" id="fTider"><div><label for="fStart">Fra kl.</label><input type="time" id="fStart" value="' + esc(f.start) + '"></div><div><label for="fSlut">Til kl.</label><input type="time" id="fSlut" value="' + esc(f.slut) + '"></div></div>';
-  h += '<div class="pd-to"><div><label for="fSted">Sted</label><input id="fSted" maxlength="80" value="' + esc(f.sted) + '"></div><div><label for="fBaner">Baner hos PADELPIT</label><select id="fBaner"><option value="0">Ingen</option><option value="1"' + (f.baner === 1 ? ' selected' : '') + '>1 bane</option><option value="2"' + (f.baner === 2 ? ' selected' : '') + '>2 baner</option></select></div></div>';
+  h += '<div class="pd-to"><div><label for="fSted">Sted</label><input id="fSted" maxlength="80" value="' + esc(f.sted) + '"></div><div><label for="fBaner">Baner hos PadelPit Roskilde</label><select id="fBaner"><option value="0">Ingen</option><option value="1"' + (f.baner === 1 ? ' selected' : '') + '>1 bane</option><option value="2"' + (f.baner === 2 ? ' selected' : '') + '>2 baner</option></select></div></div>';
   h += '<label for="fAnsvarlig">Ansvarlig</label><select id="fAnsvarlig"><option value="">Ingen</option>' + personerData.map((x) => '<option value="' + esc(x.id) + '"' + (f.ansvarlig === x.id ? ' selected' : '') + '>' + esc(x.navn) + (x.kreds === 'circle' ? ' (Padelcircle)' : '') + '</option>').join('') + '</select>';
   h += '<label>Hvem kan se den?</label><div class="chips" id="fSyn"><button type="button" data-s="alle">Alle i padel</button><button type="button" data-s="intern">&#128274; Ikke Padelcircle</button></div>';
   h += '<label>Påmind</label><div class="chips" id="fPaamind">' + PAAMIND.map(([k, n]) => '<button type="button" data-k="' + k + '" aria-pressed="' + f.paamind.includes(k) + '">' + n + '</button>').join('') + '</div>';
@@ -1073,7 +1090,7 @@ async function visRefForm(id) {
   h += '<div class="pd-to"><div><label for="rDag">Dato</label><input id="rDag" type="date" value="' + esc(v.dag) + '"></div><div><label for="rKl">Kl.</label><input id="rKl" type="time" value="' + esc(v.kl) + '"></div></div>';
   h += '<label for="rKal">Møde i kalenderen (valgfrit)</label><select id="rKal"><option value="">Intet</option>' + refData.moeder.map((m) => '<option value="' + esc(m.id) + '"' + (m.id === v.kalId ? ' selected' : '') + '>' + esc(m.titel + ', ' + kortDag(m.dag)) + '</option>').join('') + '</select>';
   h += '<fieldset class="pd-fs"><legend>Deltagere</legend><div class="chips pd-vaelg">' + personerData.map((x) => '<button type="button" data-pid="' + esc(x.id) + '" aria-pressed="' + valgt.has(x.id) + '">' + esc(x.navn) + '</button>').join('') + '</div></fieldset>';
-  h += '<label for="rAndre">Andre deltagere</label><input id="rAndre" maxlength="200" placeholder="Fx PADELPIT" value="' + esc(v.andre) + '">';
+  h += '<label for="rAndre">Andre deltagere</label><input id="rAndre" maxlength="200" placeholder="Fx PadelPit Roskilde" value="' + esc(v.andre) + '">';
   h += '<label for="rFormaal">Formål</label><input id="rFormaal" maxlength="300" value="' + esc(v.formaal) + '">';
   h += '<label for="rPunkter">Punkter</label><p class="hint" style="margin:0 0 4px">En linje som "1. Status" bliver en overskrift.</p><textarea id="rPunkter" rows="10" maxlength="20000">' + esc(v.punkter) + '</textarea>';
   h += '<label>Det, mødet udløser</label><div id="rOpg"></div><button type="button" class="ghost small" id="rOpgNy">+ Opgave</button>';
@@ -1124,6 +1141,131 @@ async function visRefForm(id) {
 }
 
 // ---------- Idéboks
+// ---------- Venteliste (trin 2, Lars 11. november 2026 kl. 12.57, mockup padel_venteliste_fane.png)
+// Tilmeldingerne fra mitrtk.dk/padel. Kun Styregruppen og Padel Team. Kun administratorer sætter på hold, ændrer status og sender tilbud.
+// Persondata, så intet lægges i Firebase: fanen spørger altid motoren.
+let vlData = null;
+const vlF = { hold: '', dag: '', vis: 'alle', sorter: 'frivillighed', liste: 'Voksne nybegyndere' };
+const vlStj = (n) => '&#9733;'.repeat(n);
+const vlMaerke = (sp) => sp.status === 'Betalt' ? '<span class="vl-m ok">' + (sp.tilbud ? 'Tilbud sendt' : 'Betalt') + '</span>'
+  : sp.status === 'Venter på betaling' ? '<span class="vl-m">Venter ' + Math.max(0, Math.round((Date.now() - new Date(sp.tid.replace(' ', 'T')).getTime()) / 3600000)) + ' t</span>'
+  : '<span class="vl-m af">' + esc(sp.status) + '</span>';
+const vlHoldNavn = (h) => h.indexOf('Junior+') === 0 ? 'Junior+' : h.indexOf('Junior') === 0 ? 'Junior' : h;
+async function vlHent() { vlData = await motor('padel', 'vl', {}); return vlData; }
+function vlCsv(raekker, navn) {
+  const csv = raekker.map((r) => r.map((v) => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"').join(';')).join('\r\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }));
+  a.download = navn; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+}
+async function visVl(del) {
+  vis('vVl');
+  if (!erFuld()) { $('vVl').innerHTML = '<p class="hint">Ventelisten er kun for Styregruppen og Padel Team.</p>'; return; }
+  if (!vlData) $('vVl').innerHTML = '<p class="hint">Henter …</p>';
+  try { await vlHent(); } catch (err) { $('vVl').innerHTML = fejlHtml(err); return; }
+  const d = vlData, sp = d.spillere, adm = d.admin;
+  const nyb = d.interesse.filter((x) => x.liste === 'Voksne nybegyndere').length, sen = d.interesse.length - nyb;
+  let h = '<p class="hint" style="margin:0 0 8px">&#128274; Kun Styregruppen og Padel Team. Lukker ' + esc(d.lukker) + '.</p>';
+  h += '<div class="pd-skift" role="group" aria-label="Venteliste" style="display:flex;margin:0 0 10px">'
+    + [['liste', 'Venteliste · ' + sp.length], ['tvivl', 'Tvivl'], ['uden', 'Uden depositum · ' + d.interesse.length]]
+      .map((x) => '<button type="button" style="flex:1" data-vldel="' + x[0] + '" aria-pressed="' + (del === x[0]) + '">' + esc(x[1]) + '</button>').join('') + '</div>';
+  if (del === 'tvivl') {
+    h += '<div class="card"><b>Tvivlstilfælde kommer med betalingerne</b><p class="hint">Når betalingerne hentes fra ForeningLet (trin 3), lander de betalinger her, som ikke kan kobles sikkert til en tilmelding. Indtil da markerer administratorerne "Betalt" på familien.</p></div>';
+  } else if (del === 'uden') {
+    const vlListeOk = (x) => (x.liste === 'Voksne nybegyndere') === (vlF.liste === 'Voksne nybegyndere');
+    const l = d.interesse.filter(vlListeOk);
+    h += '<div class="vl-chips">' + [['Voksne nybegyndere', nyb], ['Seniorpadel (60+) i dagtimerne', sen]].map((x) => '<button type="button" data-vlliste="' + esc(x[0]) + '" aria-pressed="' + (vlF.liste === x[0]) + '">' + esc(x[0]) + ' · ' + x[1] + '</button>').join('') + '</div>';
+    h += l.length ? l.map((x) => '<div class="vl-rk" style="cursor:default"><div class="vl-rv"><b>' + esc(x.navn) + '</b><span>' + esc([x.aar ? (2027 - Number(x.aar)) + ' år' : '', x.erfaring && x.liste !== 'Voksne nybegyndere' ? x.erfaring : '', x.fraNr ? 'fra ' + x.fraNr : '', x.andet ? '"' + x.andet + '"' : ''].filter(Boolean).join(' · ')) + '</span></div><div class="vl-rh"><span class="vl-nr">' + esc(x.tid.slice(0, 10)) + '</span></div></div>').join('') : '<p class="hint">Ingen på listen endnu.</p>';
+    h += '<div class="pd-knapper"><button type="button" class="ghost small" id="vlUdenCsv">Hent som regneark</button> <button type="button" class="ghost small" id="vlUdenMails">Kopiér mails</button></div><p class="msg" id="vlMsg"></p>';
+    h += '<p class="hint">Ingen betaling og ingen frist. Når I har et tilbud, kan I skrive til listen med de kopierede mails (brug Bcc).</p>';
+  } else {
+    const betalt = sp.filter((x) => x.status === 'Betalt').length, venter = sp.filter((x) => x.status === 'Venter på betaling').length;
+    h += '<div class="vl-tal"><div><b>' + sp.length + '</b><span>spillere</span></div><div><b>' + betalt + '</b><span>betalt</span></div><div><b>' + venter + '</b><span>venter</span></div><div><b>' + (sp.length - betalt - venter) + '</b><span>taget af m.m.</span></div></div>';
+    if (adm) {
+      const paa = sp.filter((x) => x.paaHold), klar = paa.filter((x) => x.status === 'Betalt' && !x.tilbud);
+      h += '<div class="vl-send"><div><b>Tilbud: ' + paa.length + ' sat på hold</b><span>' + klar.length + ' er betalt og har ikke fået tilbuddet' + (d.tilbudLink ? '' : '. Linket til ForeningLet mangler i indstillingen padel.vl.tilbud.fl') + '</span></div>'
+        + '<button type="button" class="ok small" id="vlSend"' + (klar.length ? '' : ' disabled') + '>Send tilbud</button></div><p class="msg" id="vlMsg"></p>';
+    }
+    const holdene = [...new Set(sp.map((x) => vlHoldNavn(x.hold)))].filter(Boolean);
+    h += '<div class="vl-chips"><b>Hold</b>' + [''].concat(holdene).map((x) => '<button type="button" data-vlf="hold" data-v="' + esc(x) + '" aria-pressed="' + (vlF.hold === x) + '">' + esc(x || 'Alle') + '</button>').join('') + '</div>';
+    h += '<div class="vl-chips"><b>Dag</b>' + [['', 'Alle'], ['Onsdag', 'Onsdag'], ['Lørdag', 'Lørdag']].map((x) => '<button type="button" data-vlf="dag" data-v="' + x[0] + '" aria-pressed="' + (vlF.dag === x[0]) + '">' + x[1] + '</button>').join('') + '</div>';
+    h += '<div class="vl-chips"><b>Vis</b>' + [['alle', 'Alle'], ['betalt', 'Betalt'], ['venter', 'Venter'], ['af', 'Taget af m.m.'], ['voksen', 'Prøv voksen'], ['hold', 'Sat på hold']].map((x) => '<button type="button" data-vlf="vis" data-v="' + x[0] + '" aria-pressed="' + (vlF.vis === x[0]) + '">' + x[1] + '</button>').join('') + '</div>';
+    h += '<div class="vl-chips"><b>Sortér</b>' + [['frivillighed', 'Frivillighed'], ['alder', 'Alder'], ['tid', 'Tilmeldt']].map((x) => '<button type="button" data-vlf="sorter" data-v="' + x[0] + '" aria-pressed="' + (vlF.sorter === x[0]) + '">' + x[1] + '</button>').join('') + '</div>';
+    let l = sp.filter((x) => (!vlF.hold || vlHoldNavn(x.hold) === vlF.hold) && (!vlF.dag || x.dage.indexOf(vlF.dag) >= 0));
+    l = l.filter((x) => vlF.vis === 'alle' || (vlF.vis === 'betalt' && x.status === 'Betalt') || (vlF.vis === 'venter' && x.status === 'Venter på betaling')
+      || (vlF.vis === 'af' && x.status !== 'Betalt' && x.status !== 'Venter på betaling') || (vlF.vis === 'voksen' && x.proev) || (vlF.vis === 'hold' && x.paaHold));
+    l.sort((a, b) => vlF.sorter === 'alder' ? a.alder - b.alder : vlF.sorter === 'tid' ? (a.tid < b.tid ? -1 : 1) : b.stjerner - a.stjerner || (a.tid < b.tid ? -1 : 1));
+    h += l.length ? l.map((x) => '<button type="button" class="vl-rk" data-vlnr="' + esc(x.nr) + '"><span class="vl-rv"><b>' + esc(x.navn) + '</b><span>' + esc([x.hold, x.alder + ' år', x.dage, x.erfaring].join(' · ')) + (x.proev ? ' · prøv voksen' : '') + '</span>'
+      + (x.paaHold ? '<span><i>' + esc(x.paaHold) + '</i></span>' : '') + '</span><span class="vl-rh">' + vlMaerke(x) + '<span class="vl-st" aria-label="' + x.stjerner + ' stjerner for frivillighed">' + vlStj(x.stjerner) + '</span><span class="vl-nr">' + esc(x.nr) + '</span></span></button>').join('')
+      : '<p class="hint">Ingen spillere her.</p>';
+    h += '<div class="pd-knapper"><button type="button" class="ghost small" id="vlCsv">Hent som regneark</button></div>';
+    h += '<p class="hint">Stjernerne viser frivilligheden: hvor mange ting de har krydset af, og hvor ofte. Klik på en spiller for at se familien.</p>';
+  }
+  $('vVl').innerHTML = h;
+  $('vVl').querySelectorAll('[data-vldel]').forEach((b) => b.addEventListener('click', () => { location.hash = 'venteliste/' + b.dataset.vldel; }));
+  $('vVl').querySelectorAll('[data-vlf]').forEach((b) => b.addEventListener('click', () => { vlF[b.dataset.vlf] = b.dataset.v; visVl('liste'); }));
+  $('vVl').querySelectorAll('[data-vlliste]').forEach((b) => b.addEventListener('click', () => { vlF.liste = b.dataset.vlliste; visVl('uden'); }));
+  $('vVl').querySelectorAll('[data-vlnr]').forEach((b) => b.addEventListener('click', () => { location.hash = 'vl/' + encodeURIComponent(b.dataset.vlnr); }));
+  if ($('vlCsv')) $('vlCsv').addEventListener('click', () => vlCsv([['Nr', 'Navn', 'Fødselsdato', 'Alder', 'Køn', 'Hold', 'Dage', 'Erfaring', 'Niveau', 'Prøv voksen', 'Kontakt', 'Mail', 'Mobil', 'Medlem', 'Hjælp', 'Hvem hjælper', 'Hyppighed', 'Stjerner', 'Andet', 'Status', 'Sat på hold', 'Tilbud sendt', 'Tilmeldt', 'Kilde']]
+    .concat(sp.map((x) => [x.nr, x.navn, x.foed, x.alder, x.koen, x.hold, x.dage, x.erfaring, x.niveau, x.proev ? 'Ja' : '', x.kontakt, x.mail, x.mobil, x.medlem, x.hjaelp, x.hvemHjaelper, x.hyppighed, x.stjerner, x.andet, x.status, x.paaHold, x.tilbud, x.tid, x.kilde])), 'venteliste_padel.csv'));
+  if ($('vlUdenCsv')) $('vlUdenCsv').addEventListener('click', () => vlCsv([['Liste', 'Navn', 'Fødselsår', 'Mail', 'Mobil', 'Erfaring', 'Andet', 'Fra nr', 'Tilmeldt']]
+    .concat(d.interesse.filter((x) => (x.liste === 'Voksne nybegyndere') === (vlF.liste === 'Voksne nybegyndere')).map((x) => [x.liste, x.navn, x.aar, x.mail, x.mobil, x.erfaring, x.andet, x.fraNr, x.tid])), 'liste_padel.csv'));
+  if ($('vlUdenMails')) $('vlUdenMails').addEventListener('click', async () => {
+    const m = [...new Set(d.interesse.filter((x) => (x.liste === 'Voksne nybegyndere') === (vlF.liste === 'Voksne nybegyndere')).map((x) => x.mail))].join(', ');
+    try { await navigator.clipboard.writeText(m); besked($('vlMsg'), 'Mails kopieret: ' + m.split(', ').filter(Boolean).length, 'ok'); } catch (e) { besked($('vlMsg'), m, ''); }
+  });
+  if ($('vlSend')) $('vlSend').addEventListener('click', async () => {
+    let p; try { p = await motor('padel', 'vlSendTilbud', { proeve: true }, nyId()); } catch (err) { besked($('vlMsg'), err.message, 'err'); return; }
+    if (!p.familier) { besked($('vlMsg'), 'Der er ingen tilbud at sende.', ''); return; }
+    if (!confirm('Send tilbud til ' + p.familier + ' familier (' + p.spillere + ' spillere) nu? De får to dage til at betale første kvartal.')) return;
+    $('vlSend').disabled = true; besked($('vlMsg'), 'Sender …', '');
+    try { const r = await motor('padel', 'vlSendTilbud', {}, nyId()); vlData = r.liste; await visVl('liste'); besked($('vlMsg'), r.sendt + ' tilbud sendt.', 'ok'); }
+    catch (err) { besked($('vlMsg'), err.message, 'err'); $('vlSend').disabled = false; }
+  });
+}
+async function visVlFam(nr) {
+  vis('vVl');
+  if (!erFuld()) { $('vVl').innerHTML = '<p class="hint">Ventelisten er kun for Styregruppen og Padel Team.</p>'; return; }
+  if (!vlData) { $('vVl').innerHTML = '<p class="hint">Henter …</p>'; try { await vlHent(); } catch (err) { $('vVl').innerHTML = fejlHtml(err); return; } }
+  const rk = vlData.spillere.filter((x) => x.nr === nr).sort((a, b) => a.s - b.s);
+  if (!rk.length) { location.hash = 'venteliste'; return; }
+  const k = rk[0], adm = vlData.admin;
+  const efternavn = (k.kontakt.split(' ').slice(-1)[0] || '');
+  let h = '<a class="gr-tilbage" href="#venteliste">&#8592; Venteliste</a><h2 class="lille" style="margin:8px 0 2px">' + esc(nr) + ' · ' + esc(rk.length > 1 ? 'Familien ' + efternavn : k.navn) + '</h2>';
+  h += '<p class="hint" style="margin:0">Tilmeldt ' + esc(k.tid) + (k.kilde ? ' fra ' + esc(k.kilde) : '') + '. Medlem af RTK: ' + esc(k.medlem || 'ikke svaret') + '.</p>';
+  h += '<div class="vl-bok"><div class="vl-bh"><b>Betaling</b>' + vlMaerke(k) + '</div><p class="hint" style="margin:0">' + esc(k.antal + ' × 500 kr. = ' + k.beloeb.toLocaleString('da-DK') + ' kr.') + (k.betalt ? ' · betalt ' + esc(k.betalt) : '') + (k.betaling ? ' · ' + esc(k.betaling) : '') + '</p>';
+  if (adm) h += '<div class="pd-knapper">' + [['betalt', 'Markér betalt'], ['venter', 'Venter på betaling'], ['taget', 'Tag af listen'], ['tilbage', 'Betales tilbage'], ['retur', 'Betalt tilbage']]
+    .filter((x) => vlData.status[x[0]] !== k.status).map((x) => '<button type="button" class="ghost small" data-vlstatus="' + x[0] + '">' + x[1] + '</button>').join(' ') + '</div>';
+  h += '</div>';
+  h += '<div class="vl-bok"><div class="vl-bh"><b>Kontakt</b></div><p style="margin:0">' + esc(k.kontakt) + '<br><span class="hint"><a href="mailto:' + esc(k.mail) + '">' + esc(k.mail) + '</a> · <a href="tel:+' + esc(k.mobil) + '">' + esc(k.mobil.replace(/^45/, '')) + '</a></span></p></div>';
+  rk.forEach((x) => {
+    h += '<div class="vl-bok"><div class="vl-bh"><b>' + esc(x.navn.split(' ')[0]) + ', ' + x.alder + ' år</b><span class="hint">' + esc([x.koen, x.erfaring].filter(Boolean).join(' · ')) + '</span></div>';
+    h += '<p class="hint" style="margin:0">' + esc(x.hold + ' · ' + x.dage) + (x.proev ? ' · vil prøve voksenholdet' : '') + '</p>';
+    if (x.niveau) h += '<p style="margin:6px 0 0;font-size:15px">"' + esc(x.niveau) + '"</p>';
+    if (adm && !x.tilbud) h += '<div class="vl-giv"><select data-vlhold="' + x.s + '" aria-label="Hold for ' + esc(x.navn) + '"><option value="">Ikke sat på hold</option>' + vlData.hold.map((o) => '<option' + (o === x.paaHold ? ' selected' : '') + '>' + esc(o) + '</option>').join('') + '</select><button type="button" class="ok small" data-vlgem="' + x.s + '">Sæt på hold</button></div>';
+    else h += '<p style="margin:6px 0 0"><b>' + esc(x.paaHold || 'Ikke sat på hold') + '</b>' + (x.tilbud ? ' · tilbud sendt ' + esc(x.tilbud) : '') + '</p>';
+    h += '</div>';
+  });
+  h += '<div class="vl-bok"><div class="vl-bh"><b>Frivillighed</b><span class="vl-st">' + vlStj(k.stjerner) + '</span></div>';
+  h += '<p class="hint" style="margin:0">' + esc([k.hjaelp || 'Intet krydset af', k.hvemHjaelper, k.hyppighed].filter(Boolean).join(' · ')) + '</p>';
+  if (k.andet) h += '<p style="margin:6px 0 0;font-size:15px">"' + esc(k.andet) + '"</p>';
+  h += '<p style="margin:6px 0 0">' + (k.forventning ? '<span class="vl-m ok">Forventning accepteret</span>' : '<span class="vl-m af">Forventning ikke krydset af</span>') + (k.camps ? ' <span class="vl-m af">Vil høre om camps</span>' : '') + '</p></div>';
+  h += '<p class="msg" id="vlFMsg"></p>';
+  if (k.note) h += '<p class="hint" style="white-space:pre-line;margin-top:10px">Historik:\n' + esc(k.note) + '</p>';
+  if (adm) h += '<p class="hint">Sæt på hold sender intet. Tilbuddene sendes samlet fra oversigten.</p>';
+  $('vVl').innerHTML = h;
+  $('vVl').querySelectorAll('[data-vlstatus]').forEach((b) => b.addEventListener('click', async () => {
+    if (b.dataset.vlstatus === 'taget' && !confirm('Tage ' + nr + ' af listen?')) return;
+    b.disabled = true;
+    try { vlData = await motor('padel', 'vlStatus', { nr, status: b.dataset.vlstatus }, nyId()); visVlFam(nr); } catch (err) { besked($('vlFMsg'), err.message, 'err'); b.disabled = false; }
+  }));
+  $('vVl').querySelectorAll('[data-vlgem]').forEach((b) => b.addEventListener('click', async () => {
+    const hold = $('vVl').querySelector('[data-vlhold="' + b.dataset.vlgem + '"]').value;
+    b.disabled = true;
+    try { vlData = await motor('padel', 'vlHold', { nr, spiller: Number(b.dataset.vlgem), hold }, nyId()); await visVlFam(nr); besked($('vlFMsg'), hold ? 'Sat på ' + hold + '.' : 'Fjernet fra hold.', 'ok'); }
+    catch (err) { besked($('vlFMsg'), err.message, 'err'); b.disabled = false; }
+  }));
+}
+
 // ---------- Økonomi (Lars 9. november 2026 kl. 13.16, mockup padel_oekonomi.png)
 // Forudsætninger i grupper (kun administratorer retter) og filer (alle i padel lægger op og henter). Aldrig for Padelcircle.
 let oekData = null;
