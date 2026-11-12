@@ -144,7 +144,7 @@
     'Åbner tirsdag 17. november kl. 10': 'Opens Tuesday 17 November at 10 am',
     'Skriv jer op': 'Sign up',
     'Forhåndstilmeldingen åbner tirsdag 17. november kl. 10 og lukker 10. december 2026. Du kan skrive flere spillere op på én gang, fx dig selv og dine børn. Der er et begrænset antal pladser, kun 8 til 10 på hvert hold. Når I har skrevet jer op, betaler I 500 kr. pr. spiller i depositum i ForeningLet inden for 48 timer. Voksne skal være på padelniveau 1,5. Er du voksen og helt ny, eller er du 60+ og vil spille i dagtimerne, så se':
-      'Pre-registration opens Tuesday 17 November at 10 am and closes 10 December 2026. You can sign up several players at once, e.g. yourself and your children. Places are limited, only 8 to 10 on each team. After signing up, you pay a DKK 500 deposit per player in ForeningLet within 48 hours. Adults must be at padel level 1.5. If you are an adult and completely new, or 60+ and want to play during the day, see',
+      'Pre-registration opens Tuesday 17 November at 10 am and closes 10 December 2026. You can sign up several players at once, e.g. yourself and your children. Places are limited, only 8 to 10 on each team. After signing up, you pay a DKK 500 deposit per player in ForeningLet within 48 hours. Adults must be at padel level 1.5. If you are an adult beginner, or 60+ and want to play during the day, see',
     'listerne uden depositum': 'the lists without a deposit',
     'Fra 17. november kl. 10': 'From 17 November, 10 am',
     'Nu': 'Now',
@@ -169,7 +169,7 @@
     'Jeg har læst,': 'I have read',
     'hvordan RTK bruger oplysningerne': 'how RTK uses the information',
     'Giv mig besked': 'Notify me',
-    'Er du voksen og helt ny, eller er du 60+ og vil spille i dagtimerne?': 'Are you an adult and completely new, or 60+ and want to play during the day?',
+    'Er du voksen og helt ny, eller er du 60+ og vil spille i dagtimerne?': 'Are you an adult beginner, or 60+ and want to play during the day?',
     'Listerne uden depositum': 'The lists without a deposit',
     'er åbne allerede nu.': 'are open now.',
     'Tak': 'Thank you',
@@ -239,7 +239,7 @@
     'Skriv et dansk mobilnummer med 8 cifre, eller lad feltet stå tomt.': 'Enter a Danish mobile number with 8 digits, or leave the field empty.',
     'Sæt flueben ved, at du har læst, hvordan RTK bruger oplysningerne.': 'Tick the box to confirm you have read how RTK uses the information.',
     'Skriv dit fødselsår med fire cifre. Listerne er for voksne.': 'Enter your year of birth with four digits. The lists are for adults.',
-    'Seniorpadel (60+) er for dig, der er født i 1967 eller før. Er du voksen og helt ny, så vælg den anden liste.': 'Senior padel (60+) is for people born in 1967 or earlier. If you are an adult and completely new, choose the other list.',
+    'Seniorpadel (60+) er for dig, der er født i 1967 eller før. Er du voksen og helt ny, så vælg den anden liste.': 'Senior padel (60+) is for people born in 1967 or earlier. If you are an adult beginner, choose the other list.',
     'Vælg, hvor meget du har prøvet padel.': 'Choose how much you have tried padel.',
     'Skriv dit spørgsmål.': 'Write your question.',
     'Der er ingen forbindelse lige nu. Tjek internettet, og prøv igen om et øjeblik.': 'There is no connection right now. Check your internet and try again in a moment.',
@@ -278,7 +278,7 @@
     'Passer holdene ikke til dig lige nu?': 'Don\'t the teams suit you right now?',
     'Padel for voksne nybegyndere og Seniorpadel (60+) er ikke startet endnu. Skriv dig på listen, så vi kan se, hvor mange der vil være med. Bliver vi nok, starter vi initiativet, og så hører du fra os først. Det koster ikke noget at stå på listen, og du binder dig ikke. Du bestemmer selv, om du vil blive stående på listen eller af den.':
       'Padel for adult beginners and Senior padel (60+) have not started yet. Put your name on the list so we can see how many want to join. If there are enough of us, we start the initiative, and you will hear from us first. It costs nothing to be on the list, and you are not committing to anything. You decide whether to stay on the list or come off it.',
-    'Voksen og helt ny': 'Adult and completely new',
+    'Voksen og helt ny': 'Adult beginners',
     'Du er ikke på padelniveau 1,5 endnu, fx fordi du aldrig eller næsten aldrig har spillet, og vil gerne i gang sammen med andre nybegyndere. Det er ikke startet endnu. Bliver vi nok, starter vi det.':
       'You are not at padel level 1.5 yet, e.g. because you have never or hardly ever played, and you would like to get started with other beginners. It has not started yet. If there are enough of us, we will start it.',
     'Skriv mig på listen': 'Put me on the list',
@@ -432,7 +432,7 @@
     [/^Vælg, om (.+) skal på Junior, Junior\+ eller begge\.$/, function (m) { return 'Choose whether ' + m[1] + ' should go on Junior, Junior+ or both.'; }],
     [/^Højst (\d+) spillere på én tilmelding\.$/, function (m) { return 'At most ' + m[1] + ' players in one registration.'; }],
     [/^Du har stillet (\d+) spørgsmål i dag\. Prøv igen i morgen, eller brug Spørg os nederst på siden\.$/, function (m) { return 'You have asked ' + m[1] + ' questions today. Try again tomorrow, or use Ask us at the bottom of the page.'; }],
-    [/^Seniorpadel \(60\+\) er for dig, der er født i (\d+) eller før\. Er du voksen og helt ny, så vælg den anden liste\.$/, function (m) { return 'Senior padel (60+) is for people born in ' + m[1] + ' or earlier. If you are an adult and completely new, choose the other list.'; }],
+    [/^Seniorpadel \(60\+\) er for dig, der er født i (\d+) eller før\. Er du voksen og helt ny, så vælg den anden liste\.$/, function (m) { return 'Senior padel (60+) is for people born in ' + m[1] + ' or earlier. If you are an adult beginner, choose the other list.'; }],
     [/^(\d+) spillere? × 500 kr\. = ([\d.]+) kr\.$/, function (m) { return m[1] + (m[1] === '1' ? ' player' : ' players') + ' × DKK 500 = DKK ' + komma(m[2]); }],
     [/^([\d.]+(?: [+×] [\d.]+)+) = ([\d.]+) kr\.$/, function (m) { return komma(m[1]) + ' = DKK ' + komma(m[2]); }],
     [/^([\d.]+) kr\.$/, function (m) { return 'DKK ' + komma(m[1]); }]
