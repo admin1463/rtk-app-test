@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="35c554dcf282">
+<meta name="rtk-version" content="0b42d0112872">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -18,10 +18,11 @@
 <link rel="stylesheet" href="rtk.css?v=2de082c9bdad">
 <script>
 /* Forhåndstilmeldingen åbner tirsdag 17. november 2026 kl. 10 (Lars 12. november 2026 kl. 13.11). På test kan ?aaben=1 eller ?aaben=0 vise den anden tilstand */
-(function () { var a = Date.now() >= Date.parse('2026-11-17T10:00:00+01:00'); var q = /^(localhost|127\.0\.0\.1|test\.mitrtk\.dk)$/.test(location.hostname) && /[?&]aaben=([01])/.exec(location.search); if (q) a = q[1] === '1'; if (a) document.documentElement.classList.add('aaben'); })();
+(function () { var a = Date.now() >= Date.parse('2026-11-17T10:00:00+01:00'); var q = /^(localhost|127\.0\.0\.1|test\.mitrtk\.dk)$/.test(location.hostname) && /[?&]aaben=([01])/.exec(location.search); if (q) a = q[1] === '1'; if (a) document.documentElement.classList.add('aaben'); if (/^(www\.)?mitrtk\.dk$/.test(location.hostname)) document.documentElement.classList.add('prod'); })();
 </script>
 <style>
 html.aaben .foer{display:none!important}
+html.prod .kun-test{display:none!important}
 html:not(.aaben) .efter{display:none!important}
 /* Padelsiden: offentlig, uden login. Komposition godkendt af Lars 9. november 2026 (mockup padel_venteliste). */
 .pv{--court:#1E4FA8;--bold:#D4F03C;font-size:17px;line-height:1.55}
@@ -660,7 +661,7 @@ html:not(.aaben) .efter{display:none!important}
       <span><b>Roskilde Tennis Klub</b> · Padel i samarbejde med PadelPit Roskilde</span>
     </span>
     <span class="hoejre">
-      <span>Testversion. Data er opdigtede.</span>
+      <span class="kun-test">Testversion. Data er opdigtede.</span>
       <a class="privat" href="privatliv.html">Privatliv</a>
     </span>
   </div>
