@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="49666e721b09">
+<meta name="rtk-version" content="65129dfb873f">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -109,6 +109,16 @@
 /* fællesskab */
 .pv-faelles{background:var(--teal);color:#fff}
 .pv-faelles .pv-to{grid-template-columns:1fr 1.05fr}
+/* Introvideo under billedet i "Derfor er det noget særligt" (Lars 12. november 2026) */
+.pv-saer{align-items:start}
+.pv-saer .pv-foto{min-height:420px}
+.pv-video{margin:20px auto 0;max-width:380px}
+.pv-video-ramme{position:relative;border-radius:20px;overflow:hidden;background:#0B3D3A;aspect-ratio:9/16}
+.pv-video video{display:block;width:100%;height:100%;object-fit:cover;background:#0B3D3A}
+.pv-lyd{position:absolute;left:50%;top:16px;transform:translateX(-50%);display:flex;align-items:center;gap:8px;background:rgba(11,61,58,.9);color:#fff;border:0;border-radius:999px;padding:10px 16px;font:inherit;font-size:15px;font-weight:700;cursor:pointer;white-space:nowrap}
+.pv-lyd svg{width:20px;height:20px;flex:none}
+.pv-lyd:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.pv-video figcaption{margin-top:8px;font-size:14px;color:var(--muted);text-align:center}
 .pv-faelles p{color:#DCE8E6}
 .pv-faelles .kick{color:var(--ice)}
 .pv-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
@@ -203,7 +213,8 @@
  .pv-fakta .w{grid-template-columns:1fr 1fr} .pv-fakta .w>div{padding:18px 10px 18px 0;margin-right:10px} .pv-fakta .w>div:nth-child(2){border:0} .pv-fakta b{font-size:21px}
  .pv .sek{padding:60px 0} .pv h2{font-size:31px}
  .pv-to,.pv-faelles .pv-to,.pv-tilm .pv-to,.pv-steder,.pv-faq .gitter,.pv-skriv{grid-template-columns:1fr;gap:28px}
- .pv-foto{min-height:380px}
+ .pv-foto,.pv-saer .pv-foto{min-height:380px}
+ .pv-video{margin-top:16px}
  .pv-baand{height:460px;background-position:58% 25%} .pv-baand p{font-size:28px} .pv-baand .w{padding-bottom:28px}
  .pv-kort3,.pv-trin,.pv-andre-g,.pv-rtk-g{grid-template-columns:minmax(0,1fr)}
  .pv-tal4{grid-template-columns:1fr 1fr} .pv-tal4 b{font-size:38px} .pv-rtk-intro{font-size:17px} .pv-kort .tid{display:inline-block;margin-top:8px;background:#E6EEFA;color:var(--court);font-weight:700;font-size:15px;border-radius:999px;padding:5px 12px}
@@ -248,8 +259,15 @@
   <div><b>Fra 595 kr.</b><span>pr. kvartal for juniorer</span></div>
 </div></section>
 
-<section class="sek"><div class="w pv-to">
-  <div class="pv-foto" style="background-image:url(billeder/padel/traening.jpg)" role="img" aria-label="Padeltræning indendørs. En spiller slår bolde fra kurven, mens en anden smasher på banen bagved"><div class="maerke"><b>Onsdag og lørdag</b>Onsdag eftermiddag og aften, og lørdag mellem 9 og 13.</div></div>
+<section class="sek"><div class="w pv-to pv-saer">
+  <div class="pv-venstre"><div class="pv-foto" style="background-image:url(billeder/padel/traening.jpg)" role="img" aria-label="Padeltræning indendørs. En spiller slår bolde fra kurven, mens en anden smasher på banen bagved"><div class="maerke"><b>Onsdag og lørdag</b>Onsdag eftermiddag og aften, og lørdag mellem 9 og 13.</div></div>
+  <figure class="pv-video">
+    <div class="pv-video-ramme">
+      <video id="intro" src="video/padel_intro.mp4" poster="video/padel_intro.jpg" muted playsinline preload="metadata" controls controlslist="nodownload" disablepictureinpicture aria-label="Video på 30 sekunder om fast padeltræning i RTK og PadelPit Roskilde fra januar. Med danske undertekster"></video>
+      <button type="button" class="pv-lyd" id="introLyd" aria-label="Slå lyd til og se videoen forfra"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg>Slå lyd til</button>
+    </div>
+    <figcaption>Padel i RTK på 30 sekunder. Tryk på knappen i hjørnet for fuld skærm.</figcaption>
+  </figure></div>
   <div>
     <div class="kick">Derfor er det noget særligt</div>
     <h2>Et rigtigt klubtilbud i padel. Til en pris, hvor alle kan være med.</h2>
@@ -557,6 +575,25 @@
 
 <script src="konfig.js?v=5d3b61fda9e3"></script>
 <script>
+// Introvideoen: starter uden lyd, når den ses, og stopper, når man ruller væk. "Slå lyd til" starter forfra med lyd (Lars 12. november 2026)
+(function () {
+  var v = document.getElementById('intro'), b = document.getElementById('introLyd');
+  if (!v || !b) return;
+  v.muted = true;
+  var roligt = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches, setFoer = false;
+  function visLyd() { b.hidden = !v.muted; }
+  b.addEventListener('click', function () { v.muted = false; v.currentTime = 0; setFoer = true; var p = v.play(); if (p && p.catch) p.catch(function () {}); visLyd(); });
+  v.addEventListener('volumechange', visLyd);
+  v.addEventListener('play', function () { setFoer = true; });
+  if ('IntersectionObserver' in window && !roligt) {
+    new IntersectionObserver(function (l) {
+      l.forEach(function (e) {
+        if (e.isIntersecting && e.intersectionRatio >= 0.5) { if (v.paused && !v.ended && !(setFoer && !v.muted)) { var p = v.play(); if (p && p.catch) p.catch(function () {}); } }
+        else if (!v.paused && !document.fullscreenElement && !v.webkitDisplayingFullscreen) v.pause();
+      });
+    }, { threshold: [0, 0.5] }).observe(v);
+  }
+})();
 (function () {
   'use strict';
   var PRIS = 500, START = new Date(2027, 0, 1);
