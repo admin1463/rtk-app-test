@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="6e516df7fd90">
+<meta name="rtk-version" content="91b0e18d9a85">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -160,6 +160,11 @@
 .pv-nummer b{font-size:22px;letter-spacing:.02em}
 .pv-nummer button{background:none;border:0;color:var(--pink);font-weight:700;cursor:pointer;font-family:inherit;font-size:15px}
 .pv-betal{background:var(--waitbg);color:var(--wait);border-radius:14px;padding:16px;margin-top:16px}
+.pa-igen{border:0;cursor:pointer;font:inherit;font-weight:700;font-size:14px}
+.pa-igen:hover{background:#C4004E;color:#fff}
+.pv-nu{margin-top:16px;border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:15px}
+.pv-nu ul{margin:6px 0 0;padding-left:18px}
+.pv-nu li{margin:4px 0}
 .pv-match{margin-top:10px;background:#fff;border-radius:10px;padding:10px 12px;color:#000}
 .pv-match>div{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding:5px 0;font-size:15px}
 .pv-match>div span{color:var(--muted)}
@@ -260,7 +265,8 @@
 .pa-bund button:disabled{opacity:.5}
 .pa-web{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 @media (max-width:760px){
- .pa-knap{right:12px;bottom:calc(84px + env(safe-area-inset-bottom));padding:8px 14px 8px 8px;font-size:14px}
+ .pa-knap{right:12px;bottom:calc(84px + env(safe-area-inset-bottom));padding:6px;font-size:14px}
+ .pa-knap .pa-tekst{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
  .pa-panel{right:8px;left:8px;bottom:8px;width:auto;max-width:none;height:calc(100% - 64px);max-height:none}
 }
 /* rtk.css giver alle knapper en lys baggrund ved hover, så Aces hvide tekst forsvandt (Lars 12. november 2026 kl. 10.03) */
@@ -352,16 +358,25 @@
     <div class="pv-kort"><div class="alder">10 til 17 år</div><h3>Junior+</h3><div class="tid">1,5 time om ugen</div><div class="pris">875 kr. <small>pr. kvartal</small></div>
       <ul><li>Onsdag mellem 15 og 19 eller lørdag mellem 9 og 13</li><li>Træner med hver gang</li><li>Delt i to aldersgrupper</li><li>8 til 10 spillere på hvert hold</li><li>Dygtige 16 og 17-årige kan efter aftale spille med de voksne</li></ul></div>
     <div class="pv-kort"><div class="alder">18 år og op</div><h3>Voksen</h3><div class="tid">1,5 time om ugen</div><div class="pris">1.195 kr. <small>pr. kvartal</small></div>
-      <ul><li>Onsdag mellem 17 og 19</li><li>Træner med hver anden gang. De andre gange spiller I frit, fx americano med skiftende makkere. Sådan kan de fleste voksne bedst lide at spille padel.</li><li>Let øvede til øvede. Er du helt ny, så se <a href="#andre" data-liste="nybegynder">listen for nybegyndere</a></li><li>8 til 10 spillere på 2 baner</li><li>Lørdagshold, hvis der er interesse</li></ul></div>
+      <ul><li>Onsdag mellem 17 og 19</li><li>Træner med hver anden gang. De andre gange spiller I frit, fx americano med skiftende makkere. Sådan kan de fleste voksne bedst lide at spille padel.</li><li>Kræver padelniveau 1,5: du kender reglerne og grundslagene, kan serve og kan holde bolden i gang over nettet mindst fem gange med en makker i normalt tempo. Er du ikke der endnu, så se <a href="#andre" data-liste="nybegynder">listen for nybegyndere</a></li><li>8 til 10 spillere på 2 baner</li><li>Lørdagshold, hvis der er interesse</li></ul></div>
   </div>
-  <p class="pv-note">Træningsafgiften betales pr. kalenderkvartal i ForeningLet, klubbens medlems- og betalingssystem. Man binder sig for et halvt år ad gangen. Derefter kan man opsige til udgangen af et kvartal med mindst 3 måneders varsel. Første kvartal koster fuld pris, selv om vi starter 13. januar. Når I får tildelt en plads, har I to dage til at betale. Ellers går pladsen videre til en anden på listen.</p>
+  <p class="pv-note">Træningsafgiften betales pr. kalenderkvartal i ForeningLet, klubbens medlems- og betalingssystem. Man binder sig for et halvt år ad gangen. Første periode er januar til juni 2027. Vil du stoppe 30. juni, skal du sige op senest 31. marts. Derefter kan du opsige til udgangen af et kvartal med mindst 3 måneders varsel. Første kvartal koster fuld pris, selv om vi starter 13. januar. Når I får tildelt en plads, har I to dage til at betale. Ellers går pladsen videre til en anden på listen.</p>
   <p class="pv-note" style="margin-top:10px">For at gå på et hold skal du være medlem af RTK. Er du ikke medlem i forvejen, skal du have et udemedlemskab oveni, altså et medlemskab af RTK med udendørs tennis: 144 kr. pr. kvartal (3 til 10 år), 214 kr. (11 til 24 år) eller 383 kr. (25 år og op) og et indmeldelsesgebyr på 250 kr. pr. person. Satserne gælder frem til generalforsamlingen i marts 2027. Udemedlemskabet giver også adgang til at spille tennis udendørs på klubbens to anlæg i Roskilde, og du får medlemskabet af PadelPit Roskilde og gratis adgang til udebanerne i Darup med.</p>
   <div class="pv-regn">
     <b>Eksempel på første kvartal for en, der ikke er medlem</b>
     <div><span>Barn på 9 år, Junior</span><span>595 + 144 + 250 = 989 kr.</span></div>
+    <div><span>Barn på 11 år, Junior</span><span>595 + 214 + 250 = 1.059 kr.</span></div>
     <div><span>Ung på 13 år, Junior+</span><span>875 + 214 + 250 = 1.339 kr.</span></div>
     <div><span>Voksen på 42 år</span><span>1.195 + 383 + 250 = 1.828 kr.</span></div>
-    <small>Træning + udemedlemskab + indmeldelse. Depositummet på 500 kr. pr. spiller trækkes fra. Er du allerede medlem, betaler du kun træningen.</small>
+    <b style="margin-top:14px">Derefter pr. kvartal</b>
+    <div><span>Barn på 9 år, Junior</span><span>595 + 144 = 739 kr.</span></div>
+    <div><span>Barn på 11 år, Junior</span><span>595 + 214 = 809 kr.</span></div>
+    <div><span>Ung på 13 år, Junior+</span><span>875 + 214 = 1.089 kr.</span></div>
+    <div><span>Voksen på 42 år</span><span>1.195 + 383 = 1.578 kr.</span></div>
+    <b style="margin-top:14px">Eksempel på en familie, første kvartal</b>
+    <div><span>Voksen på 42 år og børn på 9 og 13 år</span><span>1.828 + 989 + 1.339 = 4.156 kr.</span></div>
+    <div><span>Depositum, som trækkes fra</span><span>3 × 500 = 1.500 kr.</span></div>
+    <small>Træning + udemedlemskab + indmeldelse. Depositummet på 500 kr. pr. spiller trækkes fra første kvartal. Er du allerede medlem, betaler du kun træningen.</small>
   </div>
 </div></section>
 
@@ -407,12 +422,12 @@
 <div class="pv-tilm-v">
     <div class="kick">Forhåndstilmelding 2027</div>
     <h2>Skriv jer op</h2>
-    <p class="graa">Forhåndstilmeldingen lukker 15. december 2026. Du kan skrive flere spillere op på én gang, fx dig selv og dine børn. Der er et begrænset antal pladser, kun 8 til 10 på hvert hold. Når I har skrevet jer op, betaler I 500 kr. pr. spiller i depositum i ForeningLet samme dag. Voksne skal have spillet lidt padel. Er du voksen og helt ny, eller er du 60+ og vil spille i dagtimerne, så se <a href="#andre">listerne uden depositum</a>.</p>
+    <p class="graa">Forhåndstilmeldingen lukker 15. december 2026. Du kan skrive flere spillere op på én gang, fx dig selv og dine børn. Der er et begrænset antal pladser, kun 8 til 10 på hvert hold. Når I har skrevet jer op, betaler I 500 kr. pr. spiller i depositum i ForeningLet inden for 48 timer. Voksne skal være på padelniveau 1,5. Er du voksen og helt ny, eller er du 60+ og vil spille i dagtimerne, så se <a href="#andre">listerne uden depositum</a>.</p>
     <ol class="pv-trinv">
       <li class="nu"><i>Nu</i><b>Skriv jer op her</b><span>Spillere, dage og hvordan I vil give en hånd. Du får et tilmeldingsnummer, som vi bruger til at finde jeres betaling.</span></li>
-      <li><i>Samme dag</i><b>Betal 500 kr. pr. spiller</b><span>I ForeningLet, klubbens medlems- og betalingssystem, med MobilePay. Brug samme mail og mobilnummer som her, og skriv tilmeldingsnummeret. Er der ikke betalt inden for 48 timer, tager vi tilmeldingen af listen.</span></li>
+      <li><i>Inden 48 timer</i><b>Betal 500 kr. pr. spiller</b><span>I ForeningLet, klubbens medlems- og betalingssystem, med MobilePay. Brug samme mail og mobilnummer som her, og skriv tilmeldingsnummeret. Betal gerne med det samme. Fristen er 48 timer, og er der ikke betalt inden da, tager vi tilmeldingen af listen.</span></li>
       <li><i>15. december</i><b>Vi sætter holdene</b><span>Primært efter alder, niveau, dage og frivillighed.</span></li>
-      <li><i>Før jul</i><b>I får svar</b><span>Får I plads, får I det præcise tidspunkt og har to dage til at betale første kvartal i ForeningLet. Depositummet trækkes fra. Ellers går pladsen videre til en anden på listen. Får I ikke plads, får I depositummet tilbage senest to uger efter svaret og kan komme på venteliste, hvis der bliver en plads senere.</span></li>
+      <li><i>Før jul</i><b>I får svar</b><span>Får I plads, får I det præcise tidspunkt og har to dage til at betale første kvartal i ForeningLet. Depositummet trækkes fra. Ellers går pladsen videre til en anden på listen. Får I ikke plads, får I depositummet tilbage senest to uger efter svaret og kan komme på venteliste, hvis der bliver en plads senere. Siger I nej til en plads på en dag, I har valgt, beholder klubben depositummet.</span></li>
     </ol>
     <p class="graa" style="font-size:15px;margin-top:18px">I tvivl om holdet? <a href="#hold">Se hold, tider og priser igen</a>.</p>
   </div>
@@ -494,9 +509,10 @@
       <div class="pv-kvit" id="takT"></div>
       <div id="nrBoks"><div class="lb">Dit tilmeldingsnummer</div>
       <div class="pv-nummer"><b id="nummer">PV-0000</b><button type="button" id="kopi">Kopiér</button></div></div>
-      <div class="pv-betal"><b style="display:block;font-size:17px">Sidste trin: betal depositum i dag</b><span id="beloeb"></span> Betal i dag. Er der ikke betalt inden for 48 timer, tager vi tilmeldingen af listen og sender en mail om det.<div class="pv-match">Skriv præcis dette i ForeningLet, så vi kan finde jeres betaling:<div><span>Navn</span><b id="mNavn"></b></div><div><span>Tilmeldingsnummer</span><b id="mNr"></b></div><div><span>Mail</span><b id="mMail"></b></div><div><span>Mobil</span><b id="mMobil"></b></div></div></div>
+      <div class="pv-betal"><b style="display:block;font-size:17px">Sidste trin: betal depositum</b><span id="beloeb"></span> Betal gerne med det samme. Fristen er 48 timer, og er der ikke betalt inden da, tager vi tilmeldingen af listen og sender en mail om det.<div class="pv-match">Skriv præcis dette i ForeningLet, så vi kan finde jeres betaling:<div><span>Navn</span><b id="mNavn"></b></div><div><span>Tilmeldingsnummer</span><b id="mNr"></b></div><div><span>Mail</span><b id="mMail"></b></div><div><span>Mobil</span><b id="mMobil"></b></div></div></div>
       <a class="knap" id="betal" href="#" target="_blank" rel="noopener">Betal i ForeningLet</a>
       <div class="graa" style="font-size:14px;margin-top:10px">Det tager et minut. Skriv navn, mail, mobil og tilmeldingsnummeret. Linket står også i den mail, du får.</div>
+      <div class="pv-nu" id="nuBoks"><b>Det sker nu</b><ul><li><b>15. december</b> lukker forhåndstilmeldingen, og vi sætter holdene.</li><li><b>Før jul</b> får I svar. Får I plads, får I det præcise tidspunkt og har to dage til at betale første kvartal i ForeningLet. Depositummet trækkes fra. Er I ikke medlemmer, melder I jer ind i ForeningLet samtidig.</li><li><b>Får I ikke plads</b>, får I depositummet tilbage senest to uger efter svaret og kan komme på venteliste.</li><li><b>Siger I nej</b> til en plads på en dag, I har valgt, beholder klubben depositummet.</li></ul></div>
       <div class="pv-test" id="testnote" hidden>Arrangementet i ForeningLet er ikke oprettet endnu. Du får linket på mail, så snart det er klar.</div>
     </div>
   </form>
@@ -507,8 +523,8 @@
   <h2>Passer holdene ikke til dig lige nu?</h2>
   <p class="graa" style="max-width:720px">Padel for voksne nybegyndere og Seniorpadel (60+) er ikke startet endnu. Skriv dig på listen, så vi kan se, hvor mange der vil være med. Bliver vi nok, starter vi initiativet, og så hører du fra os først. Det koster ikke noget at stå på listen, og du binder dig ikke. Du bestemmer selv, om du vil blive stående på listen eller af den.</p>
   <div class="pv-andre-g">
-    <button type="button" class="pv-andre-k" data-liste="nybegynder"><b>Voksen og helt ny</b><p>Du har aldrig, eller næsten aldrig, spillet padel og vil gerne i gang sammen med andre nybegyndere. Det er ikke startet endnu. Bliver vi nok, starter vi det.</p><span class="pv-vaelg">Skriv mig på listen</span></button>
-    <button type="button" class="pv-andre-k" data-liste="senior"><b>Seniorpadel (60+) i dagtimerne</b><p>Du er født i 1967 eller før og vil gerne træne og spille på hverdage om formiddagen og frem til kl. 15. Det er ikke startet endnu. Bliver vi nok, starter vi det.</p><span class="pv-vaelg">Skriv mig på listen</span></button>
+    <button type="button" class="pv-andre-k" data-liste="nybegynder"><b>Voksen og helt ny</b><p>Du er ikke på padelniveau 1,5 endnu, fx fordi du aldrig eller næsten aldrig har spillet, og vil gerne i gang sammen med andre nybegyndere. Det er ikke startet endnu. Bliver vi nok, starter vi det.</p><span class="pv-vaelg">Skriv mig på listen</span></button>
+    <button type="button" class="pv-andre-k" data-liste="senior"><b>Seniorpadel (60+) i dagtimerne</b><p>Du fylder 60 i 2027 eller er ældre og vil gerne træne og spille på hverdage om formiddagen og frem til kl. 15. Det er ikke startet endnu. Bliver vi nok, starter vi det.</p><span class="pv-vaelg">Skriv mig på listen</span></button>
   </div>
   <form class="pv-form pv-iform" id="iform" novalidate>
     <div data-itrin="1">
@@ -547,12 +563,12 @@
 <section class="sek pv-faq"><div class="w">
   <h2>Spørgsmål og svar</h2>
   <div class="gitter">
-    <div><b>Skal man kunne spille i forvejen?</b><span>Ikke som barn eller ung. Junior og Junior+ er også for nybegyndere. Voksenholdet er for let øvede til øvede. Er du voksen og helt ny, så skriv dig på <a href="#andre" data-liste="nybegynder">listen for voksne nybegyndere</a>. Det initiativ er ikke startet endnu. Bliver vi nok, starter vi det. Det koster ikke noget at stå på listen. Vi skriver til dig, når vi starter initiativet, eller hvis der bliver plads på et hold, du kan passe ind i. Du bestemmer selv, om du vil blive stående på listen eller af den.</span></div>
+    <div><b>Skal man kunne spille i forvejen?</b><span>Ikke som barn eller ung. Junior og Junior+ er også for nybegyndere. Voksenholdet kræver padelniveau 1,5. Det betyder, at du kender reglerne og grundslagene, kan serve og kan holde bolden i gang over nettet mindst fem gange med en makker i normalt tempo. Er du voksen og ikke der endnu, så skriv dig på <a href="#andre" data-liste="nybegynder">listen for voksne nybegyndere</a>. Det initiativ er ikke startet endnu. Bliver vi nok, starter vi det. Det koster ikke noget at stå på listen. Vi skriver til dig, når vi starter initiativet, eller hvis der bliver plads på et hold, du kan passe ind i. Du bestemmer selv, om du vil blive stående på listen eller af den.</span></div>
     <div><b>Kan jeg skrive hele familien op på én gang?</b><span>Ja. Skriv alle spillere op i samme tilmelding, så får I ét tilmeldingsnummer og betaler depositummet for alle på én gang i ForeningLet.</span></div>
     <div><b>Skal jeg være medlem af RTK?</b><span>Ikke for at skrive dig op. Men for at gå på et hold skal du være medlem. Får du plads, melder du dig ind i ForeningLet, og så følger medlemskabet af PadelPit Roskilde, gratis adgang til udebanerne i Darup og udendørs tennis med.</span></div>
     <div><b>Hvordan booker vi udebanerne i Darup?</b><span>I ForeningLet, klubbens medlemsapp. Du får adgang, når du er blevet medlem, og som medlem spiller du gratis.</span></div>
     <div><b>Hvorfor et depositum?</b><span>Så vi ved, hvem der er klar til at være med, og kan sætte holdene, før træningen starter i januar. Depositummet er 500 kr. pr. spiller og trækkes fra prisen, når I får plads.</span></div>
-    <div><b>Hvad hvis vi ikke når at betale depositum?</b><span>Depositummet skal betales samme dag, som I skriver jer op. Er der ikke betalt inden for 48 timer, tager vi tilmeldingen af listen og sender en mail om det. Så kan I skrive jer op igen.</span></div>
+    <div><b>Hvad hvis vi ikke når at betale depositum?</b><span>Betal gerne med det samme. Fristen er 48 timer. Er der ikke betalt inden da, tager vi tilmeldingen af listen og sender en mail om det. Så kan I skrive jer op igen.</span></div>
     <div><b>Hvorfor skal vi bruge samme mail og mobil i ForeningLet?</b><span>Tilmeldingen her og betalingen i ForeningLet er to systemer. Vi finder jeres betaling ud fra tilmeldingsnummeret, mailen og mobilnummeret. Bruger I de samme, er I sikre på at blive fundet.</span></div>
     <div><b>Hvordan bliver holdene sat?</b><span>Primært efter alder, niveau, de dage I kan, og frivillighed. Alle får svar før jul.</span></div>
     <div><b>Kan vi vælge dag?</b><span>I fortæller, hvilke dage I kan. Hvilke hold der træner om lørdagen, afhænger af tilmeldingerne. Kan I begge dage, er chancen større. Det præcise tidspunkt får I sammen med pladsen.</span></div>
@@ -560,7 +576,7 @@
     <div><b>Skal vi hjælpe som frivillige?</b><span>Vi håber det. Det er en forventning, ikke et krav, og det behøver ikke være meget. Det kan være spilleren selv, en forælder eller en anden i familien. Læs mere under <a href="#sammen">Vi bygger det sammen</a>.</span></div>
     <div><b>Hvad hvis vi ikke får plads?</b><span>Så får I depositummet tilbage senest to uger efter, at I har fået svar. I kan komme på venteliste uden depositum, hvis der bliver en plads senere.</span></div>
     <div><b>Hvad hvis vi får plads, men ikke vil alligevel?</b><span>Er pladsen på en dag, I har sagt, at I kan, og siger I nej, beholder klubben depositummet. Det er det, depositummet er til, så vi kan regne med de pladser, vi giver. Får I tilbudt en dag, I ikke har valgt, og kan I ikke, får I depositummet tilbage.</span></div>
-    <div><b>Hvor længe binder vi os?</b><span>For et halvt år ad gangen. Træningen betales pr. kvartal i ForeningLet. Derefter kan I opsige til udgangen af et kvartal med mindst 3 måneders varsel.</span></div>
+    <div><b>Hvor længe binder vi os?</b><span>For et halvt år ad gangen. Første periode er januar til juni 2027. Vil I stoppe 30. juni, skal I sige op senest 31. marts. Træningen betales pr. kvartal i ForeningLet. Derefter kan I opsige til udgangen af et kvartal med mindst 3 måneders varsel.</span></div>
     <div><b>Træner I i ferierne?</b><span>Ikke i skolernes ferier. Til gengæld kan der være camps i vinter-, påske- og efterårsferien med delvis egenbetaling.</span></div>
     <div><b>Skal vi have eget udstyr?</b><span>Ja. Tag dit eget padelbat med og sko, der passer til banen, inde eller ude. Har du ikke et bat, kan du låne et til træningen, så langt de rækker. Du afleverer det igen, når træningen er slut. Proshoppen i RTK-hallen har et udvalg af padelbat og andet padeludstyr, og hos klubbens partner Racketlife får du rabat på padeludstyr som medlem.</span></div>
     <div><b>Hvad er Seniorpadel (60+)?</b><span>Et initiativ, vi gerne vil starte for dig på 60 år og op, der vil spille på hverdage i dagtimerne frem til kl. 15. Det er ikke startet endnu. Skriv dig på <a href="#andre" data-liste="senior">listen for Seniorpadel (60+)</a>. Bliver vi nok, starter vi det, og du hører fra os først. Det koster ikke noget at stå på listen, og du binder dig ikke. Du bestemmer selv, om du vil blive stående på listen eller af den.</span></div>
@@ -601,7 +617,7 @@
 </main>
 
 <div class="pa-boks" id="aceBoks">
-<button type="button" class="pa-knap" id="aceKnap" hidden aria-haspopup="dialog" aria-controls="acePanel"><span class="pa-ikon" aria-hidden="true">A</span>Spørg Ace om RTK padel</button>
+<button type="button" class="pa-knap" id="aceKnap" hidden aria-haspopup="dialog" aria-controls="acePanel"><span class="pa-ikon" aria-hidden="true">A</span><span class="pa-tekst">Spørg Ace om RTK padel</span></button>
 <div class="pa-panel" id="acePanel" role="dialog" aria-modal="false" aria-labelledby="aceTitel" hidden>
   <div class="pa-top"><span class="pa-ikon" aria-hidden="true">A</span><div><b id="aceTitel">Spørg Ace om RTK padel</b><small>Svarer ud fra denne side og klubbens hjemmeside</small></div><button type="button" class="pa-luk" id="aceLuk" aria-label="Luk Ace">×</button></div>
   <div class="pa-strom" id="aceStrom" aria-live="polite">
@@ -643,8 +659,11 @@
   var samtale = 's-' + nyt(), historik = [], travl = false;
   async function kald(handling, data, id) {
     for (var f = 0; f < 3; f++) {
-      var res = await fetch(URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ modul: 'ace', handling: handling, id: id, data: data }) });
-      var j = await res.json();
+      var res, j;
+      try {
+        res = await fetch(URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ modul: 'ace', handling: handling, id: id, data: data }) });
+        j = await res.json();
+      } catch (e) { var fe = new Error('Ace kunne ikke svare lige nu. Prøv igen om et øjeblik, eller skriv til os.'); fe.igen = true; throw fe; }
       if (j.ok) return j.data;
       if (!j.igang) throw new Error(j.fejl || 'Ace kan ikke svare lige nu.');
       await new Promise(function (r) { setTimeout(r, 2000); });
@@ -680,7 +699,8 @@
       vent.innerHTML = tegn(s.svar) + (k ? '<br><a class="pa-chip" href="' + k[0] + '" data-pa-luk>' + k[1] + '</a>' : '');
     } catch (err) {
       historik.pop();
-      vent.classList.add('fejl'); vent.innerHTML = esc(err.message) + '<br><a class="pa-chip" href="#skriv" data-pa-luk>Skriv til os</a>';
+      vent.classList.add('fejl'); vent.innerHTML = esc(err.message) + '<br>' + (err.igen ? '<button type="button" class="pa-chip pa-igen">Prøv igen</button> ' : '') + '<a class="pa-chip" href="#skriv" data-pa-luk>Skriv til os</a>';
+      if (err.igen) { var ig = vent.querySelector('.pa-igen'); ig.addEventListener('click', function () { vent.remove(); var mig = strom.querySelectorAll('.pa-mig'); if (mig.length) mig[mig.length - 1].remove(); spoerg(tekst); }); }
     }
     strom.scrollTop = strom.scrollHeight;
     travl = false; send.disabled = false;
@@ -733,9 +753,12 @@
   /** Ét kald til motoren. Samme id ved et nyt forsøg, så et dobbelttryk ikke gemmer to gange. */
   async function motor(handling, data, id) {
     for (var forsoeg = 0; forsoeg < 3; forsoeg++) {
-      var res = await fetch(URL_MOTOR, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ modul: 'padel', handling: handling, id: id, data: data }) });
-      var j = await res.json();
+      var res, j;
+      try {
+        res = await fetch(URL_MOTOR, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ modul: 'padel', handling: handling, id: id, data: data }) });
+        j = await res.json();
+      } catch (e) { throw new Error('Der er ingen forbindelse lige nu. Tjek internettet, og prøv igen om et øjeblik.'); }
       if (j.ok) return j.data;
       if (!j.igang) throw new Error(j.fejl || 'Noget gik galt. Prøv igen.');
       await new Promise(function (r) { setTimeout(r, 2000); });
@@ -768,11 +791,12 @@
       (n > 1 ? '<button type="button" class="fjern">Fjern</button>' : '') +
       '<label class="lb" for="sNavn' + n + '">Navn</label><input type="text" id="sNavn' + n + '" data-f="navn" autocomplete="off">' +
       '<div class="pv-to2"><div><label class="lb" for="sFoed' + n + '">Fødselsdato</label><input type="date" id="sFoed' + n + '" data-f="foed" min="1930-01-01" max="2019-12-31"></div>' +
-      '<div><label class="lb" for="sKoen' + n + '">Køn</label><select id="sKoen' + n + '" data-f="koen"><option value="">Vælg</option><option value="k">Pige eller kvinde</option><option value="m">Dreng eller mand</option><option value="x">Ønsker ikke at oplyse</option></select></div></div>' +
+      '<div><label class="lb" for="sKoen' + n + '">Køn (valgfrit)</label><select id="sKoen' + n + '" data-f="koen"><option value="">Vælg</option><option value="k">Pige eller kvinde</option><option value="m">Dreng eller mand</option><option value="x">Ønsker ikke at oplyse</option></select></div></div>' +
       '<div class="lb">Har spilleren prøvet padel?</div><div class="pv-vg">' +
       ['Aldrig', 'Lidt', 'Spiller jævnligt'].map(function (t, i) {
         return '<label><input type="radio" name="erf' + n + '" value="' + i + '"><span>' + t + '</span></label>';
       }).join('') + '</div>' +
+      '<div class="graa voksenniv" hidden style="font-size:13px;margin-top:6px">Voksenholdet kræver padelniveau 1,5: du kender reglerne og grundslagene, kan serve og kan holde bolden i gang over nettet mindst fem gange med en makker i normalt tempo. Er du ikke der endnu, så vælg Aldrig. Så kommer du på listen for voksne nybegyndere uden depositum.</div>' +
       '<label class="pv-cb voksenproeve" hidden><input type="checkbox" data-f="voksen"><span>Vil gerne prøve voksenholdet</span></label>' +
       '<div class="niveau" hidden><label class="lb" for="sNiv' + n + '">Erfaring og niveau</label>' +
       '<textarea id="sNiv' + n + '" data-f="niveau" maxlength="400" placeholder="Fx hvor længe og hvor tit du har spillet, niveau hvis du kender det, og andre sportsgrene med ketsjer eller bat"></textarea></div>' +
@@ -802,6 +826,7 @@
       var erf = d.querySelector('input[type=radio]:checked');
       var a = foed.value ? alder(new Date(foed.value)) : null;
       vp.hidden = !(a >= 16 && a <= 17);
+      d.querySelector('.voksenniv').hidden = !(a !== null && a >= 18);
       if (vp.hidden) vp.querySelector('input').checked = false;
       niv.hidden = !((erf && erf.value !== '0') || vp.querySelector('input').checked);
       // Samme grænse som seniorlisten: født i 1967 eller før (fylder 60 i 2027)
@@ -821,7 +846,7 @@
         else if (jp) h = { t: 'Hold: Junior+, 1,5 time om ugen' };
       }
       if (vp.querySelector('input').checked) h = { t: 'Hold: Junior+, 1,5 time om ugen. Vi ser på, om voksenholdet passer. Fortæl om dit niveau ovenfor.' };
-      if (a >= 18 && erf && erf.value === '0') h = { t: 'Voksenholdet er for let øvede. Du kommer på listen for voksne nybegyndere og betaler ikke depositum.' };
+      if (a >= 18 && erf && erf.value === '0') h = { t: 'Voksenholdet kræver padelniveau 1,5. Du kommer på listen for voksne nybegyndere og betaler ikke depositum.' };
       hold.textContent = h.t; hold.classList.toggle('fejl', !!h.fejl);
     }
     var fj = d.querySelector('.fjern');
@@ -853,6 +878,8 @@
 
   nySpiller();
   document.getElementById('tilfoej').addEventListener('click', nySpiller);
+  // Fejlteksten forsvinder, når man retter noget (uafhængig test 12. november 2026)
+  form.addEventListener('change', function () { document.getElementById('fejl1').textContent = ''; });
   document.getElementById('hvem').addEventListener('change', function () {
     var v = valgt('hvem')[0];
     if (v === 'begge' && liste.children.length < 2) nySpiller();
@@ -904,16 +931,16 @@
     var nr = svar.nr, antal = svar.antal;
     var erNyb = function (x) { return alder(new Date(x.foed)) >= 18 && x.erfaring === 0; };
     var esc = function (t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;'); };
-    var fornavne = function (l) { return esc(l.map(function (x) { return x.navn.split(' ')[0]; }).join(' og ')); };
+    var fornavne = function (l) { var f = l.map(function (x) { return x.navn.split(' ')[0]; }); return esc(f.length > 1 ? f.slice(0, -1).join(', ') + ' og ' + f[f.length - 1] : f.join('')); };
     var vl = data.spillere.filter(function (x) { return !erNyb(x); }), il = data.spillere.filter(erNyb);
     document.getElementById('takH').textContent = 'Tak, ' + navn.split(' ')[0];
     document.getElementById('takT').innerHTML = (vl.length ? '<b>' + fornavne(vl) + '</b> er nu forhåndstilmeldt.' : '') +
       (il.length ? (vl.length ? '<br>' : '') + '<b>' + fornavne(il) + '</b> står på listen for voksne nybegyndere og skal ikke betale noget.' : '');
     document.getElementById('nummer').textContent = nr;
-    document.getElementById('mNavn').textContent = navn; document.getElementById('mNr').textContent = nr; document.getElementById('mMail').textContent = mail.toLowerCase(); document.getElementById('mMobil').textContent = mobil.replace(/^\+45/, '');
+    document.getElementById('mNavn').textContent = navn; document.getElementById('mNr').textContent = nr; document.getElementById('mMail').textContent = mail.toLowerCase(); document.getElementById('mMobil').textContent = mobil.replace(/^\+45/, '').replace(/(\d{2})(?=\d)/g, '$1 ');
     document.getElementById('beloeb').textContent = antal + (antal > 1 ? ' spillere' : ' spiller') + ' × 500 kr. = ' + svar.beloeb.toLocaleString('da-DK') + ' kr.';
     var betaling = antal > 0, betal = document.getElementById('betal');
-    document.querySelector('.pv-betal').hidden = !betaling; document.getElementById('nrBoks').hidden = !betaling;
+    document.querySelector('.pv-betal').hidden = !betaling; document.getElementById('nrBoks').hidden = !betaling; document.getElementById('nuBoks').hidden = !betaling;
     betal.hidden = !(betaling && svar.betal); betal.nextElementSibling.hidden = !(betaling && svar.betal);
     if (svar.betal) betal.href = svar.betal;
     document.getElementById('testnote').hidden = !(betaling && !svar.betal);
