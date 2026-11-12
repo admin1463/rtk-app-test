@@ -9,8 +9,8 @@
     // Top, video og fakta
     'Roskilde Tennis Klubs hjemmeside (åbner i ny fane)': 'Roskilde Tennis Club website (opens in a new tab)',
     'To padelspillere giver hånd og griner på en blå bane': 'Two padel players shake hands and laugh on a blue court',
-    'Åbner': 'Opens',
-    'Lukker': 'Closes',
+    'Tilmelding åbner': 'Sign-up opens',
+    'Tilmelding lukker': 'Sign-up closes',
     'kl. 10': '10 am',
     'Tid til forhåndstilmeldingen åbner': 'Time until pre-registration opens',
     'Tid til forhåndstilmeldingen lukker': 'Time until pre-registration closes',
