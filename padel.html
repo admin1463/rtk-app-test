@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="dbc4af25cf2f">
+<meta name="rtk-version" content="be8e843bace5">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -136,8 +136,10 @@
 .pv-spiller .hold.fejl{color:var(--bad)}
 .pv-spiller .fjern{position:absolute;right:12px;top:12px;background:none;border:0;color:var(--muted);font-size:14px;text-decoration:underline;cursor:pointer;font-family:inherit}
 .pv-tilfoej{background:none;border:0;padding:0;margin-top:14px;color:var(--pink);font-weight:700;font-size:15px;cursor:pointer;font-family:inherit}
-.pv-cb{display:flex;gap:10px;align-items:flex-start;margin:10px 0;font-size:15px}
-.pv-cb input{width:20px;height:20px;margin:2px 0 0;flex:none;accent-color:var(--teal)}
+.pv-cb{display:flex;gap:10px;align-items:flex-start;margin:10px 0;font-size:15px;line-height:1.4;font-weight:500;cursor:pointer}
+/* rtk.css giver alle input min-height 50px og padding. Det skubbede boksen ned under teksten (Lars 12. november 2026) */
+.pv-cb input{width:20px;height:20px;min-height:0;padding:0;margin:0;flex:0 0 20px;accent-color:var(--teal)}
+.pv-cb>span{flex:1;min-width:0}
 .pv-form .knap{width:100%;text-align:center;margin-top:24px}
 .pv-tilbage{background:none;border:0;padding:12px 0 0;color:var(--muted);font-size:15px;text-decoration:underline;cursor:pointer;font-family:inherit;width:100%}
 .pv-fejl{color:var(--bad);font-size:14px;margin-top:6px}
@@ -372,13 +374,7 @@
       <div id="spillere"></div>
       <button type="button" class="pv-tilfoej" id="tilfoej">+ Tilføj en spiller mere</button>
       <div class="graa" style="font-size:13px;margin-top:4px">Har du flere børn, eller skal du selv med, så skriv alle op her på én gang. Så skal du kun betale én gang.</div>
-      <fieldset><legend>Hvilke dage kan I?</legend>
-        <div class="pv-vg">
-          <label><input type="checkbox" name="dag" value="onsdag"><span>Onsdag</span></label>
-          <label><input type="checkbox" name="dag" value="loerdag"><span>Lørdag 9 til 13</span></label>
-        </div>
-        <div class="graa" style="font-size:13px;margin-top:6px">Onsdag træner Junior mellem 15 og 17.30, Junior+ mellem 15 og 19 og voksne mellem 17 og 19. Lørdag træner vi mellem 9 og 13. Hvilke hold der træner om lørdagen, afhænger af tilmeldingerne. Det præcise tidspunkt får I sammen med pladsen. Vælg gerne begge dage, hvis I kan, det øger chancen for en plads.</div>
-      </fieldset>
+      <div class="graa" style="font-size:13px;margin-top:10px"><b>Om dagene.</b> Onsdag træner Junior mellem 15 og 17.30, Junior+ mellem 15 og 19 og voksne mellem 17 og 19. Lørdag træner vi mellem 9 og 13. Hvilke hold der træner om lørdagen, afhænger af tilmeldingerne. Det præcise tidspunkt får I sammen med pladsen. Vælg gerne begge dage for hver spiller, hvis I kan, det øger chancen for en plads.</div>
       <div class="pv-fejl" id="fejl1" role="alert"></div>
       <button type="button" class="knap" data-videre="2">Videre</button>
     </div>
@@ -399,13 +395,13 @@
       </fieldset>
       <fieldset><legend>Hvordan kan I give en hånd, hvis I får plads?</legend>
         <div class="graa" style="font-size:13px;margin:-2px 0 8px">Vælg det, I har lyst til. Det behøver ikke være meget.</div>
-        <label class="pv-cb"><input type="checkbox" name="hjaelp" value="arrangementer">Hjælpe ved arrangementer og camps</label>
-        <label class="pv-cb"><input type="checkbox" name="hjaelp" value="hjaelpetraener">Være hjælpetræner</label>
-        <label class="pv-cb"><input type="checkbox" name="hjaelp" value="foraelder">Forælder på holdet som støtte for træneren</label>
-        <label class="pv-cb"><input type="checkbox" name="hjaelp" value="praktisk">Kørsel og praktisk (bolde, baner i Darup)</label>
-        <label class="pv-cb"><input type="checkbox" name="hjaelp" value="kommunikation">Foto, sociale medier og kommunikation</label>
-        <label class="pv-cb"><input type="checkbox" name="hjaelp" value="sponsorer">Sponsorer og netværk</label>
-        <label class="pv-cb"><input type="checkbox" name="hjaelp" value="padelcircle">Være med i RTK Padelcircle, en gruppe frivillige, der vil løfte padel i klubben</label>
+        <label class="pv-cb"><input type="checkbox" name="hjaelp" value="arrangementer"><span>Hjælpe ved arrangementer og camps</span></label>
+        <label class="pv-cb"><input type="checkbox" name="hjaelp" value="hjaelpetraener"><span>Være hjælpetræner</span></label>
+        <label class="pv-cb"><input type="checkbox" name="hjaelp" value="foraelder"><span>Forælder på holdet som støtte for træneren</span></label>
+        <label class="pv-cb"><input type="checkbox" name="hjaelp" value="praktisk"><span>Kørsel og praktisk (bolde, baner i Darup)</span></label>
+        <label class="pv-cb"><input type="checkbox" name="hjaelp" value="kommunikation"><span>Foto, sociale medier og kommunikation</span></label>
+        <label class="pv-cb"><input type="checkbox" name="hjaelp" value="sponsorer"><span>Sponsorer og netværk</span></label>
+        <label class="pv-cb"><input type="checkbox" name="hjaelp" value="padelcircle"><span>Være med i RTK Padelcircle, en gruppe frivillige, der vil løfte padel i klubben</span></label>
       </fieldset>
       <fieldset><legend>Hvem giver hånden?</legend>
         <div class="pv-vg">
@@ -425,9 +421,9 @@
       <textarea id="kAndet" maxlength="600" placeholder="Fx noget I er gode til, eller et ønske til holdet"></textarea>
       <div class="pv-honning" aria-hidden="true"><label>Lad dette felt være tomt <input type="text" id="kWeb" tabindex="-1" autocomplete="off"></label></div>
       <div style="margin-top:18px">
-        <label class="pv-cb"><input type="checkbox" id="kForpligt">Vi vil gerne give en hånd, hvis vi får plads</label>
-        <label class="pv-cb"><input type="checkbox" id="kPrivat">Jeg har læst, <a href="privatliv.html?side=padel&amp;sprog=da" target="_blank" rel="noopener">hvordan RTK bruger oplysningerne</a></label>
-        <label class="pv-cb"><input type="checkbox" id="kCamps">Fortæl mig om camps og andre tilbud, hvis der ikke er plads</label>
+        <label class="pv-cb"><input type="checkbox" id="kForpligt"><span>Vi vil gerne give en hånd, hvis vi får plads</span></label>
+        <label class="pv-cb"><input type="checkbox" id="kPrivat"><span>Jeg har læst, <a href="privatliv.html?side=padel&amp;sprog=da" target="_blank" rel="noopener">hvordan RTK bruger oplysningerne</a></span></label>
+        <label class="pv-cb"><input type="checkbox" id="kCamps"><span>Fortæl mig om camps og andre tilbud, hvis der ikke er plads</span></label>
       </div>
       <div class="pv-fejl" id="fejl2" role="alert"></div>
       <button type="submit" class="knap" id="send">Skriv mig på ventelisten</button>
@@ -478,7 +474,7 @@
       </fieldset>
       <label class="lb" for="iAndet">Vil du fortælle lidt mere? (valgfrit)</label>
       <textarea id="iAndet" maxlength="400" placeholder="Fx hvilke dage og tider der passer dig"></textarea>
-      <label class="pv-cb" style="margin-top:14px"><input type="checkbox" id="iPrivat">Jeg har læst, <a href="privatliv.html?side=padel&amp;sprog=da" target="_blank" rel="noopener">hvordan RTK bruger oplysningerne</a></label>
+      <label class="pv-cb" style="margin-top:14px"><input type="checkbox" id="iPrivat"><span>Jeg har læst, <a href="privatliv.html?side=padel&amp;sprog=da" target="_blank" rel="noopener">hvordan RTK bruger oplysningerne</a></span></label>
       <div class="pv-fejl" id="ifejl" role="alert"></div>
       <button type="submit" class="knap">Skriv mig på listen</button>
     </div>
@@ -608,9 +604,12 @@
       ['Aldrig', 'Lidt', 'Spiller jævnligt'].map(function (t, i) {
         return '<label><input type="radio" name="erf' + n + '" value="' + i + '"><span>' + t + '</span></label>';
       }).join('') + '</div>' +
-      '<label class="pv-cb voksenproeve" hidden><input type="checkbox" data-f="voksen">Vil gerne prøve voksenholdet</label>' +
+      '<label class="pv-cb voksenproeve" hidden><input type="checkbox" data-f="voksen"><span>Vil gerne prøve voksenholdet</span></label>' +
       '<div class="niveau" hidden><label class="lb" for="sNiv' + n + '">Erfaring og niveau</label>' +
       '<textarea id="sNiv' + n + '" data-f="niveau" maxlength="400" placeholder="Fx hvor længe og hvor tit du har spillet, niveau hvis du kender det, og andre sportsgrene med ketsjer eller bat"></textarea></div>' +
+      '<div class="dage"><div class="lb dagelb">Hvilke dage kan spilleren?</div><div class="pv-vg">' +
+      '<label><input type="checkbox" name="dag' + n + '" value="onsdag"><span>Onsdag</span></label>' +
+      '<label><input type="checkbox" name="dag' + n + '" value="loerdag"><span>Lørdag 9 til 13</span></label></div></div>' +
       '<div class="hold" aria-live="polite"></div>' +
       '<div class="seniorhint graa" hidden>Vil du hellere spille på hverdage i dagtimerne? Se listen for <a href="#andre" data-liste="senior">Seniorpadel (60+)</a>.</div>';
     liste.appendChild(d);
@@ -621,6 +620,11 @@
     });
     d.addEventListener('change', function (e) { if (e.target.name === 'erf' + d.dataset.nr || e.target.dataset.f === 'voksen') opdHold(); });
     var vp = d.querySelector('.voksenproeve'), niv = d.querySelector('.niveau'), sh = d.querySelector('.seniorhint');
+    var dg = d.querySelector('.dage'), dgLb = d.querySelector('.dagelb'), navnF = d.querySelector('[data-f=navn]');
+    navnF.addEventListener('input', function () {
+      var fn = navnF.value.trim().split(' ')[0];
+      dgLb.textContent = 'Hvilke dage kan ' + (fn.length > 1 ? fn : 'spilleren') + '?';
+    });
     function opdHold() {
       var erf = d.querySelector('input[type=radio]:checked');
       var a = foed.value ? alder(new Date(foed.value)) : null;
@@ -629,6 +633,9 @@
       niv.hidden = !((erf && erf.value !== '0') || vp.querySelector('input').checked);
       // Samme grænse som seniorlisten: født i 1967 eller før (fylder 60 i 2027)
       sh.hidden = !(foed.value && +foed.value.slice(0, 4) <= 1967);
+      // Voksne nybegyndere kommer på listen uden depositum og skal ikke vælge dage
+      dg.hidden = a !== null && a >= 18 && !!erf && erf.value === '0';
+      if (dg.hidden) dg.querySelectorAll('input').forEach(function (i) { i.checked = false; });
       if (a === null) { hold.textContent = ''; return; }
       var h = holdFor(a);
       if (vp.querySelector('input').checked) h = { t: 'Hold: Junior+, 1,5 time om ugen. Vi ser på, om voksenholdet passer. Fortæl om dit niveau ovenfor.' };
@@ -647,7 +654,8 @@
       var erf = s.querySelector('input[type=radio]:checked');
       return { navn: s.querySelector('[data-f=navn]').value.trim(), foed: s.querySelector('[data-f=foed]').value,
         koen: s.querySelector('[data-f=koen]').value, erfaring: erf ? +erf.value : null,
-        niveau: s.querySelector('[data-f=niveau]').value.trim(), proevVoksen: s.querySelector('[data-f=voksen]').checked };
+        niveau: s.querySelector('[data-f=niveau]').value.trim(), proevVoksen: s.querySelector('[data-f=voksen]').checked,
+        dage: Array.prototype.map.call(s.querySelectorAll('.dage input:checked'), function (i) { return i.value; }) };
     });
   }
   function vis(t) {
@@ -655,6 +663,9 @@
     form.querySelectorAll('.pv-trinbar i').forEach(function (el, i) { el.classList.toggle('on', i < t); });
     form.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
+  function nybegynder(s) { return s.foed && alder(new Date(s.foed)) >= 18 && s.erfaring === 0; }
+  // Familiens samlede dage sendes også med, så siden virker mod en motor, der kun kender de fælles dage
+  function alleDage(sp) { return ['onsdag', 'loerdag'].filter(function (v) { return sp.some(function (s) { return s.dage.indexOf(v) >= 0; }); }); }
   function valgt(navn) { return Array.prototype.map.call(form.querySelectorAll('input[name=' + navn + ']:checked'), function (i) { return i.value; }); }
 
   nySpiller();
@@ -673,7 +684,8 @@
       if (sp.some(function (s) { var a = alder(new Date(s.foed)); return !(a >= 0 && a <= 100) || s.foed < '1925-01-01'; })) { f.textContent = 'Tjek fødselsdatoen på alle spillere.'; return; }
       if (sp.some(function (s) { return alder(new Date(s.foed)) < 8; })) { f.textContent = 'Holdene er for spillere fra 8 år. Skriv til os under Spørg os nederst på siden, hvis I alligevel er interesserede.'; return; }
       if (sp.some(function (s) { return s.erfaring === null; })) { f.textContent = 'Vælg, hvor meget hver spiller har prøvet padel.'; return; }
-      if (!valgt('dag').length) { f.textContent = 'Vælg mindst én dag.'; return; }
+      var udenDag = sp.filter(function (s) { return !nybegynder(s) && !s.dage.length; });
+      if (udenDag.length) { f.textContent = sp.length > 1 ? 'Vælg mindst én dag for ' + udenDag[0].navn.split(' ')[0] + '.' : 'Vælg mindst én dag.'; return; }
       if (sp.some(function (s) { return s.proevVoksen && !s.niveau; })) { f.textContent = 'Fortæl lidt om niveauet, når en spiller vil prøve voksenholdet.'; return; }
       f.textContent = '';
       if (valgt('hvem')[0] === 'mig' && !document.getElementById('kNavn').value) document.getElementById('kNavn').value = sp[0].navn;
@@ -692,7 +704,7 @@
     if (!document.getElementById('kPrivat').checked) { f.textContent = 'Sæt flueben ved, at du har læst, hvordan RTK bruger oplysningerne.'; return; }
     f.textContent = '';
     var data = {
-      hvem: valgt('hvem')[0], spillere: spillere(), dage: valgt('dag'),
+      hvem: valgt('hvem')[0], spillere: spillere(), dage: alleDage(spillere()),
       kontakt: { navn: navn, mail: mail, mobil: mobil }, medlem: valgt('medlem')[0] || '',
       hjaelp: valgt('hjaelp'), hvemHjaelper: valgt('hvemHjaelper'), hyppighed: valgt('hyppighed')[0] || '',
       andet: document.getElementById('kAndet').value.trim(), forventning: document.getElementById('kForpligt').checked,
