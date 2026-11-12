@@ -52,7 +52,7 @@
     'Gratis adgang til udebanerne i Darup': 'Free access to the outdoor courts in Darup',
     'Book en bane i ForeningLet, klubbens medlemsapp, og spil med dine nye makkere, når det passer jer.': 'Book a court in ForeningLet, the club\'s member app, and play with your new partners whenever it suits you.',
     'Camps i ferierne': 'Camps in the school holidays',
-    'I vinter-, påske-, sommer- og efterårsferien, med delvis egenbetaling. For juniorerne og måske også for voksne.': 'In the winter, Easter, summer and autumn holidays, partly paid by the participants. For juniors and perhaps also for adults.',
+    'I vinter-, påske-, sommer- og efterårsferien, med delvis egenbetaling. For juniorerne og eventuelt også for voksne.': 'In the winter, Easter, summer and autumn holidays, partly paid by the participants. For juniors and potentially also for adults.',
     'Et fællesskab, ikke et kursus': 'A community, not a course',
     'Du bliver en del af Roskilde Tennis Klub med alt, hvad det giver.': 'You become part of Roskilde Tennis Club with everything that comes with it.',
     'En flok venner holder om hinanden i solnedgangen': 'A group of friends with their arms around each other at sunset',
