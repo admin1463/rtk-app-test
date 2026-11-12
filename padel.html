@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="0ae601650a96">
+<meta name="rtk-version" content="2b65cd3b2636">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -233,6 +233,37 @@
  .pv-cta .knap{display:block;text-align:center}
  .pv-cta.skjult{display:none}
 }
+
+/* Ace på padelsiden (Lars 12. november 2026, mockup ace_aaben_desk.png). Knappen vises kun, når motoren siger, at Ace er slået til */
+.pa-knap{position:fixed;right:20px;bottom:20px;z-index:60;display:flex;align-items:center;gap:10px;background:#0B3D3A;color:#fff;border:0;border-radius:999px;padding:10px 18px 10px 10px;font:inherit;font-weight:700;font-size:15px;box-shadow:0 8px 24px rgba(0,0,0,.25);cursor:pointer}
+.pa-knap[hidden],.pa-panel[hidden]{display:none}
+.pa-ikon{width:32px;height:32px;border-radius:50%;background:#D7F04A;color:#0B3D3A;display:flex;align-items:center;justify-content:center;font-weight:900;flex:none}
+.pa-panel{position:fixed;right:20px;bottom:20px;z-index:61;width:390px;max-width:calc(100vw - 24px);height:600px;max-height:calc(100vh - 40px);background:#fff;border-radius:20px;box-shadow:0 12px 40px rgba(0,0,0,.3);display:flex;flex-direction:column;overflow:hidden;font-size:15px}
+.pa-top{background:#0B3D3A;color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px}
+.pa-top b{display:block;font-size:16px}.pa-top small{opacity:.85;font-size:12px}
+.pa-luk{margin-left:auto;background:none;border:0;color:#fff;font-size:26px;line-height:1;cursor:pointer;padding:4px 8px}
+.pa-strom{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:#F5F8F7}
+.pa-m{max-width:88%;padding:10px 13px;border-radius:14px;line-height:1.45;overflow-wrap:anywhere}
+.pa-mig{align-self:flex-end;background:#0B3D3A;color:#fff;border-bottom-right-radius:4px;white-space:pre-wrap}
+.pa-ace{align-self:flex-start;background:#fff;border:1px solid #DCE4E2;border-bottom-left-radius:4px}
+.pa-ace.fejl{border-color:#E6005C}
+.pa-ace table{border-collapse:collapse;margin:6px 0;font-size:14px;width:100%}.pa-ace td{padding:3px 8px 3px 0;border-bottom:1px solid #EEF2F1}.pa-ace td:last-child{text-align:right;white-space:nowrap;padding-right:0}
+.pa-ace tr.ialt td{font-weight:800;border-bottom:0}
+.pa-chip{display:inline-block;margin-top:8px;background:#E6005C;color:#fff;border-radius:999px;padding:7px 12px;font-weight:700;font-size:14px;text-decoration:none}
+.pa-forslag{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.pa-forslag button{border:1px solid #B9C8C5;border-radius:999px;padding:6px 10px;font:inherit;font-size:13px;background:#fff;cursor:pointer;text-align:left}
+.pa-tanker{display:flex;gap:4px;padding:4px 0}.pa-tanker i{width:7px;height:7px;border-radius:50%;background:#8FA5A1;animation:pa-p 1s infinite}.pa-tanker i:nth-child(2){animation-delay:.15s}.pa-tanker i:nth-child(3){animation-delay:.3s}
+@keyframes pa-p{0%,100%{opacity:.3}50%{opacity:1}}
+.pa-note{font-size:11.5px;color:#5A6B68;padding:8px 12px 0;text-align:center;line-height:1.4}
+.pa-bund{padding:8px 10px 10px;display:flex;gap:8px}
+.pa-bund input{flex:1;min-width:0;border:1px solid #B9C8C5;border-radius:999px;padding:10px 14px;font:inherit;font-size:16px;min-height:0}
+.pa-bund button{background:#E6005C;color:#fff;border:0;border-radius:999px;padding:0 16px;font:inherit;font-weight:700;cursor:pointer}
+.pa-bund button:disabled{opacity:.5}
+.pa-web{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+@media (max-width:760px){
+ .pa-knap{right:12px;bottom:calc(84px + env(safe-area-inset-bottom));padding:8px 14px 8px 8px;font-size:14px}
+ .pa-panel{right:8px;left:8px;bottom:8px;width:auto;max-width:none;height:calc(100% - 64px);max-height:none}
+}
+@media (prefers-reduced-motion:reduce){.pa-tanker i{animation:none}}
 </style>
 </head>
 <body>
@@ -564,6 +595,20 @@
 <div class="pv-cta" id="cta"><a class="knap" href="#tilmeld">Skriv mig på ventelisten</a></div>
 </main>
 
+<div class="pa-boks" id="aceBoks">
+<button type="button" class="pa-knap" id="aceKnap" hidden aria-haspopup="dialog" aria-controls="acePanel"><span class="pa-ikon" aria-hidden="true">A</span>Spørg Ace om padel</button>
+<div class="pa-panel" id="acePanel" role="dialog" aria-modal="false" aria-labelledby="aceTitel" hidden>
+  <div class="pa-top"><span class="pa-ikon" aria-hidden="true">A</span><div><b id="aceTitel">Spørg Ace om padel</b><small>Svarer ud fra denne side og klubbens hjemmeside</small></div><button type="button" class="pa-luk" id="aceLuk" aria-label="Luk Ace">×</button></div>
+  <div class="pa-strom" id="aceStrom" aria-live="polite">
+    <div class="pa-m pa-ace">Hej, jeg er Ace. Spørg mig om holdene, priserne, tiderne eller ventelisten. Jeg kan også regne ud, hvad det koster for jer.
+      <div class="pa-forslag"><button type="button">Hvad koster det samlet for et barn på 11 år?</button><button type="button">Hvilket hold passer til mit barn?</button><button type="button">Hvad sker der med depositummet?</button></div></div>
+  </div>
+  <div class="pa-note">Ace er en AI og kan tage fejl. Skriv ikke navne eller andre personlige oplysninger. Er du i tvivl, så brug <a href="#skriv" data-pa-luk>Spørg os</a>.</div>
+  <form class="pa-bund" id="aceForm" autocomplete="off"><label class="pa-web" aria-hidden="true">Lad feltet stå tomt <input type="text" id="aceWeb" tabindex="-1"></label>
+    <input type="text" id="aceInput" maxlength="500" placeholder="Skriv dit spørgsmål" aria-label="Dit spørgsmål til Ace"><button type="submit" id="aceSend">Send</button></form>
+</div>
+</div><!-- /pa-boks -->
+
 <footer class="bund">
   <div class="wrap">
     <span class="klub">
@@ -579,6 +624,83 @@
 
 <script src="konfig.js?v=5d3b61fda9e3"></script>
 <script>
+
+// Ace på padelsiden (Lars 12. november 2026). Knappen vises kun, når motoren siger, at Ace er slået til (ace.padelTil)
+(function () {
+  var URL = (window.RTK_KONFIG && window.RTK_KONFIG.motor) || '';
+  var knap = document.getElementById('aceKnap'), panel = document.getElementById('acePanel'), strom = document.getElementById('aceStrom');
+  var form = document.getElementById('aceForm'), inp = document.getElementById('aceInput'), send = document.getElementById('aceSend');
+  if (!URL || !knap) return;
+  var nyt = function () { return Date.now().toString(36) + Math.random().toString(36).slice(2, 12); };
+  var browser = '';
+  try { browser = localStorage.getItem('rtk.padel.ace') || ''; if (!/^[A-Za-z0-9-]{16,40}$/.test(browser)) { browser = 'b-' + nyt() + nyt().slice(0, 6); localStorage.setItem('rtk.padel.ace', browser); } }
+  catch (e) { browser = 'b-' + nyt() + nyt().slice(0, 6); }
+  var samtale = 's-' + nyt(), historik = [], travl = false;
+  async function kald(handling, data, id) {
+    for (var f = 0; f < 3; f++) {
+      var res = await fetch(URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ modul: 'ace', handling: handling, id: id, data: data }) });
+      var j = await res.json();
+      if (j.ok) return j.data;
+      if (!j.igang) throw new Error(j.fejl || 'Ace kan ikke svare lige nu.');
+      await new Promise(function (r) { setTimeout(r, 2000); });
+    }
+    throw new Error('Det tager lang tid. Prøv igen om et øjeblik.');
+  }
+  var esc = function (t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); };
+  // Linjer som "Træning, Junior: 595 kr." bliver til en lille tabel, resten til almindelig tekst
+  function tegn(t) {
+    var ud = '', rk = [];
+    var tom = function () { if (rk.length) { ud += '<table>' + rk.join('') + '</table>'; rk = []; } };
+    String(t).split('\n').forEach(function (l) {
+      var m = /^\s*[-•]?\s*(.{2,60}?):\s*(-?[\d.]+(?:,\d+)?\s*kr\.?)\s*$/.exec(l);
+      if (m) rk.push('<tr' + (/^i alt/i.test(m[1].trim()) ? ' class="ialt"' : '') + '><td>' + esc(m[1].trim()) + '</td><td>' + esc(m[2]) + '</td></tr>');
+      else { tom(); if (l.trim()) ud += esc(l) + '<br>'; }
+    });
+    tom();
+    return ud.replace(/(<br>)+$/, '');
+  }
+  var KNAP = { tilmeld: ['#tilmeld', 'Skriv jer op'], andre: ['#andre', 'Se listerne uden depositum'], skriv: ['#skriv', 'Skriv til os'] };
+  function tilfoej(kl, html) { var d = document.createElement('div'); d.className = 'pa-m ' + kl; d.innerHTML = html; strom.appendChild(d); strom.scrollTop = strom.scrollHeight; return d; }
+  async function spoerg(tekst) {
+    tekst = String(tekst || '').trim();
+    if (travl || tekst.length < 2) return;
+    travl = true; send.disabled = true; inp.value = '';
+    tilfoej('pa-mig', esc(tekst));
+    historik.push({ fra: 'mig', tekst: tekst });
+    var vent = tilfoej('pa-ace', '<span class="pa-tanker" aria-label="Ace tænker"><i></i><i></i><i></i></span>');
+    try {
+      var s = await kald('padel', { beskeder: historik.slice(-12), samtale: samtale, b: browser, web: document.getElementById('aceWeb').value }, nyt());
+      historik.push({ fra: 'ace', tekst: s.svar });
+      var k = s.knap && KNAP[s.knap];
+      vent.innerHTML = tegn(s.svar) + (k ? '<br><a class="pa-chip" href="' + k[0] + '" data-pa-luk>' + k[1] + '</a>' : '');
+    } catch (err) {
+      historik.pop();
+      vent.classList.add('fejl'); vent.innerHTML = esc(err.message) + '<br><a class="pa-chip" href="#skriv" data-pa-luk>Skriv til os</a>';
+    }
+    strom.scrollTop = strom.scrollHeight;
+    travl = false; send.disabled = false;
+    if (window.matchMedia('(min-width:761px)').matches) inp.focus();
+  }
+  function aaben() { panel.hidden = false; knap.hidden = true; setTimeout(function () { inp.focus(); }, 50); }
+  function luk() { panel.hidden = true; knap.hidden = false; knap.focus(); }
+  knap.addEventListener('click', aaben);
+  document.getElementById('aceLuk').addEventListener('click', luk);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !panel.hidden) luk(); });
+  form.addEventListener('submit', function (e) { e.preventDefault(); spoerg(inp.value); });
+  panel.addEventListener('click', function (e) {
+    var f = e.target.closest('.pa-forslag button'); if (f) { spoerg(f.textContent); return; }
+    // På mobilen dækker Ace siden, så den lukkes, når man følger en knap ned på siden
+    if (e.target.closest('[data-pa-luk]') && window.matchMedia('(max-width:760px)').matches) { panel.hidden = true; knap.hidden = false; }
+  });
+  var gemt = null;
+  try { gemt = sessionStorage.getItem('rtk.padel.ace.til'); } catch (e) { gemt = null; }
+  if (gemt === '1') knap.hidden = false;
+  kald('padelTil', {}, '').then(function (s) {
+    if (!s.til) { panel.hidden = true; knap.hidden = true; }
+    else if (panel.hidden) knap.hidden = false;
+    try { sessionStorage.setItem('rtk.padel.ace.til', s.til ? '1' : '0'); } catch (e) { /* ingen lager */ }
+  }).catch(function () { /* motoren svarer ikke: ingen knap */ });
+})();
 // Introvideoen: starter uden lyd, når den ses, og stopper, når man ruller væk. "Slå lyd til" starter forfra med lyd (Lars 12. november 2026)
 (function () {
   var v = document.getElementById('intro'), b = document.getElementById('introLyd');
