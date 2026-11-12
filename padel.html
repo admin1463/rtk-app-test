@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="2b65cd3b2636">
+<meta name="rtk-version" content="4b51f231e605">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -263,6 +263,11 @@
  .pa-knap{right:12px;bottom:calc(84px + env(safe-area-inset-bottom));padding:8px 14px 8px 8px;font-size:14px}
  .pa-panel{right:8px;left:8px;bottom:8px;width:auto;max-width:none;height:calc(100% - 64px);max-height:none}
 }
+/* rtk.css giver alle knapper en lys baggrund ved hover, så Aces hvide tekst forsvandt (Lars 12. november 2026 kl. 10.03) */
+.pa-knap:hover,.pa-knap:focus-visible{background:#12524D;color:#fff}
+.pa-luk:hover{background:rgba(255,255,255,.15);color:#fff}
+.pa-bund button:hover{background:#C8004F;color:#fff}
+.pa-forslag button:hover{background:#EEF4F2;color:#0B3D3A}
 @media (prefers-reduced-motion:reduce){.pa-tanker i{animation:none}}
 </style>
 </head>
@@ -596,9 +601,9 @@
 </main>
 
 <div class="pa-boks" id="aceBoks">
-<button type="button" class="pa-knap" id="aceKnap" hidden aria-haspopup="dialog" aria-controls="acePanel"><span class="pa-ikon" aria-hidden="true">A</span>Spørg Ace om padel</button>
+<button type="button" class="pa-knap" id="aceKnap" hidden aria-haspopup="dialog" aria-controls="acePanel"><span class="pa-ikon" aria-hidden="true">A</span>Spørg Ace om RTK padel</button>
 <div class="pa-panel" id="acePanel" role="dialog" aria-modal="false" aria-labelledby="aceTitel" hidden>
-  <div class="pa-top"><span class="pa-ikon" aria-hidden="true">A</span><div><b id="aceTitel">Spørg Ace om padel</b><small>Svarer ud fra denne side og klubbens hjemmeside</small></div><button type="button" class="pa-luk" id="aceLuk" aria-label="Luk Ace">×</button></div>
+  <div class="pa-top"><span class="pa-ikon" aria-hidden="true">A</span><div><b id="aceTitel">Spørg Ace om RTK padel</b><small>Svarer ud fra denne side og klubbens hjemmeside</small></div><button type="button" class="pa-luk" id="aceLuk" aria-label="Luk Ace">×</button></div>
   <div class="pa-strom" id="aceStrom" aria-live="polite">
     <div class="pa-m pa-ace">Hej, jeg er Ace. Spørg mig om holdene, priserne, tiderne eller ventelisten. Jeg kan også regne ud, hvad det koster for jer.
       <div class="pa-forslag"><button type="button">Hvad koster det samlet for et barn på 11 år?</button><button type="button">Hvilket hold passer til mit barn?</button><button type="button">Hvad sker der med depositummet?</button></div></div>
