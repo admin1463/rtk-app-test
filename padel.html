@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="0a5c07bc5d9a">
+<meta name="rtk-version" content="240042a3fb08">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -48,7 +48,8 @@ html:not(.aaben) .efter{display:none!important}
 .pv-hero h1 em{font-style:normal;color:var(--ice)}
 .pv-hero p{font-size:20px;max-width:520px;margin:0 0 28px;color:#EAF2F1}
 .pv-hero .smaa{font-size:14px;color:var(--sub);margin-top:16px;max-width:560px}
-.pv-frist{position:absolute;right:28px;top:110px;z-index:2;background:#fff;color:var(--teal);border-radius:16px;padding:16px 20px;text-align:center;line-height:1.1}
+/* Uret flugter med sidens højre kant og sprogknappen, også på brede skærme (Lars 12. november 2026 kl. 16.18) */
+.pv-frist{position:absolute;right:max(28px, calc((100% - 1180px) / 2 + 28px));top:110px;z-index:2;background:#fff;color:var(--teal);border-radius:16px;padding:16px 20px;text-align:center;line-height:1.1}
 .pv-frist b{display:block;font-size:40px;font-weight:900}
 .pv-frist span{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
 /* Nedtælling i boksen, variant B (Lars 11. november 2026 kl. 15.39, mockup padel_nedtaelling_B.png) */
