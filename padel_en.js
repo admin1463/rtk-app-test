@@ -144,8 +144,8 @@
     'Forhåndstilmelding 2027': 'Pre-registration 2027',
     'Forhåndstilmeldingen åbner tirsdag 17. november kl. 10': 'Pre-registration opens Tuesday 17 November at 10 am',
     'Skriv jer op': 'Sign up',
-    'Forhåndstilmeldingen åbner tirsdag 17. november kl. 10 og lukker 10. december 2026. Du kan skrive flere spillere op på én gang, fx dig selv og dine børn. Der er et begrænset antal pladser, kun 8 til 10 på hvert hold. Når I har skrevet jer op, betaler I 500 kr. pr. spiller i depositum i ForeningLet inden for 48 timer. Voksne skal være på padelniveau 1,5. Er du voksen og helt ny, eller er du 60+ og vil spille i dagtimerne, så se':
-      'Pre-registration opens Tuesday 17 November at 10 am and closes 10 December 2026. You can sign up several players at once, e.g. yourself and your children. Places are limited, only 8 to 10 on each team. After signing up, you pay a DKK 500 deposit per player in ForeningLet within 48 hours. Adults must be at padel level 1.5. If you are an adult beginner, or 60+ and want to play during the day, see',
+    'Forhåndstilmeldingen åbner tirsdag 17. november kl. 10 og lukker 10. december 2026. Alle får svar senest 15. december. Du kan skrive flere spillere op på én gang, fx dig selv og dine børn. Der er et begrænset antal pladser, kun 8 til 10 på hvert hold. Når I har skrevet jer op, betaler I 500 kr. pr. spiller i depositum i ForeningLet inden for 48 timer. Voksne skal være på padelniveau 1,5. Er du voksen og helt ny, eller er du 60+ og vil spille i dagtimerne, så se':
+      'Pre-registration opens Tuesday 17 November at 10 am and closes 10 December 2026. Everyone gets an answer by 15 December. You can sign up several players at once, e.g. yourself and your children. Places are limited, only 8 to 10 on each team. After signing up, you pay a DKK 500 deposit per player in ForeningLet within 48 hours. Adults must be at padel level 1.5. If you are an adult beginner, or 60+ and want to play during the day, see',
     'listerne uden depositum': 'the lists without a deposit',
     'Fra 17. november kl. 10': 'From 17 November, 10 am',
     'Nu': 'Now',
@@ -158,7 +158,7 @@
     '10. december': '10 December',
     'Vi sætter holdene': 'We set the teams',
     'Primært efter alder, niveau, dage og frivillighed.': 'Mainly by age, level, days and volunteering.',
-    'Før jul': 'Before Christmas',
+    'Senest 15. december': 'By 15 December',
     'I får svar': 'You get an answer',
     'Får I plads, får I det præcise tidspunkt og har to dage til at betale første kvartal i ForeningLet. Depositummet trækkes fra. Ellers går pladsen videre til en anden på listen. Får I ikke plads, får I depositummet tilbage senest to uger efter svaret og kan komme på venteliste, hvis der bliver en plads senere. Siger I nej til en plads på en dag, I har valgt, beholder klubben depositummet.':
       'If you get a place, you get the exact time and have two days to pay the first quarter in ForeningLet. The deposit is deducted. Otherwise the place goes to someone else on the list. If you don\'t get a place, your deposit is refunded no later than two weeks after the answer, and you can go on a waiting list in case a place opens up later. If you turn down a place on a day you chose, the club keeps the deposit.',
@@ -303,8 +303,8 @@
     '. Det initiativ er ikke startet endnu. Bliver vi nok, starter vi det. Det koster ikke noget at stå på listen. Vi skriver til dig, når vi starter initiativet, eller hvis der bliver plads på et hold, du kan passe ind i. Du bestemmer selv, om du vil blive stående på listen eller af den.':
       '. That initiative has not started yet. If there are enough of us, we will start it. It costs nothing to be on the list. We will write to you when we start the initiative, or if a place opens up on a team that suits you. You decide whether to stay on the list or come off it.',
     'Hvornår kan vi skrive os op?': 'When can we sign up?',
-    'Forhåndstilmeldingen åbner tirsdag 17. november kl. 10 og lukker 10. december kl. 23.59. Vil du have en mail, når vi åbner for tilmeldinger, så skriv dig op under':
-      'Pre-registration opens Tuesday 17 November at 10 am and closes 10 December at 11.59 pm. If you want an email when sign-up opens, sign up under',
+    'Forhåndstilmeldingen åbner tirsdag 17. november kl. 10 og lukker 10. december kl. 23.59. Alle får svar senest 15. december. Vil du have en mail, når vi åbner for tilmeldinger, så skriv dig op under':
+      'Pre-registration opens Tuesday 17 November at 10 am and closes 10 December at 11.59 pm. Everyone gets an answer by 15 December. If you want an email when sign-up opens, sign up under',
     '. Listerne uden depositum for voksne nybegyndere og Seniorpadel (60+) er åbne allerede nu.': '. The lists without a deposit for adult beginners and Senior padel (60+) are open now.',
     'Kan jeg skrive hele familien op på én gang?': 'Can I sign up the whole family at once?',
     'Ja. Skriv alle spillere op i samme tilmelding, så får I ét tilmeldingsnummer og betaler depositummet for alle på én gang i ForeningLet. Der er ingen familierabat, så hver spiller betaler sin egen pris.':
@@ -324,7 +324,7 @@
     'Tilmeldingen her og betalingen i ForeningLet er to systemer. Vi finder jeres betaling ud fra tilmeldingsnummeret, mailen og mobilnummeret. Bruger I de samme, er I sikre på at blive fundet.':
       'The registration here and the payment in ForeningLet are two systems. We match your payment using the registration number, the email and the mobile number. If you use the same ones, we are sure to find you.',
     'Hvordan bliver holdene sat?': 'How are the teams set?',
-    'Primært efter alder, niveau, de dage I kan, og frivillighed. Alle får svar før jul.': 'Mainly by age, level, the days you can play, and volunteering. Everyone gets an answer before Christmas.',
+    'Primært efter alder, niveau, de dage I kan, og frivillighed. Alle får svar senest 15. december.': 'Mainly by age, level, the days you can play, and volunteering. Everyone gets an answer by 15 December.',
     'Kan vi vælge dag?': 'Can we choose the day?',
     'I fortæller, hvilke dage I kan. Hvilke hold der træner om lørdagen, afhænger af tilmeldingerne. Kan I begge dage, er chancen større. Det præcise tidspunkt får I sammen med pladsen.':
       'You tell us which days you can play. Which teams train on Saturdays depends on the registrations. If you can do both days, the chance is better. You get the exact time together with your place.',
