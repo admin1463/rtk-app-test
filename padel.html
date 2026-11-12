@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="b3a6cb7be748">
+<meta name="rtk-version" content="49666e721b09">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -290,7 +290,7 @@
 <section class="sek pv-hold" id="hold"><div class="w">
   <div class="kick">Hold og priser</div>
   <h2>Find dit hold</h2>
-  <p class="graa" style="max-width:760px">Første træning er onsdag 13. januar og lørdag 16. januar 2027. Holdene lægges primært efter alder, niveau og de dage, I kan. Det præcise tidspunkt får I sammen med pladsen. Alderen pr. 1. januar 2027 gælder både for hold og udemedlemskab, og 10 til 12-årige kommer på Junior eller Junior+ efter niveau. Børn og unge, der aldrig har prøvet padel, er meget velkomne. Voksenholdet er for let øvede til øvede.</p>
+  <p class="graa" style="max-width:760px">Første træning er onsdag 13. januar og lørdag 16. januar 2027. Holdene lægges primært efter alder, niveau og de dage, I kan. Det præcise tidspunkt får I sammen med pladsen. Alderen pr. 1. januar 2027 gælder både for hold og udemedlemskab, og 10 til 12-årige vælger selv mellem Junior og Junior+. Passer begge, så sig ja til begge, så finder vi det rigtige efter niveau. Børn og unge, der aldrig har prøvet padel, er meget velkomne. Voksenholdet er for let øvede til øvede.</p>
   <div class="pv-kort3">
     <div class="pv-kort"><div class="alder">8 til 12 år</div><h3>Junior</h3><div class="tid">1 time om ugen</div><div class="pris">595 kr. <small>pr. kvartal</small></div>
       <ul><li>Onsdag mellem 15 og 17.30 eller lørdag mellem 9 og 13</li><li>Træner med hver gang: en lønnet træner og en frivillig hjælper</li><li>8 til 10 spillere på 2 baner</li></ul></div>
@@ -587,7 +587,7 @@
   function holdFor(a) {
     if (a < 8) return { fejl: true, t: 'Holdene er for spillere fra 8 år. Skriv til os under Spørg os nederst på siden, hvis I alligevel er interesserede.' };
     if (a <= 9) return { t: 'Hold: Junior, 1 time om ugen' };
-    if (a <= 12) return { t: 'Hold: Junior (1 time) eller Junior+ (1,5 time). Vi finder det rigtige.' };
+    if (a <= 12) return { t: 'Hold: Junior eller Junior+. Vælg ovenfor, hvilket hold I ønsker.', valg: true };
     if (a <= 17) return { t: 'Hold: Junior+, 1,5 time om ugen' };
     return { t: 'Hold: Voksen, 1,5 time om ugen' };
   }
@@ -611,6 +611,10 @@
       '<div class="dage"><div class="lb dagelb">Hvilke dage kan spilleren?</div><div class="pv-vg">' +
       '<label><input type="checkbox" name="dag' + n + '" value="onsdag"><span>Onsdag</span></label>' +
       '<label><input type="checkbox" name="dag' + n + '" value="loerdag"><span>Lørdag 9 til 13</span></label></div></div>' +
+      '<div class="holdvalg" hidden><div class="lb">Hvilket hold ønsker I? Vælg begge, hvis begge passer</div><div class="pv-vg">' +
+      '<label><input type="checkbox" name="hv' + n + '" value="junior"><span>Junior, 1 time, 595 kr.</span></label>' +
+      '<label><input type="checkbox" name="hv' + n + '" value="juniorplus"><span>Junior+, 1,5 time, 875 kr.</span></label></div>' +
+      '<div class="graa" style="font-size:13px;margin-top:6px">Prisen er pr. kvartal.</div></div>' +
       '<div class="hold" aria-live="polite"></div>' +
       '<div class="seniorhint graa" hidden>Vil du hellere spille på hverdage i dagtimerne? Se listen for <a href="#andre" data-liste="senior">Seniorpadel (60+)</a>.</div>';
     liste.appendChild(d);
@@ -619,9 +623,9 @@
       if (!foed.value) { hold.textContent = ''; return; }
       opdHold();
     });
-    d.addEventListener('change', function (e) { if (e.target.name === 'erf' + d.dataset.nr || e.target.dataset.f === 'voksen') opdHold(); });
+    d.addEventListener('change', function (e) { if (e.target.name === 'erf' + d.dataset.nr || e.target.name === 'hv' + d.dataset.nr || e.target.dataset.f === 'voksen') opdHold(); });
     var vp = d.querySelector('.voksenproeve'), niv = d.querySelector('.niveau'), sh = d.querySelector('.seniorhint');
-    var dg = d.querySelector('.dage'), dgLb = d.querySelector('.dagelb'), navnF = d.querySelector('[data-f=navn]');
+    var hv = d.querySelector('.holdvalg'), dg = d.querySelector('.dage'), dgLb = d.querySelector('.dagelb'), navnF = d.querySelector('[data-f=navn]');
     navnF.addEventListener('input', function () {
       var fn = navnF.value.trim().split(' ')[0];
       dgLb.textContent = 'Hvilke dage kan ' + (fn.length > 1 ? fn : 'spilleren') + '?';
@@ -639,6 +643,15 @@
       if (dg.hidden) dg.querySelectorAll('input').forEach(function (i) { i.checked = false; });
       if (a === null) { hold.textContent = ''; return; }
       var h = holdFor(a);
+      // 10 til 12 år: familien vælger Junior, Junior+ eller begge, fordi prisen og længden er forskellig (Lars 12. november 2026)
+      hv.hidden = !h.valg;
+      if (hv.hidden) hv.querySelectorAll('input').forEach(function (i) { i.checked = false; });
+      if (h.valg) {
+        var j = hv.querySelector('[value=junior]').checked, jp = hv.querySelector('[value=juniorplus]').checked;
+        if (j && jp) h = { t: 'Hold: Junior eller Junior+. Vi finder det rigtige efter niveau.' };
+        else if (j) h = { t: 'Hold: Junior, 1 time om ugen' };
+        else if (jp) h = { t: 'Hold: Junior+, 1,5 time om ugen' };
+      }
       if (vp.querySelector('input').checked) h = { t: 'Hold: Junior+, 1,5 time om ugen. Vi ser på, om voksenholdet passer. Fortæl om dit niveau ovenfor.' };
       if (a >= 18 && erf && erf.value === '0') h = { t: 'Voksenholdet er for let øvede. Du kommer på listen for voksne nybegyndere og betaler ikke depositum.' };
       hold.textContent = h.t; hold.classList.toggle('fejl', !!h.fejl);
@@ -656,7 +669,8 @@
       return { navn: s.querySelector('[data-f=navn]').value.trim(), foed: s.querySelector('[data-f=foed]').value,
         koen: s.querySelector('[data-f=koen]').value, erfaring: erf ? +erf.value : null,
         niveau: s.querySelector('[data-f=niveau]').value.trim(), proevVoksen: s.querySelector('[data-f=voksen]').checked,
-        dage: Array.prototype.map.call(s.querySelectorAll('.dage input:checked'), function (i) { return i.value; }) };
+        dage: Array.prototype.map.call(s.querySelectorAll('.dage input:checked'), function (i) { return i.value; }),
+        holdOenske: Array.prototype.map.call(s.querySelectorAll('.holdvalg input:checked'), function (i) { return i.value; }) };
     });
   }
   function vis(t) {
@@ -685,6 +699,8 @@
       if (sp.some(function (s) { var a = alder(new Date(s.foed)); return !(a >= 0 && a <= 100) || s.foed < '1925-01-01'; })) { f.textContent = 'Tjek fødselsdatoen på alle spillere.'; return; }
       if (sp.some(function (s) { return alder(new Date(s.foed)) < 8; })) { f.textContent = 'Holdene er for spillere fra 8 år. Skriv til os under Spørg os nederst på siden, hvis I alligevel er interesserede.'; return; }
       if (sp.some(function (s) { return s.erfaring === null; })) { f.textContent = 'Vælg, hvor meget hver spiller har prøvet padel.'; return; }
+      var udenHold = sp.filter(function (s) { var a = alder(new Date(s.foed)); return a >= 10 && a <= 12 && !s.holdOenske.length; });
+      if (udenHold.length) { f.textContent = 'Vælg, om ' + udenHold[0].navn.split(' ')[0] + ' skal på Junior, Junior+ eller begge.'; return; }
       var udenDag = sp.filter(function (s) { return !nybegynder(s) && !s.dage.length; });
       if (udenDag.length) { f.textContent = sp.length > 1 ? 'Vælg mindst én dag for ' + udenDag[0].navn.split(' ')[0] + '.' : 'Vælg mindst én dag.'; return; }
       if (sp.some(function (s) { return s.proevVoksen && !s.niveau; })) { f.textContent = 'Fortæl lidt om niveauet, når en spiller vil prøve voksenholdet.'; return; }
