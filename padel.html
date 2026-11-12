@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="101a1f09c2a8">
+<meta name="rtk-version" content="54b9a8cc93b4">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -313,11 +313,11 @@ html:not(.aaben) .efter{display:none!important}
 .pa-web{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 @media (max-width:760px){
  /* Lagt i hjørnet som en lille knap med kort tekst, som Ace i Mit RTK. Før svævede bolden midt i teksten (Lars 12. november 2026 kl. 21.14) */
- .pa-knap{right:12px;bottom:calc(12px + env(safe-area-inset-bottom));gap:8px;padding:5px 14px 5px 5px;font-size:15px;border:2px solid #fff}
- .pa-knap .pa-ikon{width:36px;height:36px;box-shadow:none}
+ .pa-knap{right:10px;bottom:calc(10px + env(safe-area-inset-bottom));gap:6px;padding:3px 11px 3px 3px;font-size:13px;min-height:0;line-height:1.2;border:1.5px solid #fff;box-shadow:0 4px 12px rgba(0,0,0,.22)}
+ .pa-knap .pa-ikon{width:26px;height:26px;box-shadow:none}
  .pa-knap .pa-tekst{display:none}
  .pa-knap .pa-kort{display:inline}
- html.cta-vist .pa-knap{bottom:calc(84px + env(safe-area-inset-bottom))}
+ html.cta-vist .pa-knap{bottom:calc(var(--cta-h, 84px) + 8px)}
  .pa-knap{transition:bottom .2s}
  .pa-panel{right:8px;left:8px;bottom:8px;width:auto;max-width:none;height:calc(100% - 64px);max-height:none}
 }
@@ -1167,6 +1167,7 @@ window.sprogOrd = function (da, en) { return window.sprogNu() === 'en' ? en : da
       cta.classList.toggle('skjult', Object.keys(synlig).some(function (k) { return synlig[k]; }));
       // Ace rykker kun op over den faste knap, når den er synlig (Lars 12. november 2026 kl. 21.14)
       document.documentElement.classList.toggle('cta-vist', !cta.classList.contains('skjult'));
+      if (cta.offsetHeight) document.documentElement.style.setProperty('--cta-h', cta.offsetHeight + 'px');
     });
     ['pv-hero', 'sek pv-tilm', 'sek pv-andre', 'pv-skriv'].forEach(function (c) { var el = document.querySelector('[class="' + c + '"]'); if (el) io.observe(el); });
   }
