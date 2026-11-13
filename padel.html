@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="ce7bc1b94f97">
+<meta name="rtk-version" content="5c5bd5998c50">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -860,7 +860,8 @@ window.sprogOrd = function (da, en) { return window.sprogNu() === 'en' ? en : da
   }
   var vlId = nyId(), ilId = nyId();
   var form = document.getElementById('form'), liste = document.getElementById('spillere');
-  var kilde = (new URLSearchParams(location.search).get('kilde') || '').slice(0, 60);
+  // Kampagnens navn: ?kilde=, ellers ?utm_source= (Lars 13. november 2026 kl. 19.17: opslagene er måske sat op på en anden måde)
+  var kilde = (new URLSearchParams(location.search).get('kilde') || new URLSearchParams(location.search).get('utm_source') || '').slice(0, 60);
   var n = 0;
 
   function alder(d) {
@@ -1197,7 +1198,7 @@ window.sprogOrd = function (da, en) { return window.sprogNu() === 'en' ? en : da
   var w = window.innerWidth, groft = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
   send('start', {
     side: location.hostname.replace(/^www\./, ''),
-    kilde: (new URLSearchParams(location.search).get('kilde') || '').slice(0, 40),
+    kilde: (new URLSearchParams(location.search).get('kilde') || new URLSearchParams(location.search).get('utm_source') || '').slice(0, 40),
     henv: henv(),
     sprog: (window.sprogNu && window.sprogNu()) || 'da',
     enhed: w < 700 ? 'mobil' : (groft && w < 1100 ? 'tablet' : 'computer')
