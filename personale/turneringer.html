@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="8421e16caaa5">
+<meta name="rtk-version" content="f6bddf91d0aa">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -148,16 +148,26 @@ function logUd(udloebet) {
 $('logud').addEventListener('click', () => logUd(false));
 
 // ---------------------------------------------------------------- Tekster fra regellaget (kort omskrevet, kilderne står i regler_og_begreber.txt)
+// Trappen (Lars 14. november kl. 22.56): boldene, man bevæger sig igennem, og så kategorierne. Kilder: DTF's Tennis10-side og
+// rækkeoversigten for Vinter Tour (bolde og baner), Tennis Øst afsnit 1.2 og 1.7 (skum for børn og voksne), DTF-reglementet sektion 27.
+const BOLDE = [
+  ['Skum', 'Skumbold på badmintonbane. Primært for juniorer fra U8, men skum er for alle aldre: Tennis Øst holder åbent SM i skumtennis for både juniorer og voksne, og der er skumhold helt op til senior.'],
+  ['Rød', 'Rød bold eller skumbold på rød bane. Tennis10, puljer på tid.'],
+  ['Orange', 'Orange bold på orange bane. Tennis10.'],
+  ['Grøn', 'Grøn bold på almindelig bane. Tennis10 og de første kategorier på stor bane: U12 i Kat. 4 og 3 og U14 i Kat. 4.'],
+  ['Gul', 'Almindelig bold. U12 fra Kat. 2, U14 fra Kat. 3, og U16, U18, senior og veteran altid.']];
 const TRAPPE = [
-  ['Skumtennis', 'U8 til U14 på badmintonbane med skumbold. Mange kampe i puljer. Også uden klub.'],
-  ['Tennis10', 'U10 med rød, orange eller grøn bold. Drenge og piger sammen.'],
-  ['Kat. 4', 'For nye turneringsspillere fra U12. Ofte puljer.'],
+  ['Kat. 4', 'For nye turneringsspillere fra U12. Altid puljer med 8 spillere.'],
   ['Kat. 3', 'For spillere i den nederste del af ranglisten.'],
   ['Kat. 2', 'For de næstbedste.'], ['Kat. 1', 'For de bedste.'],
   ['Kat. G', 'Grand Prix for de bedste.'], ['Kat. A', 'DM for seniorer og UM for juniorer.']];
+// Hvor melder man sig til (Lars 14. november kl. 22.56). Kilder: Tennis Øst afsnit 1.6 og 8, DTF's Vinter Tour og Tennis10-side, DGI
+const STEDER = [
+  ['Tennis Øst og DTF i Tournament Software', 'Næsten alle tennisturneringer: ranglisteturneringer, Tennis10, veteraner, GameOn og Sjællandsmesterskaberne. Man tilmelder sig med en gratis profil i Tournament Software. Søg på turneringens kode.', 'https://dtf.tournamentsoftware.com'],
+  ['DGI', 'De fleste skumstævner, som Tennis Øst holder sammen med DGI. Man tilmelder sig hos DGI og kan deltage uden at være medlem af en klub. Søg på arrangementets nummer.', 'https://www.dgi.dk/idraet/idraetter-i-dgi/tennis/skumtennis']];
 const FORKLAR = {
-  'Skum': 'Det blødeste sted at starte. Badmintonbane og skumbold, puljer på tid, så alle får mange kampe. Man kan deltage uden at være medlem af en klub.',
-  'Rød': 'Tennis10 for U10 med rød, orange eller grøn bold. Rækkerne er kønsneutrale. Der er ingen rangliste i U10.',
+  'Skum': 'Det blødeste sted at starte. Badmintonbane og skumbold, puljer på tid, så alle får mange kampe. Primært for juniorer, men også for voksne, fx Tennis Østs åbne SM i skumtennis. Man kan deltage uden at være medlem af en klub.',
+  'Rød': 'Tennis10 for U10: rød bold på rød bane, så orange bold på orange bane og grøn bold på almindelig bane. Rækkerne er kønsneutrale, og der er ingen rangliste i U10.',
   'Kat. 4': 'Primært for nye turneringsspillere. Det er stedet at starte på stor bane, og mange rækker spilles i puljer.',
   'Kat. 3': 'For spillere i den nederste del af ranglisten. Første turnering på stor bane? Så er Kat. 4 stedet at starte.',
   'Kat. 2': 'For de næstbedste på ranglisten.', 'Kat. 1': 'For de bedste på ranglisten.', 'Kat. G': 'Grand Prix-turneringer for de bedste.'
@@ -169,13 +179,26 @@ const ORD = [['Pulje', '3 til 8 spillere, hvor alle møder alle.'], ['Bonusrunde
 // Turneringstyper, veteraner og licens (Lars 14. november kl. 22.27). Kilder: DTF's reglementer for individuelle turneringer og for
 // veteranturneringer (november 2025, sektion 16, 25, 27, 30 og 39), tennis.dk "Licens og klubskifte", tennis.dk om UM ude og Tennis Øst. Læst 14. november 2026.
 const TYPER = {
-  'Ranglisteturnering': ['Ranglisteturnering', 'En turnering, som DTF har givet en kategori (Kat. 4, 3, 2, 1, G eller A). Den giver point til DTF\'s rangliste til spillere med licens. Ranglisten opdateres hver uge og bruges til at fordele spillerne i kategorierne og til seedning.'],
-  'Veteranturnering': ['Veteranturnering', 'For voksne fra 30 år i grupper med 5 års spring, fra 30+ til 90+. Man hører til en gruppe fra det år, man fylder alderen. Veteranerne har deres eget reglement med Kat. 3, 2 og 1 og DM.'],
+  'Ranglisteturnering': ['Ranglisteturnering', 'En turnering, som DTF har givet en kategori (Kat. 4, 3, 2, 1, G eller A). Den giver point til DTF\'s rangliste til spillere med licens.'],
+  'Veteranturnering': ['Veteranturnering', 'For voksne i aldersgrupper med 5 års spring. Vinter Tour 2026/27 har rækker fra 35+ til 75+, og reglementet går fra 30+ til 90+. Man hører til en gruppe fra det år, man fylder alderen. Veteranerne har deres eget reglement med Kat. 3, 2 og 1 og DM.'],
+  'Skumtennis': ['Skumtennis', 'Skumbold på badmintonbane, puljer på tid, så alle får mange kampe. Primært for juniorer, men skum er for alle aldre, og Tennis Øst holder åbent SM i skumtennis for både juniorer og voksne. Ingen licens, og man kan deltage uden klub.'],
   'GameOn double': ['GameOn double', 'DTF\'s doubleturneringer for breddespillere og motionister. Rækkerne deles efter WTN, og man kan melde sig alene og finde en makker.']
 };
+// Ranglisten (Lars 14. november kl. 23.00). Kilder: DTF's regler for pointtildeling (oktober 2023, punkt 1, 2 og 4), DTF's side
+// Ranglister (læst 14. november 2026), reglementet sektion 16 og 18, Vinter Tour 2026/27 (kategorier og doubler til WTN).
+const RANGLISTE = [
+  ['Hvad er den?', 'DTF\'s nationale ranglister for U12, U14, U16, U18, senior og veteran. Spillere i U14, U16 og U18 står også på seniorranglisten. U10 og Tennis10 har ingen rangliste.'],
+  ['Hvem kommer på?', 'Kun spillere med aktiv licens får point.'],
+  ['Hvordan får man point?', 'Kun singlekampe tæller. Ranglisten lægger de 10 bedste individuelle turneringer fra de sidste 52 uger sammen med point fra holdkampe og internationale turneringer. I en cupturnering får man point for den runde, man taber i, og intet for at tabe første runde (undtagen U12 i Kat. 3). I en pulje får man point for hver vundet kamp. Jo højere kategori, jo flere point.'],
+  ['Hvornår opdateres den?', 'Hver uge med resultaterne fra ugen før. Internationale point cirka hver anden uge. Point forsvinder igen efter 52 uger.'],
+  ['Hvad bruges den til?', 'Til at fordele spillerne: hvem kommer med, når der er flere tilmeldte end pladser, og hvem må spille Kat. 2 og 3. Den bruges også til seedning.'],
+  ['Og WTN?', 'World Tennis Number er noget andet: ITF\'s niveaumål for alle spillere, også uden licens, hvor doubler også tæller. GameOn og DM for veteraner bruger WTN.']
+];
+const RANGLISTE_LINK = [['DTF\'s side om ranglisterne (med link til listerne)', 'https://tennis.dk/spiller/ranglister-2/'], ['DTF\'s regler for point', 'https://tennis.dk/wp-content/uploads/2023/10/Regler-pointtildeling_oktober2023.pdf']];
 const LICENS = [
   ['Hvad giver den?', 'Point på DTF\'s rangliste. Spillere med licens får plads før spillere uden licens i de individuelle turneringer, og nogle rækker i holdturneringen kræver licens.'],
-  ['Hvem skal have den?', 'Den, der vil have point på ranglisten. Uden licens kommer man efter spillerne med licens, når pladserne fordeles, og UM kræver aktiv licens. Den gælder for U12, U14, U16, U18, senior og veteran. U10 har ingen rangliste, men Tennis10-spillere kan løse licens og kommer så på en grupperingsliste.'],
+  ['Kræver turneringen licens?', 'I DTF\'s Vinter Tour 2026/27 kræver ingen kategori licens, heller ikke Kat. 2 og 1. Men spillere uden licens sættes altid nederst på deltagerlisten, i alle kategorier og i Tennis10. Er der flere tilmeldte end pladser, kommer de altså ikke med. Kat. 2 og 3 har desuden grænser efter ranglisten, og det kræver licens at være på den. UM kræver aktiv licens, og skumstævner hos DGI kræver ingen licens.'],
+  ['Hvem bør have den?', 'Den, der vil spille DTF-turneringer jævnligt eller have point på ranglisten. Den gælder for U12, U14, U16, U18, senior og veteran. DTF anbefaler også licens til Tennis10-spillere, fordi det gør det lettere at komme ind i turneringer.'],
   ['Sådan får man den', 'Log ind i Tournament Software, eller opret en profil. Vælg Profil og licens, tryk Køb ved licensen, vælg Roskilde Tennis Klub og betal med kort eller MobilePay. Klubben skal godkende.'],
   ['Hvor længe?', 'Fra købet til 30. april. Man får besked i Tournament Software, når den skal fornyes, og den kan købes hele året.']
 ];
@@ -355,8 +378,8 @@ function visTurnering(id) {
   h += '<h3 class="tu-h" style="margin-top:14px">Fra arrangøren</h3>' + (t.praktisk ? '<p class="tu-p">' + esc(t.praktisk) + (t.praktisk.length >= 600 ? ' …' : '') + '</p>' : '<p class="tu-p tu-tom">Arrangøren har ikke skrevet en beskrivelse.</p>') + '</div>';
   const nivF = FORKLAR[V.niveau] ? V.niveau : (t.type === 'Skumtennis' ? 'Skum' : (t.kategorier.match(/Kat\. [1-4G]/g) || []).sort().pop());
   if (TYPER[t.type]) h += '<div class="card tu-forkl"><h3 class="tu-h">' + esc(TYPER[t.type][0]) + ' kort fortalt</h3><p class="tu-p">' + esc(TYPER[t.type][1]) + '</p>' +
-    (t.kilde === 'DTF' && t.type !== 'GameOn double' ? '<p style="margin:8px 0 0"><button type="button" class="tu-link-knap" data-gaa="kort#licens">Licens: hvornår og hvordan &#8594;</button></p>' : '') + '</div>';
-  if (nivF && FORKLAR[nivF]) h += '<div class="card tu-forkl"><h3 class="tu-h">' + esc(['Rød', 'Orange', 'Grøn'].indexOf(nivF) >= 0 ? 'Tennis10' : nivF === 'Skum' ? 'Skumtennis' : nivF) + ' kort fortalt</h3><p class="tu-p">' + esc(FORKLAR[nivF]) + '</p><p style="margin:8px 0 0"><button type="button" class="tu-link-knap" data-gaa="kort">Alle kategorier og årgange i Kort fortalt &#8594;</button></p></div>';
+    (t.kilde === 'DTF' && t.type !== 'GameOn double' ? '<p style="margin:8px 0 0"><button type="button" class="tu-link-knap" data-gaa="kort#rangliste">Ranglisten og licens &#8594;</button></p>' : '') + '</div>';
+  if (nivF && FORKLAR[nivF] && !(TYPER[t.type] && nivF === 'Skum')) h += '<div class="card tu-forkl"><h3 class="tu-h">' + esc(['Rød', 'Orange', 'Grøn'].indexOf(nivF) >= 0 ? 'Tennis10' : nivF === 'Skum' ? 'Skumtennis' : nivF) + ' kort fortalt</h3><p class="tu-p">' + esc(FORKLAR[nivF]) + '</p><p style="margin:8px 0 0"><button type="button" class="tu-link-knap" data-gaa="kort">Alle kategorier og årgange i Kort fortalt &#8594;</button></p></div>';
   h += '<button type="button" style="width:100%" data-gaa="kopi=' + esc(t.id) + '">Kopiér som tekst</button></div>';
   return h;
 }
@@ -421,7 +444,8 @@ function visRtk() {
 
 function visKort() {
   let h = faner('kort') + '<div class="tu-smal">';
-  h += '<div class="card"><h3 class="tu-h" style="margin-bottom:8px">Hvor starter man?</h3><ol class="tu-trappe">' + TRAPPE.map(([t, b]) => '<li><b>' + esc(t) + '</b>' + esc(b) + '</li>').join('') + '</ol></div>';
+  h += '<div class="card" id="steder"><h3 class="tu-h" style="margin-bottom:8px">Hvor melder man sig til?</h3><dl class="tu-ord">' + STEDER.map(([o, t, u]) => '<dt>' + esc(o) + '</dt><dd>' + esc(t) + ' <a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(u.replace('https://', '').replace(/\/.*$/, '')) + '</a></dd>').join('') + '</dl></div>';
+  h += '<div class="card"><h3 class="tu-h" style="margin-bottom:8px">Hvor starter man?</h3><p class="tu-p" style="margin:0 0 8px">Boldene, man bevæger sig igennem:</p><ol class="tu-trappe">' + BOLDE.map(([t, b]) => '<li><b>' + esc(t) + '</b>' + esc(b) + '</li>').join('') + '</ol><p class="tu-p" style="margin:12px 0 8px">Kategorierne på stor bane, fra U12:</p><ol class="tu-trappe">' + TRAPPE.map(([t, b]) => '<li><b>' + esc(t) + '</b>' + esc(b) + '</li>').join('') + '</ol></div>';
   // Årgangene skifter selv ved nytår: det år, man fylder 10, 12, 14, 16 eller 18, er sidste år i gruppen
   const y = +D.idag.slice(0, 4);
   const aar = (Y) => [['U10', (Y - 10) + ' og senere'], ['U12', (Y - 12) + ' og ' + (Y - 11)], ['U14', (Y - 14) + ' og ' + (Y - 13)], ['U16', (Y - 16) + ' og ' + (Y - 15)], ['U18', (Y - 18) + ' og ' + (Y - 17)], ['Senior', (Y - 19) + ' og før']];
@@ -430,6 +454,8 @@ function visKort() {
   a.forEach((r, i) => { h += '<tr><td><b>' + r[0] + '</b></td><td>' + r[1] + '</td><td>' + b[i][1] + '</td></tr>'; });
   h += '</table><p class="tu-p" style="margin:10px 0 0">Gruppen skifter ved nytår. Det år, man fylder 10, 12, 14, 16 eller 18, er sidste år i gruppen.</p><p class="tu-p" style="margin:6px 0 0">U12 må også spille U14. U10 spiller kun i egen gruppe.</p></div>';
   h += '<div class="card" id="typer"><h3 class="tu-h" style="margin-bottom:8px">Hvad er hvad?</h3><dl class="tu-ord">' + Object.keys(TYPER).map((k) => '<dt>' + esc(TYPER[k][0]) + '</dt><dd>' + esc(TYPER[k][1]) + '</dd>').join('') + '</dl></div>';
+  h += '<div class="card" id="rangliste"><h3 class="tu-h" style="margin-bottom:8px">Ranglisten</h3><dl class="tu-ord">' + RANGLISTE.map(([o, t]) => '<dt>' + esc(o) + '</dt><dd>' + esc(t) + '</dd>').join('') + '</dl>' +
+    '<p class="tu-p" style="margin:10px 0 0">' + RANGLISTE_LINK.map(([n, u]) => '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(n) + '</a>').join('<br>') + '</p></div>';
   h += '<div class="card" id="licens"><h3 class="tu-h" style="margin-bottom:8px">Licens</h3><dl class="tu-ord">' + LICENS.map(([o, t]) => '<dt>' + esc(o) + '</dt><dd>' + esc(t) + '</dd>').join('') + '</dl>' +
     '<table class="tu-tab" style="margin-top:12px"><tr><th>Pris</th><th style="text-align:right">Købt før ' + esc(LICENS_PRIS.foer.replace(' 2027', '')) + '</th><th style="text-align:right">Fra ' + esc(LICENS_PRIS.foer) + '</th></tr>' +
     LICENS_PRIS.pris.map(([n, a, b]) => '<tr><td>' + esc(n) + '</td><td class="n">' + a + ' kr.</td><td class="n">' + b + ' kr.</td></tr>').join('') +
