@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="5c5bd5998c50">
+<meta name="rtk-version" content="35b70fcd77b7">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -1201,8 +1201,11 @@ window.sprogOrd = function (da, en) { return window.sprogNu() === 'en' ? en : da
     kilde: (new URLSearchParams(location.search).get('kilde') || new URLSearchParams(location.search).get('utm_source') || '').slice(0, 40),
     henv: henv(),
     sprog: (window.sprogNu && window.sprogNu()) || 'da',
-    enhed: w < 700 ? 'mobil' : (groft && w < 1100 ? 'tablet' : 'computer')
+    enhed: w < 700 ? 'mobil' : (groft && w < 1100 ? 'tablet' : 'computer'),
+    // Brutto og netto (Lars 14. november 2026 kl. 08.12): hentet i baggrunden, fx af Facebook, er ikke vist
+    vist: document.visibilityState === 'visible'
   });
+  var varVist = document.visibilityState === 'visible';
   function maal() {
     var d = document.documentElement, hoejde = Math.max(d.scrollHeight, document.body.scrollHeight);
     var pct = hoejde ? Math.round((window.scrollY + window.innerHeight) / hoejde * 100) : 0;
@@ -1221,7 +1224,12 @@ window.sprogOrd = function (da, en) { return window.sprogNu() === 'en' ? en : da
     sidstSendt = tegn;
     send('slut', { side: location.hostname.replace(/^www\./, ''), scroll: maks, sek: sek, h: liste.slice(0, 400) });
   }
-  document.addEventListener('visibilitychange', function () { tael(); synlig = !document.hidden; if (document.hidden) slut(); });
+  document.addEventListener('visibilitychange', function () {
+    tael(); synlig = !document.hidden;
+    // En side hentet i baggrunden, som nu bliver vist: meld det med det samme, så besøget tæller netto, selvom slut aldrig kommer
+    if (!varVist && synlig) { varVist = true; send('slut', { side: location.hostname.replace(/^www\./, ''), scroll: 0, sek: 0, h: 'vist' }); h.vist = 1; }
+    if (document.hidden) slut();
+  });
   window.addEventListener('pagehide', function () { if (!document.hidden) slut(); });
   // Hvad folk gør
   document.addEventListener('click', function (e) {
