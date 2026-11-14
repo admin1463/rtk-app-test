@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="84880333111e">
+<meta name="rtk-version" content="8421e16caaa5">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -165,7 +165,21 @@ const FORKLAR = {
 FORKLAR['Orange'] = FORKLAR['Grøn'] = FORKLAR['Rød'];
 const ORD = [['Pulje', '3 til 8 spillere, hvor alle møder alle.'], ['Bonusrunde', 'En ekstra kamp til dem, der taber i første runde.'],
   ['Next Gen', 'Korte sæt til 4.'], ['Termin', 'Normalt en uge. Kun én turnering pr. termin.'],
-  ['Licens', 'Giver resultater på ranglisten. Løses gennem klubben.']];
+  ['Licens', 'Giver point på ranglisten. Se Licens ovenfor.']];
+// Turneringstyper, veteraner og licens (Lars 14. november kl. 22.27). Kilder: DTF's reglementer for individuelle turneringer og for
+// veteranturneringer (november 2025, sektion 16, 25, 27, 30 og 39), tennis.dk "Licens og klubskifte", tennis.dk om UM ude og Tennis Øst. Læst 14. november 2026.
+const TYPER = {
+  'Ranglisteturnering': ['Ranglisteturnering', 'En turnering, som DTF har givet en kategori (Kat. 4, 3, 2, 1, G eller A). Den giver point til DTF\'s rangliste til spillere med licens. Ranglisten opdateres hver uge og bruges til at fordele spillerne i kategorierne og til seedning.'],
+  'Veteranturnering': ['Veteranturnering', 'For voksne fra 30 år i grupper med 5 års spring, fra 30+ til 90+. Man hører til en gruppe fra det år, man fylder alderen. Veteranerne har deres eget reglement med Kat. 3, 2 og 1 og DM.'],
+  'GameOn double': ['GameOn double', 'DTF\'s doubleturneringer for breddespillere og motionister. Rækkerne deles efter WTN, og man kan melde sig alene og finde en makker.']
+};
+const LICENS = [
+  ['Hvad giver den?', 'Point på DTF\'s rangliste. Spillere med licens får plads før spillere uden licens i de individuelle turneringer, og nogle rækker i holdturneringen kræver licens.'],
+  ['Hvem skal have den?', 'Den, der vil have point på ranglisten. Uden licens kommer man efter spillerne med licens, når pladserne fordeles, og UM kræver aktiv licens. Den gælder for U12, U14, U16, U18, senior og veteran. U10 har ingen rangliste, men Tennis10-spillere kan løse licens og kommer så på en grupperingsliste.'],
+  ['Sådan får man den', 'Log ind i Tournament Software, eller opret en profil. Vælg Profil og licens, tryk Køb ved licensen, vælg Roskilde Tennis Klub og betal med kort eller MobilePay. Klubben skal godkende.'],
+  ['Hvor længe?', 'Fra købet til 30. april. Man får besked i Tournament Software, når den skal fornyes, og den kan købes hele året.']
+];
+const LICENS_PRIS = { til: '30. april 2027', foer: '1. januar 2027', pris: [['Tennis10', 165, 85], ['U12', 330, 165], ['U14, U16 og U18', 455, 230], ['Senior', 455, 230], ['Veteran', 0, 0]] };
 const FORSIDE = { dtf: ['Tournament Software (DTF\'s turneringer)', 'https://dtf.tournamentsoftware.com'],
   dgi: ['DGI\'s skumtennisstævner', 'https://www.dgi.dk/idraet/idraetter-i-dgi/tennis/skumtennis'] };
 
@@ -340,6 +354,8 @@ function visTurnering(id) {
   h += '<div class="card"><h3 class="tu-h">Om arrangøren</h3><p class="tu-p">' + esc(t.om || t.arrangoer || 'Arrangøren er ikke oplyst.') + '</p>';
   h += '<h3 class="tu-h" style="margin-top:14px">Fra arrangøren</h3>' + (t.praktisk ? '<p class="tu-p">' + esc(t.praktisk) + (t.praktisk.length >= 600 ? ' …' : '') + '</p>' : '<p class="tu-p tu-tom">Arrangøren har ikke skrevet en beskrivelse.</p>') + '</div>';
   const nivF = FORKLAR[V.niveau] ? V.niveau : (t.type === 'Skumtennis' ? 'Skum' : (t.kategorier.match(/Kat\. [1-4G]/g) || []).sort().pop());
+  if (TYPER[t.type]) h += '<div class="card tu-forkl"><h3 class="tu-h">' + esc(TYPER[t.type][0]) + ' kort fortalt</h3><p class="tu-p">' + esc(TYPER[t.type][1]) + '</p>' +
+    (t.kilde === 'DTF' && t.type !== 'GameOn double' ? '<p style="margin:8px 0 0"><button type="button" class="tu-link-knap" data-gaa="kort#licens">Licens: hvornår og hvordan &#8594;</button></p>' : '') + '</div>';
   if (nivF && FORKLAR[nivF]) h += '<div class="card tu-forkl"><h3 class="tu-h">' + esc(['Rød', 'Orange', 'Grøn'].indexOf(nivF) >= 0 ? 'Tennis10' : nivF === 'Skum' ? 'Skumtennis' : nivF) + ' kort fortalt</h3><p class="tu-p">' + esc(FORKLAR[nivF]) + '</p><p style="margin:8px 0 0"><button type="button" class="tu-link-knap" data-gaa="kort">Alle kategorier og årgange i Kort fortalt &#8594;</button></p></div>';
   h += '<button type="button" style="width:100%" data-gaa="kopi=' + esc(t.id) + '">Kopiér som tekst</button></div>';
   return h;
@@ -413,12 +429,17 @@ function visKort() {
   h += '<div class="card"><h3 class="tu-h" style="margin-bottom:8px">Hvilken aldersgruppe?</h3><table class="tu-tab"><tr><th></th><th>Født, ' + y + '<br>til nytår</th><th>Født, ' + (y + 1) + '<br>fra nytår</th></tr>';
   a.forEach((r, i) => { h += '<tr><td><b>' + r[0] + '</b></td><td>' + r[1] + '</td><td>' + b[i][1] + '</td></tr>'; });
   h += '</table><p class="tu-p" style="margin:10px 0 0">Gruppen skifter ved nytår. Det år, man fylder 10, 12, 14, 16 eller 18, er sidste år i gruppen.</p><p class="tu-p" style="margin:6px 0 0">U12 må også spille U14. U10 spiller kun i egen gruppe.</p></div>';
+  h += '<div class="card" id="typer"><h3 class="tu-h" style="margin-bottom:8px">Hvad er hvad?</h3><dl class="tu-ord">' + Object.keys(TYPER).map((k) => '<dt>' + esc(TYPER[k][0]) + '</dt><dd>' + esc(TYPER[k][1]) + '</dd>').join('') + '</dl></div>';
+  h += '<div class="card" id="licens"><h3 class="tu-h" style="margin-bottom:8px">Licens</h3><dl class="tu-ord">' + LICENS.map(([o, t]) => '<dt>' + esc(o) + '</dt><dd>' + esc(t) + '</dd>').join('') + '</dl>' +
+    '<table class="tu-tab" style="margin-top:12px"><tr><th>Pris</th><th style="text-align:right">Købt før ' + esc(LICENS_PRIS.foer.replace(' 2027', '')) + '</th><th style="text-align:right">Fra ' + esc(LICENS_PRIS.foer) + '</th></tr>' +
+    LICENS_PRIS.pris.map(([n, a, b]) => '<tr><td>' + esc(n) + '</td><td class="n">' + a + ' kr.</td><td class="n">' + b + ' kr.</td></tr>').join('') +
+    '</table><p class="hint" style="font-size:13px">Priserne er DTF\'s for licens, der gælder til ' + esc(LICENS_PRIS.til) + '.</p></div>';
   h += '<div class="card"><h3 class="tu-h">Ord, man møder</h3><dl class="tu-ord">' + ORD.map(([o, t]) => '<dt>' + esc(o) + '</dt><dd>' + esc(t) + '</dd>').join('') + '</dl></div>';
   return h + '</div>';
 }
 
 // ---------------------------------------------------------------- Navigation med #, så telefonens tilbage virker
-function rute() { return decodeURIComponent(location.hash.slice(1)) || 'find'; }
+function rute() { return (decodeURIComponent(location.hash.slice(1)) || 'find').split('#')[0]; }
 function tegn() {
   if (!D) return;
   const r = rute();
@@ -427,6 +448,9 @@ function tegn() {
   const pos = fokus ? document.activeElement.selectionStart : 0;
   $('vis').innerHTML = ud;
   if (fokus && $('sog')) { $('sog').focus(); $('sog').setSelectionRange(pos, pos); }
+  // Et anker efter ruten, fx #kort#licens, viser det kort med det samme
+  const anker = decodeURIComponent(location.hash.slice(1)).split('#')[1];
+  if (anker && $(anker)) $(anker).scrollIntoView();
 }
 function gaa(r) {
   if (r === 'tilbage') { if (history.length > 1 && window.TU_INDE) history.back(); else location.hash = 'find'; return; }
