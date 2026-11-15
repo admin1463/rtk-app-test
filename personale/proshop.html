@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="14df0b09fd63">
+<meta name="rtk-version" content="bfc1719d50d5">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -214,7 +214,7 @@ async function visLager(udgaaede) {
     O.frister.forEach((f) => { if (f.snart || f.overskredet) h += '<div class="ps-frist"><b>' + esc(f.leverandoer) + (f.ordrenr ? ' ' + esc(f.ordrenr) : '') + (f.overskredet ? ': klarmeldingen er overskredet' : '') + '</b>Dag 75 ' + dag(f.dag75) + ' · klarmelding dag 80 ' + dag(f.dag80) + ' · forfald ' + dag(f.forfald) + '</div>'; });
     if (O.bolde && O.bolde.mangler.length) h += '<div class="ps-alarm"><b>Bolde fra Boldlager uden vare</b>' + O.bolde.mangler.map((m) => esc(m.dato + ': ' + m.bold + ', ' + m.antal + '. ' + m.grund)).join('<br>') + '</div>';
     if (O.start && O.salg.huller.length) h += '<div class="ps-alarm"><b>Salg mangler fra MobilePay</b>' + esc(O.salg.huller.join(' og ')) + '</div>';
-    if (O.start) h += '<p class="hint" style="margin:0 0 10px">Salget er læst ind ' + (O.salg.til ? 'til og med ' + dag(O.salg.til) : 'fra startoptællingen ' + dag(O.start) + ': intet endnu') + '.</p>';
+    if (O.start) h += '<p class="hint" style="margin:0 0 10px">Salget er læst ind ' + (O.salg.til ? 'til og med ' + dag(O.salg.til) : 'fra startoptællingen ' + dag(O.start) + ': intet endnu').replace(/\.$/, '') + '.</p>';
   } else h += '<a class="ps-tilbage" href="#lager">&#8592; Lager</a><h2 style="margin:0 0 10px">Udgåede varer</h2>';
   h += '<input id="soeg" type="search" placeholder="Søg vare eller varenummer" aria-label="Søg vare eller varenummer" style="margin:0 0 6px">';
   h += '<div id="liste"></div>';
