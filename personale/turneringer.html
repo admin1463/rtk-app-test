@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="f6bddf91d0aa">
+<meta name="rtk-version" content="3772ff7145f8">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../rtk.css?v=2de082c9bdad">
+<link rel="stylesheet" href="../rtk.css?v=cc78992e33b4">
 <style>
 /* Turneringer (Lars 14. november 2026, mockup v3 godkendt samme aften) */
 .tu-faner .tabs{margin:0 0 12px;gap:6px}.tu-faner .tabs button{padding-left:12px;padding-right:12px}
@@ -248,7 +248,8 @@ function raekkePasser(r) {
   return true;
 }
 const raekkeFilter = () => !!V.alder || V.niveau !== 'Alle' || V.koen !== 'Alle';
-const hvorPasser = (t, h) => h === 'naer' ? t.naer === 'Ja' : h === 'sj' ? t.landsdel === 'Sjælland' : h === 'rest' ? t.landsdel !== 'Sjælland' : true;
+// Kender kilden ikke stedet, vises turneringen både under Sjælland og Resten af landet (E2E-test 14. november)
+const hvorPasser = (t, h) => h === 'naer' ? t.naer === 'Ja' : h === 'sj' ? (t.landsdel === 'Sjælland' || !t.landsdel) : h === 'rest' ? t.landsdel !== 'Sjælland' : true;
 const kanTilmelde = (t) => t.status === 'Åben' || t.status === 'Lukker snart';
 function filtrer(hvor) {
   if (!D) return [];
@@ -322,15 +323,18 @@ function visFind() {
     '<button type="button" class="tu-sw" id="nu" role="switch" aria-checked="' + V.nu + '"><span class="tu-tog" aria-hidden="true"></span> Kun dem, man kan tilmelde sig nu</button></div>';
   const l = filtrer();
   const hvorT = { naer: 'nær Roskilde', sj: 'på Sjælland', rest: 'i resten af landet' }[V.hvor] || '';
-  const hvad = [V.alder, V.niveau !== 'Alle' ? (V.niveau === 'Uden kategori' ? 'uden kategori' : /^Kat/.test(V.niveau) || V.niveau === 'Skum' ? V.niveau : V.niveau.toLowerCase() + ' bold') : '', V.koen !== 'Alle' ? V.koen.toLowerCase() : ''].filter(Boolean);
+  const alderT = V.alder === 'Veteran' ? 'veteraner' : V.alder === 'Senior' ? 'seniorer' : V.alder;
+  const nivT = V.niveau === 'Alle' ? '' : V.niveau === 'Uden kategori' ? 'uden kategori' : /^Kat/.test(V.niveau) ? 'i ' + V.niveau : V.niveau === 'Skum' ? 'i skum' : 'med ' + V.niveau.toLowerCase() + ' bold';
+  const koenT = V.koen === 'Alle' ? '' : 'for ' + V.koen.toLowerCase();
+  const hvad = [alderT ? 'med ' + alderT : '', alderT ? nivT.replace(/^med /, 'og ') : nivT, koenT].filter(Boolean);
   let hoe = '';
   if (!l.length) {
-    hoe += '<div class="card"><b style="display:block;font-size:16px;margin:0 0 2px">Ingen turneringer' + (hvad.length ? ' med ' + esc(hvad.join(' og ')) : '') + ' ' + esc(hvorT) + '</b><p class="tu-p">de næste 6 måneder.</p>';
+    hoe += '<div class="card"><b style="display:block;font-size:16px;margin:0 0 2px">Ingen turneringer' + (hvad.length ? ' ' + esc(hvad.join(' ')) : '') + ' ' + esc(hvorT) + '</b><p class="tu-p">de næste 6 måneder.</p>';
     const forslag = [['sj', 'Sjælland'], ['rest', 'resten af landet']].filter(([k]) => k !== V.hvor).map(([k, n]) => [k, n, filtrer(k).length]).filter((x) => x[2]);
     forslag.slice(0, 1).forEach(([k, n, a]) => { hoe += '<button type="button" class="ghost" data-chip="hvor" data-v="' + k + '" style="width:100%;margin-top:10px">Vis ' + n + ': ' + a + (a === 1 ? ' turnering' : ' turneringer') + '</button>'; });
     hoe += '</div>';
   } else {
-    hoe += '<p class="tu-ant"><b>' + l.length + (l.length === 1 ? ' turnering' : ' turneringer') + '</b>' + (hvad.length ? ' med ' + esc(hvad.join(' i ')) : '') + ' ' + esc(hvorT) + '</p>';
+    hoe += '<p class="tu-ant"><b>' + l.length + (l.length === 1 ? ' turnering' : ' turneringer') + '</b>' + (hvad.length ? ' ' + esc(hvad.join(' ')) : '') + ' ' + esc(hvorT) + '</p>';
     hoe += '<p class="tu-per">Tennisturneringer og skumstævner fra i dag og 6 måneder frem' + (D.hentet && D.hentet.til ? ', til ' + esc(langDag(D.hentet.til).replace(/^\S+ /, '')) + ' ' + esc(D.hentet.til.slice(0, 4)) : '') + '. Perioden ruller med.</p>';
     if (V.alder === 'U12' || V.alder === 'U14') hoe += '<p class="tu-tip">' + V.alder + (V.alder === 'U12' ? ' må også spille U14.' : ' må i et vist omfang også spille i ældre grupper.') + ' <button type="button" data-gaa="kort">Se Kort fortalt</button></p>';
     hoe += '<div class="tu-grid">';
@@ -355,7 +359,7 @@ function visTurnering(id) {
   if (t.aabner) h += '<div><i class="' + (t.aabner <= idag ? 'ok' : '') + '"></i>Tilmelding ' + (t.aabner <= idag ? 'åbnede ' + esc(dagMd(t.aabner)) : 'åbner ' + esc(langDag(t.aabner))) + '</div>';
   if (t.lukker) h += '<div><i class="' + (t.lukker < idag ? 'ok' : 'nu') + '"></i>' + (t.lukker < idag ? 'Tilmeldingen lukkede ' + esc(dagMd(t.lukker)) : '<b>Tilmelding senest ' + esc(langDag(t.lukker)) + '</b>') + '</div>';
   else h += '<div><i></i>Se fristen hos arrangøren</div>';
-  if (t.kilde === 'DTF') h += '<div><i></i>Afbud senest 48 timer før første kamp</div>';
+  if (t.type === 'Ranglisteturnering' || t.type === 'Mesterskab') h += '<div><i></i>Afbud senest 48 timer før første kamp</div>';
   h += '</div>';
   if (t.kode) h += '<div class="tu-kode"><span>Søg på <b>' + esc(t.kode) + '</b> ' + (t.kilde === 'DGI' ? 'hos DGI' : 'i Tournament Software') + '</span><button type="button" class="ghost" data-kopier="' + esc(t.kode) + '">Kopiér koden</button></div>';
   else h += '<div class="tu-kode"><span>Ingen kode. Søg på navnet og datoen i Tournament Software.</span></div>';
