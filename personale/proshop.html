@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="bfc1719d50d5">
+<meta name="rtk-version" content="6b2bf0286908">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -59,6 +59,9 @@
 .card h3{margin:0 0 8px;font-size:17px}
 .ps-lin{display:grid;grid-template-columns:1fr 1fr 48px;gap:6px 8px;align-items:end;margin:0 0 14px;padding:0 0 12px;border-bottom:1px solid #E3E7EA}.ps-lin .hel{grid-column:1/-1}
 .ps-lin button{min-height:50px;padding:0}
+/* Markedspriser (15. november 2026 kl. 22.51) */
+.ps-mk{font-size:12px;color:var(--muted)}.ps-mk .over{color:#B0004A;font-weight:700}.ps-mk .op{color:#1E6B3A;font-weight:700}
+.ps-fs{border-bottom:1px solid #E3E7EA;padding:10px 0}.ps-fs:last-child{border:0}.ps-fs button{margin-top:8px}
 </style>
 <main class="side">
   <div class="monster lav" aria-hidden="true"></div>
@@ -164,6 +167,7 @@ async function route() {
     else if (a === 'ny-vare') { fane('lager'); await visVareForm(null); }
     else if (a === 'ret') { fane('lager'); await visVareForm(b); }
     else if (a === 'lagerpr') { fane('lager'); await visLagerPr(); }
+    else if (a === 'marked') { fane('lager'); await visMarked(); }
     else if (a === 'ordrer') { fane('ordrer'); await visOrdrer(); }
     else if (a === 'ny-ordre') { fane('ordrer'); await visNyOrdre(); }
     else if (a === 'ordre') { fane('ordrer'); await visOrdre(b); }
@@ -214,6 +218,10 @@ async function visLager(udgaaede) {
     O.frister.forEach((f) => { if (f.snart || f.overskredet) h += '<div class="ps-frist"><b>' + esc(f.leverandoer) + (f.ordrenr ? ' ' + esc(f.ordrenr) : '') + (f.overskredet ? ': klarmeldingen er overskredet' : '') + '</b>Dag 75 ' + dag(f.dag75) + ' · klarmelding dag 80 ' + dag(f.dag80) + ' · forfald ' + dag(f.forfald) + '</div>'; });
     if (O.bolde && O.bolde.mangler.length) h += '<div class="ps-alarm"><b>Bolde fra Boldlager uden vare</b>' + O.bolde.mangler.map((m) => esc(m.dato + ': ' + m.bold + ', ' + m.antal + '. ' + m.grund)).join('<br>') + '</div>';
     if (O.start && O.salg.huller.length) h += '<div class="ps-alarm"><b>Salg mangler fra MobilePay</b>' + esc(O.salg.huller.join(' og ')) + '</div>';
+    if (O.markedDato) {
+      const over = O.varer.filter((v) => v.marked && v.marked.regel === 'Over').length;
+      h += '<a class="' + (over ? 'ps-alarm' : 'ps-info') + '" style="display:block;text-decoration:none" href="#marked"><b>Markedspriser ' + esc(dag(O.markedDato)) + (over ? ': ' + over + (over === 1 ? ' vare over markedet' : ' varer over markedet') : '') + '</b>' + (O.markedForslag.length ? O.markedForslag.length + (O.markedForslag.length === 1 ? ' forslag' : ' forslag') + ' til justering.' : 'Ingen forslag.') + ' Åbn &#8594;</a>';
+    } else h += '<a class="ps-info" style="display:block;text-decoration:none" href="#marked"><b>Markedspriser</b>' + (O.markedOpsat ? 'Ingen priser hentet endnu.' : 'Ingen links endnu.') + ' Åbn &#8594;</a>';
     if (O.start) h += '<p class="hint" style="margin:0 0 10px">Salget er læst ind ' + (O.salg.til ? 'til og med ' + dag(O.salg.til) : 'fra startoptællingen ' + dag(O.start) + ': intet endnu').replace(/\.$/, '') + '.</p>';
   } else h += '<a class="ps-tilbage" href="#lager">&#8592; Lager</a><h2 style="margin:0 0 10px">Udgåede varer</h2>';
   h += '<input id="soeg" type="search" placeholder="Søg vare eller varenummer" aria-label="Søg vare eller varenummer" style="margin:0 0 6px">';
@@ -231,7 +239,7 @@ async function visLager(udgaaede) {
       vv.forEach((v) => {
         const tag = v.underMin && O.start ? '<span class="ps-tag min">Under min.</span>' : (v.restordre ? '<span class="ps-tag rest">' + esc(mgd(v.restordre, v.enhed)) + ' på vej</span>' : (v.status === 'Udgået' ? '<span class="ps-tag rest">Udgået</span>' : ''));
         ud += '<button type="button" class="ps-rk" data-vare="' + esc(v.varenr) + '"><span class="ps-n' + (v.antal <= 0 ? ' nul' : '') + '">' + esc(talTekst(v.antal)) + '<small>' + esc(kortE(v.enhed)) + '</small></span>'
-          + '<span class="ps-k"><b>' + esc(v.navn) + '</b><small>' + esc((v.indhold ? v.indhold + ' · ' : '') + v.varenr + ' · min. ' + v.minimum + ' · ' + kr(v.pris) + ' pr. ' + (v.enhed === 'pakke' ? 'pakke' : v.enhed.replace('.', ''))) + '</small></span>' + tag + '</button>';
+          + '<span class="ps-k"><b>' + esc(v.navn) + '</b><small>' + esc((v.indhold ? v.indhold + ' · ' : '') + v.varenr + ' · min. ' + v.minimum + ' · ' + kr(v.pris) + ' pr. ' + (v.enhed === 'pakke' ? 'pakke' : v.enhed.replace('.', ''))) + '</small>' + mkLinje(v) + '</span>' + tag + '</button>';
       });
     });
     $('liste').innerHTML = ud || '<p class="hint">' + (udgaaede ? 'Ingen udgåede varer.' : 'Ingen varer endnu. Opret den første med "+ Ny vare".') + '</p>';
@@ -239,6 +247,56 @@ async function visLager(udgaaede) {
   };
   $('soeg').addEventListener('input', tegn); tegn();
   knap('nyVare', () => gaa('ny-vare')); knap('udg', () => gaa('udgaaede')); knap('lagerpr', () => gaa('lagerpr'));
+}
+
+// ------------------------------------------------------------ markedspriser
+const mkKr = (n) => (n === '' || n === null || n === undefined ? '<span class="hint">–</span>' : esc(talTekst(n)));
+function mkLinje(v) {
+  const m = v.marked;
+  if (!m) return '';
+  const del = [];
+  if (m.rtkv10 !== '') del.push('RTKV10 ' + talTekst(m.rtkv10));
+  if (m.dk !== '') del.push(m.dkButik ? m.dkButik + ' ' + talTekst(m.dk) : 'DK ' + talTekst(m.dk));
+  if (m.tp !== '') del.push('TP ' + talTekst(m.tp) + (m.tpKoeb ? '' : ' (udsolgt)'));
+  let t = esc(del.join(' · '));
+  if (m.regel === 'Over') t += ' · <span class="over">over markedet</span>';
+  else if (m.forslag !== '') t += ' · <span class="op">plads op</span>';
+  return '<small class="ps-mk">' + t + '</small>';
+}
+async function visMarked() {
+  O = await ps('oversigt', {});
+  let h = '<a class="ps-tilbage" href="#lager">&#8592; Lager</a><div class="card"><h2 style="margin:0 0 6px">Markedspriser</h2>';
+  h += '<p class="hint" style="margin:0 0 10px">' + (O.markedDato ? 'Seneste runde ' + esc(dag(O.markedDato).replace(/\.$/, '')) + '. ' : 'Ingen runde hentet endnu. ') + 'Motoren henter priserne hver mandag kl. 6 fra Racketlife, de danske netbutikker og Tennis-Point ud fra links på hver vare. Alle priser inkl. moms.</p>';
+  h += '<div class="ps-knapper"><button type="button" class="ghost" id="mkHent">Hent nu</button></div><div class="msg" id="mkMsg" aria-live="polite"></div></div>';
+  if (O.markedForslag.length) {
+    h += '<div class="card"><h3>Forslag</h3>' + O.markedForslag.map((f) => '<div class="ps-fs"><b>' + esc(f.navn) + '</b> <span class="hint" style="font-size:13px">nu ' + kr(f.pris) + ', indkøb ' + kr2(f.indkoeb) + '</span><br>'
+      + (f.grund ? '<span class="' + (f.regel === 'Over' ? 'ps-minus' : 'ps-plus') + '" style="font-size:14px">' + esc(f.grund) + '</span><br>' : '')
+      + (f.tpUnder ? '<span class="hint" style="font-size:13px">Tennis-Point sælger den til ' + esc(talTekst(f.tp)) + ' kr.</span><br>' : '')
+      + (f.note ? '<span class="hint" style="font-size:13px">' + esc(f.note) + '</span><br>' : '')
+      + (f.forslag !== '' ? '<button type="button" class="ghost small" data-brug="' + esc(f.varenr) + '" data-pris="' + esc(f.forslag) + '">Brug ' + esc(talTekst(f.forslag)) + ' kr.</button>' : '') + '</div>').join('') + '<div class="msg" id="fsMsg" aria-live="polite"></div></div>';
+  }
+  const mv = O.varer.filter((v) => v.marked);
+  if (mv.length) {
+    h += '<div class="card"><h3>Alle varer</h3><table class="ps-tab"><tr><th>Vare</th><th class="n">Vores</th><th class="n">RTKV10</th><th class="n">Anden DK</th><th class="n">Tennis-P.</th></tr>'
+      + mv.map((v) => { const m = v.marked; return '<tr><td><a href="#vare/' + esc(v.varenr) + '">' + esc(v.navn) + '</a></td><td class="n' + (m.regel === 'Over' ? ' ps-minus' : '') + '">' + esc(talTekst(v.pris)) + '</td><td class="n">' + mkKr(m.rtkv10) + '</td><td class="n">' + mkKr(m.dk) + '</td><td class="n">' + mkKr(m.tp) + (m.tp !== '' && !m.tpKoeb ? '<br><span class="hint" style="font-size:11px">udsolgt</span>' : '') + '</td></tr>'; }).join('')
+      + '</table><p class="hint">Rød pris: ikke under både RTKV10 og billigste anden danske netbutik (prisreglen 15. november). Tennis-Point er til orientering.</p></div>';
+  }
+  vis(h);
+  knap('mkHent', (e) => gemMed(e.target, $('mkMsg'), async () => {
+    const r = await ps('markedHent', {});
+    besked($('mkMsg'), (r.allerede ? 'Alle varer er allerede hentet i dag.' : r.nye + (r.nye === 1 ? ' vare' : ' varer') + ' hentet.') + (r.fejl && r.fejl.length ? ' Kunne ikke læses: ' + r.fejl.join(' · ') : ''), r.fejl && r.fejl.length ? 'err' : 'ok');
+    if (!(r.fejl && r.fejl.length)) setTimeout(route, 1500); else setTimeout(() => { const t = $('mkMsg').textContent; route().then(() => { if ($('mkMsg')) besked($('mkMsg'), t, 'err'); }); }, 2500);
+  }));
+  document.querySelectorAll('[data-brug]').forEach((b) => b.addEventListener('click', (e) => gemMed(e.target, $('fsMsg'), async () => {
+    const pris = Number(b.dataset.pris);
+    const vd = await ps('vare', { varenr: b.dataset.brug });
+    if (!confirm('Sæt ' + vd.vare.navn + ' til ' + talTekst(pris) + ' kr.? Husk at rette prisen i MobilePay samme dag.')) { besked($('fsMsg'), ''); return; }
+    const data = Object.assign({}, vd.vare, { pris, prisNote: 'Markedspriser ' + dag(O.markedDato).replace(/\.$/, '') });
+    let r = await ps('vareGem', data);
+    if (r.advarsel) { if (!confirm(r.advarsel)) { besked($('fsMsg'), ''); return; } r = await ps('vareGem', Object.assign(data, { underGulvOk: true })); }
+    besked($('fsMsg'), r.mobilepay || 'Gemt.', 'ok');
+    setTimeout(route, 1800);
+  })));
 }
 
 async function visVare(nr) {
@@ -256,7 +314,23 @@ async function visVare(nr) {
   h += '<div class="card"><h3>Bevægelser</h3><div class="ps-tl">' + (d.bevaegelser.length ? d.bevaegelser.map((b) => '<div><i class="' + (b.antal > 0 ? 'plus' : b.antal < 0 ? 'minus' : '') + '"></i><b>' + esc(dag(b.dato)) + '</b> ' + esc(b.type) + ': ' + esc((b.antal > 0 ? '+' : '') + b.tekst) + (b.kostpris ? ' à ' + kr2(b.kostpris) : '') + (b.grund ? ' · ' + esc(b.grund) : '') + '<br><span class="hint" style="font-size:13px">' + esc([b.kilde, b.note, b.navn].filter(Boolean).join(' · ')) + '</span></div>').join('') : '<p class="hint">Ingen endnu. Lageret går op, når en ordre modtages, eller bolde tages ud til pro shoppen.</p>') + '</div></div>';
   h += '<div class="card"><h3>Prishistorik</h3><table class="ps-tab"><tr><th>Fra</th><th class="n">Indkøb</th><th class="n">Medlem</th><th>Af</th></tr>' + d.priser.map((p) => '<tr><td>' + esc(dag(p.dato)) + '</td><td class="n">' + kr2(p.indkoeb) + '</td><td class="n">' + kr2(p.pris) + '</td><td>' + esc(p.af) + (p.note ? '<br><span class="hint" style="font-size:12px">' + esc(p.note) + '</span>' : '') + '</td></tr>').join('') + '</table>'
     + '<p class="hint">Ret også prisen i MobilePay samme dag. Navnet skal stå præcis som i MobilePay.</p></div>';
+  const lk = d.markedLinks || { racketlife: '', tennispoint: '', danske: [], note: '' };
+  h += '<div class="card"><h3>Links til markedspriser</h3><p class="hint" style="margin:0 0 8px">Indsæt adressen på varens side i butikken. Motoren henter prisen derfra hver mandag.</p>'
+    + '<label for="lkRl">Racketlife</label><input id="lkRl" inputmode="url" value="' + esc(lk.racketlife) + '" placeholder="https://racketlife.dk/products/…">'
+    + '<label for="lkTp">Tennis-Point</label><input id="lkTp" inputmode="url" value="' + esc(lk.tennispoint) + '" placeholder="https://www.tennis-point.dk/products/…">'
+    + [0, 1, 2].map((i) => '<label for="lkDk' + i + '">Anden dansk butik ' + (i + 1) + '</label><input id="lkDk' + i + '" inputmode="url" value="' + esc((lk.danske[i] || {}).link || '') + '" placeholder="fx https://tennisshoppen.dk/produkt/…">').join('')
+    + '<label for="lkNote">Note</label><input id="lkNote" maxlength="200" value="' + esc(lk.note || '') + '">'
+    + '<div class="ps-knapper"><button type="button" class="ghost" id="lkGem">Gem links</button></div><div class="msg" id="lkMsg" aria-live="polite"></div></div>';
+  if (d.marked && d.marked.length) {
+    h += '<div class="card"><h3>Markedspriser</h3><table class="ps-tab"><tr><th>Uge</th><th class="n">RTKV10</th><th class="n">Anden DK</th><th class="n">Tennis-P.</th><th class="n">Vores</th></tr>'
+      + d.marked.map((m) => '<tr><td>' + esc(dag(m.dato)) + '</td><td class="n">' + mkKr(m.rtkv10) + '</td><td class="n">' + mkKr(m.dk) + (m.dkButik ? '<br><span class="hint" style="font-size:11px">' + esc(m.dkButik) + '</span>' : '') + '</td><td class="n">' + mkKr(m.tp) + (m.tpNormal && m.tpNormal !== m.tp ? '<br><span class="hint" style="font-size:11px">normal ' + mkKr(m.tpNormal) + '</span>' : '') + '</td><td class="n' + (m.regel === 'Over' ? ' ps-minus' : '') + '">' + kr(m.pris) + '</td></tr>').join('')
+      + '</table><p class="hint">Alle priser inkl. moms. RTKV10 er Racketlifes pris minus 10 %. Vores pris skal ligge under både RTKV10 og den billigste anden danske netbutik.</p></div>';
+  }
   vis(h);
+  knap('lkGem', (e) => gemMed(e.target, $('lkMsg'), async () => {
+    await ps('markedLinksGem', { varenr: v.varenr, racketlife: $('lkRl').value.trim(), tennispoint: $('lkTp').value.trim(), danske: [0, 1, 2].map((i) => $('lkDk' + i).value.trim()), note: $('lkNote').value });
+    besked($('lkMsg'), 'Gemt. Prisen hentes næste mandag, eller med "Hent nu" under Markedspriser.', 'ok');
+  }));
   knap('ret', () => gaa('ret/' + v.varenr));
   knap('genakt', (e) => gemMed(e.target, $('vMsg'), async () => { await ps('vareGenaktiver', { varenr: v.varenr }); route(); }));
   knap('slet', (e) => { if (!confirm('Slet ' + v.navn + '? Det kan kun gøres, fordi varen aldrig har haft en bevægelse.')) return; gemMed(e.target, $('vMsg'), async () => { await ps('vareSlet', { varenr: v.varenr }); gaa('lager'); }); });
