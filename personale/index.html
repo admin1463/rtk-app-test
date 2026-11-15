@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="cb47ec5579f1">
+<meta name="rtk-version" content="1f555b718c3f">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -120,6 +120,8 @@ const IKON = {
   padel: '<svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true" fill="none" stroke="#0F2537" stroke-width="1.5"><rect x="7" y="4" width="20" height="24" rx="10"/><circle cx="13" cy="12" r="1.2"/><circle cx="17" cy="10" r="1.2"/><circle cx="21" cy="12" r="1.2"/><circle cx="15" cy="16" r="1.2"/><circle cx="19" cy="16" r="1.2"/><circle cx="17" cy="21" r="1.2"/><line x1="17" y1="28" x2="17" y2="40" stroke-width="3"/><circle cx="34" cy="34" r="5"/></svg>',
   // Turneringer (14. november 2026): en pokal
   pokal: '<svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true" fill="none" stroke="#0F2537" stroke-width="1.5"><path d="M14 6h16v9a8 8 0 0 1-16 0z"/><path d="M14 9H8a5 5 0 0 0 6 7"/><path d="M30 9h6a5 5 0 0 1-6 7"/><line x1="22" y1="23" x2="22" y2="31"/><path d="M15 38h14l-2-7H17z"/></svg>',
+  // Holdturneringer (15. november 2026): tre spillere bag et net
+  hold: '<svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true" fill="none" stroke="#0F2537" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="11" r="4"/><circle cx="22" cy="9" r="4"/><circle cx="32" cy="11" r="4"/><path d="M5 26c0-5 3-8 7-8"/><path d="M14 24c0-6 4-9 8-9s8 3 8 9"/><path d="M39 26c0-5-3-8-7-8"/><rect x="5" y="28" width="34" height="10" rx="1"/><line x1="5" y1="33" x2="39" y2="33"/><line x1="13" y1="28" x2="13" y2="38"/><line x1="22" y1="28" x2="22" y2="38"/><line x1="31" y1="28" x2="31" y2="38"/></svg>',
   ketsjer: '<svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true" fill="none" stroke="#0F2537" stroke-width="1.5"><ellipse cx="17" cy="16" rx="11" ry="13"/><line x1="9" y1="10" x2="25" y2="10"/><line x1="7" y1="16" x2="27" y2="16"/><line x1="9" y1="22" x2="25" y2="22"/><line x1="12" y1="4" x2="12" y2="28"/><line x1="17" y1="3" x2="17" y2="29"/><line x1="22" y1="4" x2="22" y2="28"/><line x1="24" y1="27" x2="38" y2="41" stroke-width="3"/></svg>'
 };
 
@@ -133,6 +135,10 @@ const FELTER = [
   { afsnit: 'arbejde', navn: 'Turneringer', side: 'turneringer.html', ikon: 'pokal', ny: true,
     roller: ['opstrenger', 'traener', 'kaptajn', 'cheftraener', 'boldansvarlig', 'bogholder', 'koordinator', 'oevrige', 'bestyrelse', 'padel', 'padelcircle'],
     tekst: () => 'Find turneringer til dig selv eller dit hold efter alder og niveau. Gem dine favoritter.' },
+  // Holdturneringer (Lars 15. november 2026): alle på personalesiden ser feltet. Motoren henter holdene hver nat
+  { afsnit: 'arbejde', navn: 'Holdturneringer', side: 'holdturneringer.html', ikon: 'hold', ny: true,
+    roller: ['opstrenger', 'traener', 'kaptajn', 'cheftraener', 'boldansvarlig', 'bogholder', 'koordinator', 'oevrige', 'bestyrelse', 'padel', 'padelcircle'],
+    tekst: () => 'Klubbens hold: hvem de møder, hvor og hvornår, stillingen og resultaterne.' },
   { afsnit: 'arbejde', navn: (p) => harRolle(p, ANSVARLIG) ? 'Boldregnskab' : 'Tag bolde', side: 'bolde.html', ikon: 'bold', roller: ['traener', 'cheftraener', 'boldansvarlig'],
     tekst: (p) => harRolle(p, ANSVARLIG) ? 'Tag bolde, lager, forbrug, optælling og bestilling.' : 'Tag bolde til træning, og se lageret.' },
   // Arbejdstøj og udstyr fra kontoen hos Sports Group (Lars 16. oktober kl. 20.58). Alle med en rolle kan få en tildeling.
