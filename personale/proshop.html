@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="6b2bf0286908">
+<meta name="rtk-version" content="fc924aede7c5">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -60,6 +60,8 @@
 .ps-lin{display:grid;grid-template-columns:1fr 1fr 48px;gap:6px 8px;align-items:end;margin:0 0 14px;padding:0 0 12px;border-bottom:1px solid #E3E7EA}.ps-lin .hel{grid-column:1/-1}
 .ps-lin button{min-height:50px;padding:0}
 /* Markedspriser (15. november 2026 kl. 22.51) */
+/* Fem faner skal kunne ses på en telefon uden at rulle (Lars 16. november kl. 6.25) */
+@media (max-width:480px){#faner{gap:4px}#faner button{padding-left:8px;padding-right:8px;font-size:14px}}
 .ps-mk{font-size:12px;color:var(--muted)}.ps-mk .over{color:#B0004A;font-weight:700}.ps-mk .op{color:#1E6B3A;font-weight:700}
 .ps-fs{border-bottom:1px solid #E3E7EA;padding:10px 0}.ps-fs:last-child{border:0}.ps-fs button{margin-top:8px}
 </style>
@@ -69,13 +71,14 @@
   <div id="testBanner" class="card hidden" style="padding:10px 14px;font-size:14px;background:var(--soft);color:var(--muted)">Testmiljø med opdigtede data.</div>
   <div id="omraade" class="hidden">
     <div class="who"><span id="hvem"></span><button class="ghost small" id="logud" type="button">Log ud</button></div>
-    <div id="ikkeAdmin" class="card hidden"><b>Kun for administratorer</b><p class="hint">Pro shoppens lager, ordrer, optælling og salg.</p></div>
+    <div id="ikkeAdmin" class="card hidden"><b>Kun for administratorer</b><p class="hint">Pro shoppens lager, ordrer, optælling, salg og markedspriser.</p></div>
     <div id="indhold" class="hidden">
       <div class="tabs" role="tablist" id="faner">
         <button type="button" role="tab" data-fane="lager">Lager</button>
         <button type="button" role="tab" data-fane="ordrer">Ordrer</button>
         <button type="button" role="tab" data-fane="optael">Optælling</button>
         <button type="button" role="tab" data-fane="salg">Salg</button>
+        <button type="button" role="tab" data-fane="marked">Priser</button>
       </div>
       <div id="hentMsg" class="msg" aria-live="polite">Henter …</div>
       <div id="vis"></div>
@@ -167,7 +170,7 @@ async function route() {
     else if (a === 'ny-vare') { fane('lager'); await visVareForm(null); }
     else if (a === 'ret') { fane('lager'); await visVareForm(b); }
     else if (a === 'lagerpr') { fane('lager'); await visLagerPr(); }
-    else if (a === 'marked') { fane('lager'); await visMarked(); }
+    else if (a === 'marked') { fane('marked'); await visMarked(); }
     else if (a === 'ordrer') { fane('ordrer'); await visOrdrer(); }
     else if (a === 'ny-ordre') { fane('ordrer'); await visNyOrdre(); }
     else if (a === 'ordre') { fane('ordrer'); await visOrdre(b); }
@@ -265,7 +268,7 @@ function mkLinje(v) {
 }
 async function visMarked() {
   O = await ps('oversigt', {});
-  let h = '<a class="ps-tilbage" href="#lager">&#8592; Lager</a><div class="card"><h2 style="margin:0 0 6px">Markedspriser</h2>';
+  let h = '<div class="card"><h2 style="margin:0 0 6px">Markedspriser</h2>';
   h += '<p class="hint" style="margin:0 0 10px">' + (O.markedDato ? 'Seneste runde ' + esc(dag(O.markedDato).replace(/\.$/, '')) + '. ' : 'Ingen runde hentet endnu. ') + 'Motoren henter priserne hver mandag kl. 6 fra Racketlife, de danske netbutikker og Tennis-Point ud fra links på hver vare. Alle priser inkl. moms.</p>';
   h += '<div class="ps-knapper"><button type="button" class="ghost" id="mkHent">Hent nu</button></div><div class="msg" id="mkMsg" aria-live="polite"></div></div>';
   if (O.markedForslag.length) {
