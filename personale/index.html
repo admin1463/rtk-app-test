@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="196a646d477d">
+<meta name="rtk-version" content="07766a107247">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -171,11 +171,10 @@ const FELTER = [
   // Ace, klubbens AI-hjælper (Lars 25. oktober 2026 kl. 06.36): hele samtalerne uden navn, kun administratorer
   { afsnit: 'admin', navn: 'Ace: samtaler', side: 'ace.html', ikon: 'ace', roller: ['admin'],
     tekst: () => 'Hvad medlemmerne spørger Ace om, og hvad Ace svarer. Uden navne.' },
-  // Turneringer: administratorer fra 15. november 2026 kl. 10.23, trænere, cheftrænere og holdkaptajner fra 21. november kl. 22.13
-  // (RTK-spillere, så trænere og medspillere kan heppe). Motoren tjekker det også. Motoren henter turneringer torsdag kl. 4
-  // og RTK-spillernes kampe hver morgen kl. 6. Holdturneringer: kun administratorer. Holdene hentes mandag kl. 5
-  { afsnit: 'arbejde', navn: 'Turneringer', side: 'turneringer.html', ikon: 'pokal', ny: true, roller: ['traener', 'cheftraener', 'kaptajn'],
-    tekst: () => 'Find turneringer til dig selv eller dit hold, og se hvornår RTK-spillerne spiller, så I kan komme og heppe.' },
+  // Turneringer og Holdturneringer: kun administratorer til at starte med (Lars 15. november 2026 kl. 10.23, før for alle
+  // på personalesiden). Motoren tjekker det også. Motoren henter turneringer torsdag kl. 4 og holdene mandag kl. 5
+  { afsnit: 'admin', navn: 'Turneringer', side: 'turneringer.html', ikon: 'pokal', ny: true, roller: ['admin'],
+    tekst: () => 'Find turneringer til dig selv eller dit hold efter alder og niveau. Gem dine favoritter.' },
   { afsnit: 'admin', navn: 'Holdturneringer', side: 'holdturneringer.html', ikon: 'hold', ny: true, roller: ['admin'],
     tekst: () => 'Klubbens hold: hvem de møder, hvor og hvornår, stillingen og resultaterne.' },
   // Pro shop: lager (Lars 15. november 2026 kl. 20.12 til 20.26): kun administratorer med pinkoden
