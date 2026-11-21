@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="f2d3c81c779e">
+<meta name="rtk-version" content="51e9de03c3e8">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -24,6 +24,13 @@
 .tu-sog button{min-height:36px;padding:4px 10px;border:1px solid var(--line2);font-weight:600}
 .tu-rtk{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--teal);color:#fff;border-radius:12px;padding:14px 16px;margin:0 0 12px;text-decoration:none;border:0;width:100%;text-align:left;white-space:normal}
 .tu-rtk b{display:block;font-size:17px}.tu-rtk small{font-size:13px;color:var(--sub);font-weight:500}.tu-rtk .pil{font-size:22px}
+/* RTK-spillere, så trænere og medspillere kan heppe (Lars 21. november 2026 kl. 22.13, mockup_rtk_spillere) */
+.tu-rtk.sp{background:#0f4f3a}.tu-rtk.sp ul{margin:6px 0 0;padding-left:18px;font-size:14px;font-weight:500}
+.ms-dag{font-weight:700;margin:14px 0 4px;padding-top:10px;border-top:1px solid var(--line2)}.ms-dag:first-of-type{border-top:0;padding-top:0}
+.ms-k{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:8px 0;border-bottom:1px solid #f0f2f1}.ms-n{grid-column:1;font-size:15px}.ms-s{grid-column:1;font-size:14px;color:var(--muted)}
+.ms-t,.ms-r{grid-column:2;grid-row:1/3;align-self:center;font-size:13px;white-space:nowrap;text-align:right}.ms-t{background:#EEF3F1;border-radius:999px;padding:2px 9px;font-weight:600}.ms-t.ikke{background:#fff4c7;color:#7a5d00;font-weight:500}
+.ms-r{font-weight:600;color:var(--teal)}.ms-r.tabt{color:var(--muted)}.ms-r small{display:block;font-weight:500;color:var(--muted)}
+.ms-mere summary{cursor:pointer;font-size:14px;font-weight:600;color:var(--teal);padding:8px 0;min-height:40px}
 .tu-filt{padding:16px}.tu-filt .lab{display:block;font-size:13px;font-weight:700;margin:12px 0 6px;color:var(--teal)}.tu-filt .lab:first-child{margin-top:0}
 .tu-filt .chips{gap:6px}.tu-filt .chips button{min-height:38px;padding:4px 12px;font-size:14px}
 .tu-sw{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;margin-top:14px;background:none;border:0;padding:0;min-height:40px;width:100%;text-align:left;white-space:normal}
@@ -293,6 +300,55 @@ function katKort(s) {
   const og = (x) => x.length === 1 ? x[0] : x.slice(0, -1).join(', ') + ' og ' + x[x.length - 1];
   return l.every((x) => /^Kat\. /.test(x)) ? 'Kat. ' + og(l.map((x) => x.slice(5))) : og(l);
 }
+// RTK-spillere og deres kampe fra i dag og 7 dage frem (Lars 21. november 2026 kl. 22.13). Motoren henter dem hver morgen kl. 6.
+// Modstanderen vises kun med klub (Lars kl. 22.10)
+const rtkD = () => (D && D.rtk) || { hentet: '', antal: {}, kampe: [] };
+const rtkKampe = (id) => rtkD().kampe.filter((k) => k.id === id);
+const rtkAntal = (id) => +rtkD().antal[id] || new Set(rtkKampe(id).flatMap((k) => k.sp.split(' og '))).size;
+function rtkKamp(k) {
+  const sted = /darup|roskilde\s+tennis/i.test(k.sted) ? '<b>' + esc(k.sted) + '</b>' : esc(k.sted);
+  const hoejre = k.ud ? '<span class="ms-r' + (k.ud === 'Tabt' ? ' tabt' : '') + '">' + esc(k.ud) + (k.res ? '<small>' + esc(k.res) + '</small>' : '') + '</span>'
+    : k.tid ? '<span class="ms-t">kl. ' + esc(k.tid.replace(':', '.')) + '</span>' : '<span class="ms-t ikke">Tid ikke sat</span>';
+  return '<div class="ms-k"><div class="ms-n"><b>' + esc(k.sp) + '</b> · ' + esc([k.r, k.ru].filter(Boolean).join(', ')) + '</div><div class="ms-s">' + [sted, k.mod ? 'mod spiller fra ' + esc(k.mod) : 'modstander ikke fundet endnu'].filter(Boolean).join(' · ') + '</div>' + hoejre + '</div>';
+}
+function rtkDage(kampe) {
+  const pr = {};
+  kampe.forEach((k) => { (pr[k.dato] = pr[k.dato] || []).push(k); });
+  return Object.keys(pr).sort().map((d) => {
+    const l = pr[d];
+    return '<div class="ms-dag">' + esc(d === D.idag ? 'I dag, ' + langDag(d) : stor(langDag(d))) + ' · ' + l.length + (l.length === 1 ? ' kamp' : ' kampe') + '</div>' +
+      l.slice(0, 8).map(rtkKamp).join('') + (l.length > 8 ? '<details class="ms-mere"><summary>Vis ' + (l.length - 8) + ' kampe mere</summary>' + l.slice(8).map(rtkKamp).join('') + '</details>' : '');
+  }).join('');
+}
+const rtkOpd = () => rtkD().hentet ? 'Opdateret ' + langDag(rtkD().hentet) + ' kl. ' + rtkD().hentet.slice(11, 16).replace(':', '.') + '. ' : '';
+function rtkAfsnit(t) {
+  const n = rtkAntal(t.id), l = rtkKampe(t.id);
+  if (!n && !l.length) return '';
+  return '<div class="card"><h3 class="tu-h">RTK-spillere (' + n + ')</h3><p class="tu-p" style="margin:0 0 6px">Kampene for spillere fra Roskilde Tennis Klub de næste 7 dage, også på andre spillesteder. ' +
+    esc(rtkOpd()) + 'Tiden kommer med, når turneringslederen har sat den.</p>' + (l.length ? rtkDage(l) : '<p class="tu-p tu-tom">Kampene er ikke lagt i Tournament Software endnu.</p>') + '</div>';
+}
+function rtkKortFind() {
+  const slut = (() => { const d = dt(D.idag); d.setUTCDate(d.getUTCDate() + 7); return d.toISOString().slice(0, 10); })();
+  const l = rtkD().kampe.filter((k) => k.dato <= slut);
+  if (!l.length) return '';
+  const ider = [...new Set(l.map((k) => k.id))];
+  const navn = (id) => (D.turneringer.filter((t) => t.id === id)[0] || {}).navn || 'Turnering';
+  const dage = (id) => dageKort([...new Set(l.filter((k) => k.id === id).map((k) => k.dato))].map((d) => ({ d })));
+  return '<button type="button" class="tu-rtk sp" data-gaa="spillere"><span><b>RTK-spillere i turnering de næste 7 dage</b><small>' + l.length + (l.length === 1 ? ' kamp' : ' kampe') + ' i ' + ider.length + (ider.length === 1 ? ' turnering' : ' turneringer') + '</small>' +
+    '<ul>' + ider.slice(0, 4).map((id) => '<li>' + esc(navn(id)) + ': ' + rtkAntal(id) + ' spillere, ' + esc(dage(id)) + '</li>').join('') + '</ul></span><span class="pil" aria-hidden="true">&#8594;</span></button>';
+}
+function visSpillere() {
+  const slut = (() => { const d = dt(D.idag); d.setUTCDate(d.getUTCDate() + 7); return d.toISOString().slice(0, 10); })();
+  const l = rtkD().kampe.filter((k) => k.dato <= slut);
+  let h = '<div class="tu-smal"><button type="button" class="tu-tilbage" data-gaa="find">&#8592; Find</button><h2 style="margin:0 0 4px">RTK-spillere i turnering</h2><p class="tu-opd">' + esc(rtkOpd() || 'Hentes hver morgen kl. 6.') + '</p>';
+  h += '<p class="tu-ant">Kampene de næste 7 dage for spillere fra Roskilde Tennis Klub. Kom og hep.</p>';
+  if (!l.length) h += '<p class="tu-p tu-tom">Ingen RTK-spillere i turnering de næste 7 dage.</p>';
+  [...new Set(l.map((k) => k.id))].forEach((id) => {
+    const t = D.turneringer.filter((x) => x.id === id)[0] || { navn: 'Turnering' };
+    h += '<div class="card"><button type="button" class="tu-link-knap" style="font-size:17px;font-weight:700;text-align:left" data-gaa="t=' + esc(id) + '">' + esc(t.navn) + ' &#8594;</button><p class="tu-p" style="margin:2px 0 6px">' + rtkAntal(id) + ' RTK-spillere</p>' + rtkDage(l.filter((k) => k.id === id)) + '</div>';
+  });
+  return h + '</div>';
+}
 // Dagene med kampe i Roskilde (Darup) i turneringer, der spilles mange steder, fx SM (Lars 21. november kl. 21.25). Kun dage fra i dag
 const dageRtk = (t) => String(t.dageRtk || '').split('; ').filter(Boolean).map((x) => { const [d, n] = x.split(':'); return { d, n: +n || 0 }; }).filter((o) => o.d >= D.idag);
 function dageKort(dd) {
@@ -305,7 +361,7 @@ function kort(t, linje) {
   const d = dt(t.fra);
   return '<div class="tu-res" role="link" tabindex="0" data-t="' + esc(t.id) + '"><div class="tu-d">' + d.getUTCDate() + '<small>' + MDR[d.getUTCMonth()].slice(0, 3) + '</small></div>' +
     '<div class="tu-k"><b>' + esc(t.navn) + '</b><span class="tu-by">' + esc(t.irtk ? (t.spillesteder && !t.spillested ? (dageRtk(t).length ? 'I Roskilde ' + dageKort(dageRtk(t)) : 'Bl.a. i Roskilde Tennis Klub') : 'Roskilde Tennis Klub') : t.by || t.omraade) + (+t.km > 0 && t.naer ? ' <span class="tu-naer">ca. ' + esc(t.km) + ' km</span>' : '') + '</span>' +
-    '<span class="tu-r">' + esc(linje === undefined ? linjeOm(t) : linje) + '</span><span class="tu-f">' + statusChip(t) + (t.lukker && t.status !== 'Aflyst' ? ' Frist ' + esc(kortDag(t.lukker)) : '') + '</span>' +
+    '<span class="tu-r">' + esc([linje === undefined ? linjeOm(t) : linje, rtkAntal(t.id) ? rtkAntal(t.id) + ' RTK-spillere' : ''].filter(Boolean).join(' · ')) + '</span><span class="tu-f">' + statusChip(t) + (t.lukker && t.status !== 'Aflyst' ? ' Frist ' + esc(kortDag(t.lukker)) : '') + '</span>' +
     (t.kode ? '<span class="tu-kd">' + esc(kodeTekst(t)) + '</span>' : '') + '</div>' + (t.planlagt ? '' : stjerne(t.id)) + '</div>';
 }
 function opdateret() {
@@ -372,7 +428,7 @@ function visFind() {
     return h;
   }
   const irtk = D.turneringer.filter((t) => t.irtk);
-  let ven = advarsler() + nytKort();
+  let ven = advarsler() + nytKort() + rtkKortFind();
   if (irtk.length) ven += '<button type="button" class="tu-rtk" data-gaa="rtk"><span><b>I Roskilde Tennis Klub</b><small>' + irtk.length + (irtk.length === 1 ? ' turnering' : ' turneringer') + ' på Darupvej frem til ' + esc(dagMd(irtk[irtk.length - 1].fra).replace(/\.\s/, '. ')) + '</small></span><span class="pil" aria-hidden="true">&#8594;</span></button>';
   ven += '<div class="card tu-filt"><span class="lab">Alder</span>' + chips('alder', ALDRE, V.alder) + '<span class="lab">Niveau</span>' + chips('niveau', NIVEAU, V.niveau) +
     '<span class="lab">Hvor</span>' + chips('hvor', HVOR, V.hvor) + '<span class="lab">Køn</span>' + chips('koen', KOEN, V.koen) +
@@ -447,6 +503,7 @@ function visTurnering(id) {
   if (TYPER[t.type]) h += '<div class="card tu-forkl"><h3 class="tu-h">' + esc(TYPER[t.type][0]) + ' kort fortalt</h3><p class="tu-p">' + esc(TYPER[t.type][1]) + '</p>' +
     (t.kilde === 'DTF' && t.type !== 'GameOn double' ? '<p style="margin:8px 0 0"><button type="button" class="tu-link-knap" data-gaa="kort#rangliste">Ranglisten og licens &#8594;</button></p>' : '') + '</div>';
   if (nivF && FORKLAR[nivF] && !(TYPER[t.type] && nivF === 'Skum')) h += '<div class="card tu-forkl"><h3 class="tu-h">' + esc(['Rød', 'Orange', 'Grøn'].indexOf(nivF) >= 0 ? 'Tennis10' : nivF === 'Skum' ? 'Skumtennis' : nivF) + ' kort fortalt</h3><p class="tu-p">' + esc(FORKLAR[nivF]) + '</p><p style="margin:8px 0 0"><button type="button" class="tu-link-knap" data-gaa="kort">Alle kategorier og årgange i Kort fortalt &#8594;</button></p></div>';
+  h += rtkAfsnit(t);
   h += '<button type="button" style="width:100%" data-gaa="kopi=' + esc(t.id) + '">Kopiér som tekst</button></div>';
   return h;
 }
@@ -555,7 +612,7 @@ function rute() { return (decodeURIComponent(location.hash.slice(1)) || 'find').
 function tegn() {
   if (!D) return;
   const r = rute();
-  const ud = r.indexOf('t=') === 0 ? visTurnering(r.slice(2)) : r.indexOf('kopi=') === 0 ? visKopi(r.slice(5)) : r === 'fav' ? visFavoritter() : r === 'kort' ? visKort() : r === 'rtk' ? visRtk() : visFind();
+  const ud = r.indexOf('t=') === 0 ? visTurnering(r.slice(2)) : r.indexOf('kopi=') === 0 ? visKopi(r.slice(5)) : r === 'fav' ? visFavoritter() : r === 'kort' ? visKort() : r === 'rtk' ? visRtk() : r === 'spillere' ? visSpillere() : visFind();
   const fokus = document.activeElement && document.activeElement.id === 'sog';
   const pos = fokus ? document.activeElement.selectionStart : 0;
   $('vis').innerHTML = ud;
@@ -568,7 +625,7 @@ function gaa(r) {
   if (r === 'tilbage') { if (history.length > 1 && window.TU_INDE) history.back(); else location.hash = 'find'; return; }
   window.TU_INDE = true;
   if ('#' + r === location.hash) tegn(); else location.hash = r;
-  if (r.indexOf('t=') === 0 || r.indexOf('kopi=') === 0 || r === 'rtk') window.scrollTo(0, 0);
+  if (r.indexOf('t=') === 0 || r.indexOf('kopi=') === 0 || r === 'rtk' || r === 'spillere') window.scrollTo(0, 0);
 }
 window.addEventListener('hashchange', tegn);
 
