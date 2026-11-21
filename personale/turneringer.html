@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="0ca6d6ba37d4">
+<meta name="rtk-version" content="c632f6f56e67">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -264,7 +264,7 @@ function filtrer(hvor) {
 }
 function soeg(q) {
   const ord = q.toLowerCase().split(/\s+/).filter(Boolean);
-  return D.turneringer.filter((t) => { const s = [t.navn, t.by, t.kode, t.arrangoer, t.spillested, t.postnr].join(' ').toLowerCase(); return ord.every((o) => s.indexOf(o) >= 0); });
+  return D.turneringer.filter((t) => { const s = [t.navn, t.by, t.kode, t.arrangoer, t.spillested, t.spillesteder, t.postnr].join(' ').toLowerCase(); return ord.every((o) => s.indexOf(o) >= 0); });
 }
 
 // Et menneskeligt navn på en række: "U14 drenge single Kat. 3"
@@ -298,7 +298,7 @@ const stjerne = (id) => { const on = FAV.indexOf(id) >= 0; return '<button type=
 function kort(t, linje) {
   const d = dt(t.fra);
   return '<div class="tu-res" role="link" tabindex="0" data-t="' + esc(t.id) + '"><div class="tu-d">' + d.getUTCDate() + '<small>' + MDR[d.getUTCMonth()].slice(0, 3) + '</small></div>' +
-    '<div class="tu-k"><b>' + esc(t.navn) + '</b><span class="tu-by">' + esc(t.irtk ? 'Roskilde Tennis Klub' : t.by || t.omraade) + (+t.km > 0 && t.naer ? ' <span class="tu-naer">ca. ' + esc(t.km) + ' km</span>' : '') + '</span>' +
+    '<div class="tu-k"><b>' + esc(t.navn) + '</b><span class="tu-by">' + esc(t.irtk ? (t.spillesteder && !t.spillested ? 'Bl.a. i Roskilde Tennis Klub' : 'Roskilde Tennis Klub') : t.by || t.omraade) + (+t.km > 0 && t.naer ? ' <span class="tu-naer">ca. ' + esc(t.km) + ' km</span>' : '') + '</span>' +
     '<span class="tu-r">' + esc(linje === undefined ? linjeOm(t) : linje) + '</span><span class="tu-f">' + statusChip(t) + (t.lukker && t.status !== 'Aflyst' ? ' Frist ' + esc(kortDag(t.lukker)) : '') + '</span>' +
     (t.kode ? '<span class="tu-kd">' + esc(kodeTekst(t)) + '</span>' : '') + '</div>' + (t.planlagt ? '' : stjerne(t.id)) + '</div>';
 }
@@ -403,6 +403,8 @@ function visTurnering(id) {
   let h = '<div class="tu-smal"><button type="button" class="tu-tilbage" data-gaa="tilbage">&#8592; Tilbage</button>';
   h += '<div class="card"><div class="tu-hoved"><div><p class="kicker" style="margin:0 0 4px">' + esc([t.type, kat].filter(Boolean).join(' · ')) + '</p><h2 style="margin:0">' + esc(t.navn) + '</h2></div>' + (t.planlagt ? '' : stjerne(t.id)) + '</div>';
   h += '<p class="tu-hvad">' + esc(datoer(t)) + ' · uge ' + uge(t.fra) + '<br>' + esc([t.spillested, t.adresse, t.by].filter(Boolean).join(', ') || t.omraade) + (t.naer && +t.km > 0 ? ' <span class="tu-naer">ca. ' + esc(t.km) + ' km</span>' : '') + '</p>';
+  // Turneringer, der spilles mange steder (fx SM): spillestederne fra Tournament Software, Roskilde fremhævet (Lars 21. november kl. 20.59)
+  if (t.spillesteder && !t.spillested) h += '<p class="tu-p" style="margin:6px 0 0"><b>Spillesteder:</b> ' + t.spillesteder.split('; ').map((x) => /darup|roskilde\s+tennis/i.test(x) ? '<b>' + esc(x) + '</b>' : esc(x)).join(', ') + '</p>';
   const idag = D.idag;
   if (t.planlagt) return h + visPlanlagt(t) + '</div>';
   h += '<div class="tu-tl">';
@@ -458,7 +460,7 @@ function visPlanlagt(t) {
 }
 
 function tekstTil(t) {
-  let s = t.navn + ', ' + datoer(t).replace(/^./, (c) => c.toLowerCase()) + (t.spillested ? ' i ' + t.spillested : t.by ? ' i ' + t.by : '') + '.\n';
+  let s = t.navn + ', ' + datoer(t).replace(/^./, (c) => c.toLowerCase()) + (t.spillested ? ' i ' + t.spillested : t.irtk && t.spillesteder ? ', bl.a. i Roskilde (Darup)' : t.by ? ' i ' + t.by : '') + '.\n';
   if (t.orientering) s += t.orientering + '\n';
   const m = raekkeFilter() ? t.raekker.filter(raekkePasser).filter((r) => +r.ti > 0) : [];
   if (m.length === 1) s += stor(raekkeNavn(m[0])) + ' har ' + m[0].ti + ' tilmeldt indtil nu.\n';
