@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="c632f6f56e67">
+<meta name="rtk-version" content="f2d3c81c779e">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -293,12 +293,18 @@ function katKort(s) {
   const og = (x) => x.length === 1 ? x[0] : x.slice(0, -1).join(', ') + ' og ' + x[x.length - 1];
   return l.every((x) => /^Kat\. /.test(x)) ? 'Kat. ' + og(l.map((x) => x.slice(5))) : og(l);
 }
+// Dagene med kampe i Roskilde (Darup) i turneringer, der spilles mange steder, fx SM (Lars 21. november kl. 21.25). Kun dage fra i dag
+const dageRtk = (t) => String(t.dageRtk || '').split('; ').filter(Boolean).map((x) => { const [d, n] = x.split(':'); return { d, n: +n || 0 }; }).filter((o) => o.d >= D.idag);
+function dageKort(dd) {
+  if (!dd.length) return '';
+  return dd.map((o, i) => { const d = dt(o.d), n = dd[i + 1] && dt(dd[i + 1].d); return d.getUTCDate() + '.' + (n && n.getUTCMonth() === d.getUTCMonth() ? '' : ' ' + MDR[d.getUTCMonth()].slice(0, 3)); }).join(', ');
+}
 const kodeTekst = (t) => t.kode ? (t.kilde === 'DGI' ? 'DGI ' + t.kode : t.kode) : '';
 const stjerne = (id) => { const on = FAV.indexOf(id) >= 0; return '<button type="button" class="tu-stj" data-fav="' + esc(id) + '" aria-pressed="' + on + '" aria-label="' + (on ? 'Fjern fra favoritter' : 'Gem som favorit') + '">' + (on ? '&#9733;' : '&#9734;') + '</button>'; };
 function kort(t, linje) {
   const d = dt(t.fra);
   return '<div class="tu-res" role="link" tabindex="0" data-t="' + esc(t.id) + '"><div class="tu-d">' + d.getUTCDate() + '<small>' + MDR[d.getUTCMonth()].slice(0, 3) + '</small></div>' +
-    '<div class="tu-k"><b>' + esc(t.navn) + '</b><span class="tu-by">' + esc(t.irtk ? (t.spillesteder && !t.spillested ? 'Bl.a. i Roskilde Tennis Klub' : 'Roskilde Tennis Klub') : t.by || t.omraade) + (+t.km > 0 && t.naer ? ' <span class="tu-naer">ca. ' + esc(t.km) + ' km</span>' : '') + '</span>' +
+    '<div class="tu-k"><b>' + esc(t.navn) + '</b><span class="tu-by">' + esc(t.irtk ? (t.spillesteder && !t.spillested ? (dageRtk(t).length ? 'I Roskilde ' + dageKort(dageRtk(t)) : 'Bl.a. i Roskilde Tennis Klub') : 'Roskilde Tennis Klub') : t.by || t.omraade) + (+t.km > 0 && t.naer ? ' <span class="tu-naer">ca. ' + esc(t.km) + ' km</span>' : '') + '</span>' +
     '<span class="tu-r">' + esc(linje === undefined ? linjeOm(t) : linje) + '</span><span class="tu-f">' + statusChip(t) + (t.lukker && t.status !== 'Aflyst' ? ' Frist ' + esc(kortDag(t.lukker)) : '') + '</span>' +
     (t.kode ? '<span class="tu-kd">' + esc(kodeTekst(t)) + '</span>' : '') + '</div>' + (t.planlagt ? '' : stjerne(t.id)) + '</div>';
 }
@@ -405,6 +411,10 @@ function visTurnering(id) {
   h += '<p class="tu-hvad">' + esc(datoer(t)) + ' · uge ' + uge(t.fra) + '<br>' + esc([t.spillested, t.adresse, t.by].filter(Boolean).join(', ') || t.omraade) + (t.naer && +t.km > 0 ? ' <span class="tu-naer">ca. ' + esc(t.km) + ' km</span>' : '') + '</p>';
   // Turneringer, der spilles mange steder (fx SM): spillestederne fra Tournament Software, Roskilde fremhævet (Lars 21. november kl. 20.59)
   if (t.spillesteder && !t.spillested) h += '<p class="tu-p" style="margin:6px 0 0"><b>Spillesteder:</b> ' + t.spillesteder.split('; ').map((x) => /darup|roskilde\s+tennis/i.test(x) ? '<b>' + esc(x) + '</b>' : esc(x)).join(', ') + '</p>';
+  if (t.spillesteder && !t.spillested && t.irtk) {
+    const dd = dageRtk(t);
+    h += '<p class="tu-p" style="margin:6px 0 0"><b>Kampe i Roskilde (Darup):</b> ' + (dd.length ? dd.map((o) => esc(langDag(o.d)) + ' (' + o.n + (o.n === 1 ? ' kamp' : ' kampe') + ')').join(', ') : 'Kampprogrammet for Roskilde er ikke lagt i Tournament Software endnu') + '</p>';
+  }
   const idag = D.idag;
   if (t.planlagt) return h + visPlanlagt(t) + '</div>';
   h += '<div class="tu-tl">';
@@ -460,7 +470,7 @@ function visPlanlagt(t) {
 }
 
 function tekstTil(t) {
-  let s = t.navn + ', ' + datoer(t).replace(/^./, (c) => c.toLowerCase()) + (t.spillested ? ' i ' + t.spillested : t.irtk && t.spillesteder ? ', bl.a. i Roskilde (Darup)' : t.by ? ' i ' + t.by : '') + '.\n';
+  let s = t.navn + ', ' + datoer(t).replace(/^./, (c) => c.toLowerCase()) + (t.spillested ? ' i ' + t.spillested : t.irtk && t.spillesteder ? (dageRtk(t).length ? ', i Roskilde (Darup) ' + dageRtk(t).map((o) => langDag(o.d)).join(', ') : ', bl.a. i Roskilde (Darup)') : t.by ? ' i ' + t.by : '') + '.\n';
   if (t.orientering) s += t.orientering + '\n';
   const m = raekkeFilter() ? t.raekker.filter(raekkePasser).filter((r) => +r.ti > 0) : [];
   if (m.length === 1) s += stor(raekkeNavn(m[0])) + ' har ' + m[0].ti + ' tilmeldt indtil nu.\n';
