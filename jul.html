@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="cd8b27554965">
+<meta name="rtk-version" content="600c14d8aa3d">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -13,7 +13,7 @@
 <link rel="manifest" href="jul.webmanifest">
 <link rel="apple-touch-icon" href="ikoner/jul-180.png">
 <link rel="icon" type="image/svg+xml" href="ikoner/jul-logo.svg">
-<title>Julefrokost</title>
+<title>Julefrokost 3. december</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -24,6 +24,7 @@
 .top .logo img{width:44px;height:44px}
 .jf-tabs{display:flex;gap:4px;margin:0 0 14px;position:sticky;top:0;z-index:5;background:#fff;padding:8px 0}
 .jf-tabs a{flex:1 1 0;min-width:0;text-align:center;text-decoration:none;color:var(--ink);border:1px solid var(--line2);border-radius:10px;padding:8px 2px;font-weight:600;font-size:14px;position:relative}
+.jf-tabs a i{display:block;font-style:normal;font-size:18px;line-height:1.2}
 .jf-tabs a[aria-current="page"]{border-color:var(--pink);border-width:2px;padding:7px 1px}
 .jf-ul{position:absolute;top:-7px;right:-4px;background:var(--pink);color:#fff;border-radius:99px;font-size:11px;font-weight:700;padding:1px 6px}
 .jf-hero{position:relative;height:190px;border-radius:0 0 22px 22px;margin:-16px -16px 14px;background:linear-gradient(180deg,rgba(11,61,58,.1),rgba(11,61,58,.88)),url(billeder/grupper-top.jpg) center/cover;display:flex;align-items:flex-end;padding:16px;color:#fff}
@@ -78,6 +79,9 @@
 .jf-ekstra{display:flex;gap:8px;flex-wrap:wrap}.jf-ekstra div{position:relative}.jf-ekstra span{display:block;width:84px;height:84px;border-radius:8px;background:var(--soft) center/cover}
 .jf-ekstra button{position:absolute;top:-6px;right:-6px;min-height:26px;width:26px;padding:0;border-radius:99px;font-size:14px}
 .jf-skjult{display:none!important}
+.jf-guide{margin:4px 0 6px;font-size:14px}.jf-guide summary{cursor:pointer;color:var(--teal);font-weight:600;padding:4px 0}
+.jf-guide dl{margin:6px 0}.jf-guide dt{font-weight:700;margin-top:8px}.jf-guide dd{margin:2px 0 0;color:var(--muted);line-height:1.4}
+.jf-nivtekst{background:var(--soft);border-radius:8px;padding:8px 10px;margin:6px 0}
 .jf-msg{min-height:20px}
 </style>
 </head>
@@ -86,7 +90,7 @@
   <div class="wrap">
     <div class="brand">
       <span class="logo"><img src="ikoner/jul-logo.svg" alt=""></span>
-      <span class="navn titel jf-titel"><b>Julefrokost</b><span id="topUnder">Roskilde Tennis Gentlemen møder Onsdags Padel &amp; Pils</span></span>
+      <span class="navn titel jf-titel"><b>Julefrokost 3. december</b><span id="topUnder">Roskilde Tennis Gentlemen møder Onsdags Padel &amp; Pils</span></span>
     </div>
   </div>
 </header>
@@ -96,7 +100,7 @@
     <section id="login" class="jf-skjult"></section>
     <section id="app" class="jf-skjult">
       <nav class="jf-tabs" aria-label="Faner">
-        <a href="#program">Program</a><a href="#chat">Chat<span class="jf-ul jf-skjult" id="ulaest"></span></a><a href="#billeder">Billeder</a><a href="#deltagere">Deltagere</a><a href="#links" id="fLinks" class="jf-skjult">Links</a>
+        <a href="#program"><i aria-hidden="true">🎄</i>Program</a><a href="#chat"><i aria-hidden="true">💬</i>Chat<span class="jf-ul jf-skjult" id="ulaest"></span></a><a href="#billeder"><i aria-hidden="true">📸</i>Billeder</a><a href="#deltagere"><i aria-hidden="true">👥</i>Deltagere</a><a href="#links" id="fLinks" class="jf-skjult"><i aria-hidden="true">🔗</i>Links</a>
       </nav>
       <div id="vis"></div>
     </section>
@@ -104,6 +108,7 @@
 </main>
 <input type="file" id="filer" accept="image/*" multiple hidden aria-hidden="true" tabindex="-1">
 <script src="konfig.js?v=869b7a78d104"></script>
+<script src="niveauer.js?v=4cc686edce45"></script>
 <script>
 (function () {
 'use strict';
@@ -140,7 +145,7 @@ const S = { bid: '', pid: '', arr: false, b: null, del: {}, besk: [], bill: [], 
 function visLogin(fejl) {
   $('vent').classList.add('jf-skjult'); $('app').classList.add('jf-skjult');
   const l = $('login'); l.classList.remove('jf-skjult');
-  l.innerHTML = '<div class="jf-hero"><img src="ikoner/jul-logo.svg" alt=""><div><b>Julefrokost</b><span class="u">Roskilde Tennis Gentlemen møder Onsdags Padel &amp; Pils</span><span>Torsdag 3. december</span></div></div>' +
+  l.innerHTML = '<div class="jf-hero"><img src="ikoner/jul-logo.svg" alt=""><div><b>Julefrokost 🎄</b><span class="u">Roskilde Tennis Gentlemen møder Onsdags Padel &amp; Pils</span><span>Torsdag 3. december</span></div></div>' +
     '<p>Siden er kun for de 16 til julefrokosten. Brug linket, du har fået fra Lars. Står der en kode i beskeden, kan du skrive den her.</p>' +
     '<form id="kodeForm" class="card jf-boks" novalidate><label for="kode" style="font-weight:600">Din kode</label>' +
     '<input id="kode" autocomplete="one-time-code" autocapitalize="characters" spellcheck="false" maxlength="20" placeholder="fx ABCD-2345" style="width:100%;box-sizing:border-box;margin:6px 0 10px;text-transform:uppercase;letter-spacing:.1em">' +
@@ -287,29 +292,34 @@ function tegnProgram() {
   const efterFrist = frist && Date.now() > frist.getTime();
   const d = dageTil(b.dato || '2026-12-03');
   let h = '';
-  if (S.velkommen) h += '<div class="card jf-boks"><b>Hej ' + esc(S.navn) + '</b><p class="jf-lille">Du er logget ind. Telefonen husker dig i 30 dage.' + (S.kode ? ' Din kode er <b>' + esc(S.kode.slice(0, 4) + '-' + S.kode.slice(4)) + '</b>, hvis du skulle få brug for den.' : '') + '</p>' + hjemTekst() + '</div>';
-  h += '<div class="jf-ned"><b>' + (d > 1 ? 'Om ' + d + ' dage' : d === 1 ? 'I morgen' : d === 0 ? 'I dag!' : 'Tak for i aftes') + '</b> · torsdag 3. december</div>';
-  h += '<div class="card jf-boks"><b style="font-size:18px">Spiller du padel?</b><p class="jf-lille">Middagen er bestilt til alle ' + alle.length + '.</p>';
+  if (S.velkommen) h += '<div class="card jf-boks"><b>👋 Hej ' + esc(S.navn) + '</b><p class="jf-lille">Du er logget ind. Telefonen husker dig i 30 dage.' + (S.kode ? ' Din kode er <b>' + esc(S.kode.slice(0, 4) + '-' + S.kode.slice(4)) + '</b>, hvis du skulle få brug for den.' : '') + '</p>' + hjemTekst() + '</div>';
+  h += '<div class="jf-ned">🎅 <b>' + (d > 1 ? 'Om ' + d + ' dage' : d === 1 ? 'I morgen' : d === 0 ? 'I dag!' : 'Tak for i aftes') + '</b> · torsdag 3. december</div>';
+  h += '<div class="card jf-boks"><b style="font-size:18px">🎾 Padel og middag 🍽️</b><p class="jf-lille">Middagen er bestilt til alle ' + alle.length + '. Vælg, om du også spiller padel.</p>';
   if (frist) h += '<p class="jf-frist">' + (efterFrist ? 'Fristen er overskredet. Skriv til Lars, hvis du vil ændre det.' : 'Vælg senest ' + frist.toLocaleDateString('da-DK', { weekday: 'long', day: 'numeric', month: 'long' })) + '</p>';
-  h += '<div class="jf-valg"><button type="button" data-v="padel" aria-pressed="' + (mig.valg === 'padel') + '"' + (efterFrist ? ' disabled' : '') + '>🎾 Padel og middag</button><button type="button" data-v="middag" aria-pressed="' + (mig.valg === 'middag') + '"' + (efterFrist ? ' disabled' : '') + '>🍽️ Kun middag</button></div>';
-  if (mig.valg === 'padel' && mig.status === 'plads') h += '<p class="jf-min">Du har plads til padel kl. 17.</p>' + (b.padelBetaling ? '<p class="jf-lille">' + esc(b.padelBetaling) + '</p>' : '');
-  else if (mig.valg === 'padel') h += '<p class="jf-min">Du er nr. ' + (vente.indexOf(S.pid) + 1) + ' på ventelisten til padel.</p><p class="jf-lille">Du får besked, hvis du rykker op.</p>';
-  else if (mig.valg === 'middag') h += '<p class="jf-min">Du kommer til middagen kl. 19.</p>';
+  // Padel er bindende, når man har en plads (Lars 23. november kl. 21.10). Kun Lars kan melde fra
+  const bundet = mig.valg === 'padel' && mig.status === 'plads';
+  h += '<div class="jf-valg"><button type="button" data-v="padel" aria-pressed="' + (mig.valg === 'padel') + '"' + (efterFrist || bundet ? ' disabled' : '') + '>🎾 Padel og middag</button><button type="button" data-v="middag" aria-pressed="' + (mig.valg === 'middag') + '"' + (efterFrist || bundet ? ' disabled' : '') + '>🍽️ Kun middag</button></div>';
+  if (!mig.valg && !efterFrist) h += '<p class="jf-lille">⚠️ Padel er bindende. Når du har fået en plads, kan du ikke melde fra igen.</p>';
+  if (mig.valg === 'padel' && mig.status === 'plads') h += '<p class="jf-min">✅ Du har plads til padel kl. 17.</p><p class="jf-lille">Padel er bindende. Skriv til Lars, hvis du ikke kan alligevel.</p>' + (b.padelBetaling ? '<p class="jf-lille">' + esc(b.padelBetaling) + '</p>' : '');
+  else if (mig.valg === 'padel') h += '<p class="jf-min">⏳ Du er nr. ' + (vente.indexOf(S.pid) + 1) + ' på ventelisten til padel.</p><p class="jf-lille">Du får besked, hvis du rykker op.</p>';
+  else if (mig.valg === 'middag') h += '<p class="jf-min">✅ Du kommer til middagen kl. 19.</p>';
   h += '<div class="jf-taeller"><span>🎾 Padel <b>' + padel + ' af ' + pladser + '</b></span>' + (vente.length ? '<span>Venteliste <b>' + vente.length + '</b></span>' : '') + '<span>🍽️ Middag <b>' + alle.length + '</b></span><span>Har ikke valgt <b>' + ikke + '</b></span></div>';
   h += '<div class="jf-bar"><i style="width:' + Math.min(100, Math.round(padel / pladser * 100)) + '%"></i></div>';
   h += '<p class="jf-lille">Er padel fuld, kommer du på venteliste og rykker op, hvis nogen melder fra.</p><div class="msg jf-msg" id="valgMsg" role="status"></div></div>';
-  h += '<h3 class="jf-h">Programmet</h3>';
+  h += '<h3 class="jf-h">🗓️ Programmet</h3>';
   (b.program || []).forEach((p) => {
     const sted = String(p.tekst || '').split('·')[0].trim();
     const kort = /^(Racket|Bryggerg|.*\d{4}|.*gade|.*vej)/i.test(sted) ? ' <a href="https://maps.google.com/?q=' + encodeURIComponent(sted + ', Roskilde') + '" target="_blank" rel="noopener">Kort</a>' : '';
     h += '<div class="jf-p"><div class="jf-kl">' + esc(p.kl) + '</div><div class="jf-ik">' + esc(p.ikon) + '</div><div><b>' + esc(p.titel) + '</b>' + (p.tekst ? '<span>' + esc(p.tekst) + kort + '</span>' : '') + '</div></div>';
   });
-  if (b.menu && (b.menu.titel || b.menu.tekst)) h += '<div class="card jf-boks"><b>' + esc(b.menu.titel) + '</b><p class="jf-lille">' + esc(b.menu.tekst) + '</p></div>';
+  if (b.menu && (b.menu.titel || b.menu.tekst)) h += '<div class="card jf-boks"><b>🍽️ ' + esc(b.menu.titel) + '</b><p class="jf-lille">' + esc(b.menu.tekst) + '</p></div>';
   h += '<div class="card jf-boks" id="pushBoks"></div>';
   $('vis').innerHTML = h;
   document.querySelectorAll('.jf-valg button').forEach((k) => k.addEventListener('click', async () => {
     const v = k.getAttribute('data-v');
     if ((S.del[S.pid] || {}).valg === v) return;
+    // Padel er bindende: to tryk, før det gemmes
+    if (v === 'padel' && !k.dataset.ok) { k.dataset.ok = '1'; k.textContent = '🎾 Tryk igen: padel er bindende'; return; }
     $('valgMsg').textContent = 'Gemmer …'; $('valgMsg').className = 'msg jf-msg';
     try { await motor('jul', 'valg', { valg: v }, nyId()); $('valgMsg').textContent = ''; }
     catch (err) { $('valgMsg').textContent = err.message; $('valgMsg').className = 'msg err jf-msg'; }
@@ -327,7 +337,7 @@ function hjemTekst() {
 const pushKan = () => 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
 function tegnPush() {
   const bx = $('pushBoks'); if (!bx) return;
-  let h = '<b>Besked, når der skrives</b>';
+  let h = '<b>🔔 Besked, når der skrives</b>';
   if (erIos() && !erHjem()) h += '<p class="jf-lille">På iPhone skal siden først på hjemmeskærmen: tryk på Del og "Føj til hjemmeskærm", og åbn den derfra. Så kan du få besked, når nogen skriver.</p>';
   else if (!pushKan()) h += '<p class="jf-lille">Denne browser kan ikke vise notifikationer. Kig i chatten en gang imellem.</p>';
   else if (Notification.permission === 'denied') h += '<p class="jf-lille">Notifikationer er slået fra for siden i telefonens indstillinger.</p>';
@@ -382,7 +392,7 @@ function tegnChat(ny) {
     $('skriv').addEventListener('submit', send);
   }
   let h = '', fDag = '', fFra = null;
-  if (!S.besk.length) h += '<li class="gr-sys">Ingen beskeder endnu. Sig hej!</li>';
+  if (!S.besk.length) h += '<li class="gr-sys">Ingen beskeder endnu. Sig hej! 👋</li>';
   S.besk.forEach((b) => {
     const d = dato(b.tid) || new Date();
     const dk = d.toDateString();
@@ -475,7 +485,7 @@ function tilJpeg(fil, maks, maksTegn, kvadrat) {
 }
 function tegnBilleder() {
   // Filvælgeren ligger uden for det, der tegnes igen, så et valgt billede ikke går tabt, hvis listen opdateres imens
-  let h = '<button type="button" class="primary" id="laegOpKnap" style="width:100%;margin-bottom:10px">+ Læg billeder op</button><div class="msg jf-msg' + (S.bilMsg ? ' ' + S.bilMsg.k : '') + '" id="bilMsg" role="status">' + esc(S.bilMsg ? S.bilMsg.t : '') + '</div>';
+  let h = '<button type="button" class="primary" id="laegOpKnap" style="width:100%;margin-bottom:10px">📸 Læg billeder op</button><div class="msg jf-msg' + (S.bilMsg ? ' ' + S.bilMsg.k : '') + '" id="bilMsg" role="status">' + esc(S.bilMsg ? S.bilMsg.t : '') + '</div>';
   if (!S.bill.length) h += '<p class="hint">Ingen billeder endnu.</p>';
   h += '<div class="jf-gitter">' + S.bill.map((b, i) => '<button type="button" data-i="' + i + '" aria-label="Billede ' + (i + 1) + ' fra ' + esc(navnPaa(b.af)) + '" style="background-image:url(' + (JPG.test(b.mini) ? b.mini : '') + ')"></button>').join('') + '</div>';
   h += '<p class="jf-lille" style="margin-top:10px">' + S.bill.length + ' billeder · tryk for fuld skærm. Du kan slette dine egne.</p><p class="jf-lille">Kun de ' + ((S.b.deltagerIder || []).length) + ' ser billederne. Læg kun billeder op af nogen, der har sagt ja.</p>';
@@ -541,9 +551,9 @@ async function fuld(i, liste) {
 // ---------- Deltagere og profilkort
 function tegnDeltagere() {
   const alle = (S.b.deltagerIder || []).slice();
-  let h = '<button type="button" class="jf-d" id="minProfil" style="border-top:0">' + avatar(S.pid) + '<div><b>Min profil</b><span>Billede, et par ord om dig og dit niveau</span></div></button>';
+  let h = '<button type="button" class="jf-d" id="minProfil" style="border-top:0">' + avatar(S.pid) + '<div><b>✏️ Min profil</b><span>Billede, et par ord om dig og dit niveau</span></div></button>';
   h += '<h3 class="jf-h">Alle ' + alle.length + '</h3>';
-  alle.forEach((p) => { const x = S.del[p] || {}; h += '<button type="button" class="jf-d" data-p="' + esc(p) + '">' + avatar(p) + '<div><b>' + esc(x.navn) + (x.arrangoer ? '<span class="jf-tag">Arrangør</span>' : '') + (p === S.pid ? '<span class="jf-tag">Dig</span>' : '') + '</b><span>' + esc(statusTekst(x)) + '</span></div></button>'; });
+  alle.forEach((p) => { const x = S.del[p] || {}; h += '<button type="button" class="jf-d" data-p="' + esc(p) + '">' + avatar(p) + '<div><b>' + esc(x.navn) + (x.arrangoer ? '<span class="jf-tag">🎅 Arrangør</span>' : '') + (p === S.pid ? '<span class="jf-tag">Dig</span>' : '') + '</b><span>' + esc(statusTekst(x)) + '</span></div></button>'; });
   h += '<p style="margin-top:20px"><button type="button" class="ghost small" id="logUd">Log ud på denne telefon</button></p><div class="msg jf-msg" id="udMsg"></div>';
   $('vis').innerHTML = h;
   $('minProfil').addEventListener('click', () => { location.hash = '#profil'; });
@@ -561,7 +571,11 @@ async function hentProfil(pid) {
   catch (err) { S.profiler[pid] = {}; }
   return S.profiler[pid];
 }
-const NIV = (v) => (Number(v) ? String(v).replace('.', ',') : '');
+const NIV = (v) => (Number(v) ? Number(v).toFixed(1).replace('.', ',') : '');
+// Niveauerne fra Mit RTK (niveauer.md): tennis efter NTRP, padel efter den danske padelskala (Lars 23. november: niveauerne skal have en guide)
+const NIVTAB = (typeof NIVEAUER !== 'undefined' && NIVEAUER) || { tennis: { niveauer: [] }, padel: { niveauer: [] } };
+const nivInfo = (sport, v) => (NIVTAB[sport].niveauer || []).find((x) => Number(x.v) === Number(v)) || null;
+const nivNavn = (sport, v) => { const x = nivInfo(sport, v); return x && x.navn && x.navn.da ? x.navn.da : ''; };
 async function visKort(pid) {
   const x = S.del[pid] || {};
   const ark = document.createElement('div'); ark.className = 'jf-ark'; ark.setAttribute('role', 'dialog'); ark.setAttribute('aria-modal', 'true'); ark.setAttribute('aria-label', 'Profilkort for ' + (x.navn || ''));
@@ -578,7 +592,7 @@ async function visKort(pid) {
     '<div><div class="jf-pk-n">' + esc(x.navn) + '</div><div class="jf-lille">' + esc(statusTekst(x)) + '</div></div></div>';
   if (p.tekst) h += '<h3>Om mig</h3><p style="margin:0">' + esc(p.tekst) + '</p>';
   const n = p.niveau || {};
-  if (Number(n.tennis) || Number(n.padel)) h += '<h3>Niveau</h3><p style="margin:0">' + (Number(n.tennis) ? 'Tennis <b>' + NIV(n.tennis) + '</b>&nbsp;&nbsp; ' : '') + (Number(n.padel) ? 'Padel <b>' + NIV(n.padel) + '</b>' : '') + '</p>';
+  if (Number(n.tennis) || Number(n.padel)) h += '<h3>Niveau</h3><p style="margin:0">' + (Number(n.tennis) ? '🎾 Tennis <b>' + NIV(n.tennis) + '</b>&nbsp;&nbsp; ' : '') + (Number(n.padel) ? 'Padel <b>' + NIV(n.padel) + (nivNavn('padel', n.padel) ? ' · ' + esc(nivNavn('padel', n.padel)) : '') + '</b>' : '') + '</p>';
   const ekstra = bil.filter((y) => y.i > 0);
   if (ekstra.length) h += '<h3>Billeder ' + ekstra.length + '</h3><div class="jf-pk-g">' + ekstra.map((y) => '<button type="button" data-b="' + y.i + '" aria-label="Vis billede" style="background-image:url(' + y.b + ')"></button>').join('') + '</div>';
   if (!p.tekst && !bil.length && !(Number(n.tennis) || Number(n.padel))) h += '<p class="jf-lille" style="margin-top:12px">' + (pid === S.pid ? 'Du har ikke lavet dit profilkort endnu.' : esc(String(x.navn || '').split(' ')[0]) + ' har ikke lavet sit profilkort endnu.') + '</p>';
@@ -593,20 +607,22 @@ async function visKort(pid) {
 }
 
 // ---------- Ret mit profilkort
-const NIVEAUER = [0, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5];
+const NIV_VALG = { tennis: [0].concat((NIVTAB.tennis.niveauer || []).map((x) => Number(x.v))), padel: [0].concat((NIVTAB.padel.niveauer || []).map((x) => Number(x.v))) };
 async function tegnProfilRet() {
   $('vis').innerHTML = '<p class="hint">Henter …</p>';
   const p = Object.assign({}, await hentProfil(S.pid));
   if (fane() !== 'profil') return;
   const R = { billede: JPG.test(p.billede || '') ? p.billede : '', stor0: null, ekstra: (p.ekstra || []).filter((b) => JPG.test(b)).slice(0, 3).map((b) => ({ b, stor: null })), aendret: false };
-  const sel = (id, v) => '<select id="' + id + '">' + NIVEAUER.map((n) => '<option value="' + n + '"' + (Number(v || 0) === n ? ' selected' : '') + '>' + (n ? String(n).replace('.', ',') : 'Ikke angivet') + '</option>').join('') + '</select>';
+  const sel = (id, sport, v) => '<select id="' + id + '" data-sport="' + sport + '">' + NIV_VALG[sport].map((n) => '<option value="' + n + '"' + (Number(v || 0) === n ? ' selected' : '') + '>' + (n ? NIV(n) + (nivNavn(sport, n) ? ' · ' + nivNavn(sport, n) : '') : 'Ikke angivet') + '</option>').join('') + '</select>';
+  const guide = (sport) => '<details class="jf-guide"><summary>Se alle niveauer i ' + sport + '</summary><dl>' + (NIVTAB[sport].niveauer || []).map((x) => '<dt>' + NIV(x.v) + (x.navn && x.navn.da ? ' · ' + esc(x.navn.da) : '') + '</dt><dd>' + esc(x.tekst.da) + '</dd>').join('') + '</dl>' + (NIVTAB[sport].fodnote ? '<p class="jf-lille">' + esc(NIVTAB[sport].fodnote.da) + '</p>' : '') + '</details>';
+  const nivTekst = (sport, v) => { const x = nivInfo(sport, v); return x ? esc(x.tekst.da) : 'Vælg det niveau, der passer bedst. Se beskrivelserne herunder.'; };
   const tegnR = () => {
     let h = '<a href="#deltagere" class="gr-tilbage">&#8592; Deltagere</a><h2 style="margin:10px 0 4px">Mit profilkort</h2><p class="jf-lille">Kun de ' + (S.b.deltagerIder || []).length + ' til julefrokosten kan se det.</p>';
     h += '<form class="jf-ret" id="profForm" novalidate>';
     h += '<label>Profilbillede</label><div class="jf-pk-h"><span class="jf-pk-b" style="' + (R.billede && JPG.test(R.billede) ? 'background-image:url(' + R.billede + ')' : 'background:' + farve(S.pid)) + '">' + (R.billede ? '' : esc(ini(S.pid))) + '</span><div><label class="ghost small" style="display:inline-block;margin:0;padding:6px 12px;border:1px solid var(--line2);border-radius:10px;cursor:pointer;font-weight:600">Vælg billede<input type="file" id="pBil" accept="image/*" style="position:absolute;opacity:0;width:1px;height:1px"></label>' + (R.billede ? ' <button type="button" class="ghost small" id="pBilFjern">Fjern</button>' : '') + '</div></div>';
     h += '<label for="pTekst">Om mig</label><textarea id="pTekst" maxlength="300" rows="3" placeholder="Fx hvor længe du har spillet, og hvad du glæder dig til">' + esc(p.tekst || '') + '</textarea>';
-    h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div><label for="pTennis">Tennis</label>' + sel('pTennis', (p.niveau || {}).tennis) + '</div><div><label for="pPadel">Padel</label>' + sel('pPadel', (p.niveau || {}).padel) + '</div></div>';
-    h += '<p class="jf-lille">Niveau fra 1 (nybegynder) til 5,5 (elite), som på Mit RTK.</p>';
+    h += '<label for="pTennis">🎾 Tennisniveau</label>' + sel('pTennis', 'tennis', (p.niveau || {}).tennis) + '<p class="jf-lille jf-nivtekst" id="tTennis">' + nivTekst('tennis', (p.niveau || {}).tennis) + '</p>' + guide('tennis');
+    h += '<label for="pPadel">Padelniveau</label>' + sel('pPadel', 'padel', (p.niveau || {}).padel) + '<p class="jf-lille jf-nivtekst" id="tPadel">' + nivTekst('padel', (p.niveau || {}).padel) + '</p>' + guide('padel');
     h += '<label>Andre billeder (højst 3)</label><div class="jf-ekstra">' + R.ekstra.filter((x) => JPG.test(x.b)).map((x, i) => '<div><span style="background-image:url(' + x.b + ')"></span><button type="button" class="ghost" data-fjern="' + i + '" aria-label="Fjern billedet">×</button></div>').join('') +
       (R.ekstra.length < 3 ? '<label style="display:flex;align-items:center;justify-content:center;width:84px;height:84px;border:1px dashed var(--line2);border-radius:8px;margin:0;cursor:pointer;font-size:26px;color:var(--muted)">+<input type="file" id="pEkstra" accept="image/*" style="position:absolute;opacity:0;width:1px;height:1px"></label>' : '') + '</div>';
     h += '<p class="jf-lille">Brug kun billeder, du selv har taget eller må bruge, og kun af personer, der har sagt ja.</p>';
@@ -614,6 +630,8 @@ async function tegnProfilRet() {
     $('vis').innerHTML = h;
     S.travlt = true;
     const msg = $('profMsg');
+    $('pTennis').addEventListener('change', () => { $('tTennis').innerHTML = nivTekst('tennis', $('pTennis').value); });
+    $('pPadel').addEventListener('change', () => { $('tPadel').innerHTML = nivTekst('padel', $('pPadel').value); });
     $('pBil').addEventListener('change', async (e) => {
       const f = e.target.files[0]; if (!f) return;
       msg.textContent = 'Gør billedet klar …';
