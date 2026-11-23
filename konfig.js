@@ -23,8 +23,8 @@
     }
   };
   var vaert = String(location.hostname || '').toLowerCase().replace(/\.$/, '');
-  // rtkpadel.dk viser padelsiden fra produktionen (Lars 12. november 2026 kl. 17.02)
-  var miljoe = /^(www\.)?(mitrtk|rtkpadel)\.dk$/.test(vaert) && MILJOER.produktion.motor ? 'produktion' : 'test';
+  // rtkpadel.dk viser padelsiden fra produktionen (Lars 12. november 2026 kl. 17.02). racketcircle.dk viser julefrokosten (Lars 23. november 2026 kl. 21.37)
+  var miljoe = /^(www\.)?(mitrtk|rtkpadel|racketcircle)\.dk$/.test(vaert) && MILJOER.produktion.motor ? 'produktion' : 'test';
   var m = MILJOER[miljoe];
   // Det, der ikke er gået live i produktionen (Lars 31. oktober 2026): siderne skjules fra forsiderne, og et direkte
   // link sender til forsiden. I testen vises alt som før.

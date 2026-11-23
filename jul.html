@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="e3df151027e6">
+<meta name="rtk-version" content="2179559f60f6">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -85,6 +85,7 @@
 .jf-ekstra{display:flex;gap:8px;flex-wrap:wrap}.jf-ekstra div{position:relative}.jf-ekstra span{display:block;width:84px;height:84px;border-radius:8px;background:var(--soft) center/cover}
 .jf-ekstra button{position:absolute;top:-6px;right:-6px;min-height:26px;width:26px;padding:0;border-radius:99px;font-size:14px}
 .jf-skjult{display:none!important}
+.jf-arr{margin-top:14px}.jf-arr summary{cursor:pointer;color:var(--teal);font-weight:600;font-size:14px}
 .jf-guide{margin:4px 0 6px;font-size:14px}.jf-guide summary{cursor:pointer;color:var(--teal);font-weight:600;padding:4px 0}
 .jf-guide dl{margin:6px 0}.jf-guide dt{font-weight:700;margin-top:8px}.jf-guide dd{margin:2px 0 0;color:var(--muted);line-height:1.4}
 .jf-nivtekst{background:var(--soft);border-radius:8px;padding:8px 10px;margin:6px 0}
@@ -113,7 +114,7 @@
   </div>
 </main>
 <input type="file" id="filer" accept="image/*" multiple hidden aria-hidden="true" tabindex="-1">
-<script src="konfig.js?v=869b7a78d104"></script>
+<script src="konfig.js?v=8f01fd917301"></script>
 <script src="niveauer.js?v=4cc686edce45"></script>
 <script>
 (function () {
@@ -156,9 +157,34 @@ function visLogin(fejl) {
     '<form id="kodeForm" class="card jf-boks" novalidate><label for="kode" style="font-weight:600">Din kode</label>' +
     '<input id="kode" autocomplete="one-time-code" autocapitalize="characters" spellcheck="false" maxlength="20" placeholder="fx ABCD-2345" style="width:100%;box-sizing:border-box;margin:6px 0 10px;text-transform:uppercase;letter-spacing:.1em">' +
     '<button class="primary" style="width:100%">Log ind</button><div class="msg jf-msg" id="kodeMsg" role="status"></div></form>' +
-    '<p class="jf-lille">Er du arrangør? <a href="/">Log ind på Mit RTK</a> med dit mobilnummer, og åbn så denne side igen.</p>';
+    '<details class="jf-arr"><summary>Er du arrangør? Log ind med dit mobilnummer</summary>' +
+    '<form id="smsForm" class="card jf-boks" novalidate><label for="mobil" style="font-weight:600">Dit mobilnummer</label>' +
+    '<input id="mobil" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" style="width:100%;box-sizing:border-box;margin:6px 0 10px">' +
+    '<div id="smsKodeDel" class="jf-skjult"><label for="smsKode" style="font-weight:600">Koden fra sms\'en</label>' +
+    '<input id="smsKode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" style="width:100%;box-sizing:border-box;margin:6px 0 10px"></div>' +
+    '<button class="ghost" id="smsKnap" style="width:100%">Send kode på sms</button><div class="msg jf-msg" id="smsMsg" role="status"></div></form></details>';
   if (fejl) { $('kodeMsg').textContent = fejl; $('kodeMsg').className = 'msg err jf-msg'; }
   $('kodeForm').addEventListener('submit', (e) => { e.preventDefault(); logIndMedKode($('kode').value, $('kodeMsg')); });
+  // Arrangøren er en almindelig person i Mit RTK og logger ind med sms. På en anden adresse end mitrtk.dk (racketcircle.dk)
+  // kender siden ikke Mit RTK's login, så det kan gøres her (Lars 23. november kl. 21.37)
+  let kodeSendt = false;
+  $('smsForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const m = $('smsMsg'); m.className = 'msg jf-msg';
+    try {
+      if (!kodeSendt) {
+        m.textContent = 'Sender koden …';
+        const r = await motor('kerne', 'sendKode', { mobil: $('mobil').value, kanal: 'sms', enhed });
+        kodeSendt = true; $('smsKodeDel').classList.remove('jf-skjult'); $('smsKnap').textContent = 'Log ind';
+        m.textContent = 'Koden er sendt' + (r && r.til ? ' til ' + r.til : '') + '. Den gælder i 10 minutter.'; $('smsKode').focus();
+      } else {
+        m.textContent = 'Logger ind …';
+        const s2 = await motor('kerne', 'kodeLogin', { mobil: $('mobil').value, kode: $('smsKode').value, enhed, husk: true });
+        gem('rtk.jul.token', null); gem('rtk.token', s2.token);
+        await start(false);
+      }
+    } catch (err) { m.textContent = err.message; m.className = 'msg err jf-msg'; }
+  });
 }
 async function logIndMedKode(kode, msg, fraUrl) {
   if (msg) { msg.textContent = 'Logger ind …'; msg.className = 'msg jf-msg'; }
@@ -213,11 +239,12 @@ async function start(fraLink) {
   catch (err) {
     if (err.login && hent('rtk.jul.token') && KODE_URL && !S.provetUrl) { S.provetUrl = true; gem('rtk.jul.token', null); return logIndMedKode(KODE_URL, null, true); }
     if (err.login || /ikke med/.test(err.message)) { gem('rtk.jul.token', null); visLogin(err.login ? 'Dit link er ikke gyldigt længere. Bed Lars om et nyt.' : (hent('rtk.token') ? 'Du er logget ind på Mit RTK, men du er ikke med i julefrokosten.' : '')); return; }
+    $('login').classList.add('jf-skjult'); $('vent').classList.remove('jf-skjult');
     $('vent').innerHTML = '<p class="msg err">' + esc(err.message) + '</p><button class="ghost" onclick="location.reload()">Prøv igen</button>'; return;
   }
   S.bid = s.bid; S.pid = s.pid; S.arr = !!s.arrangoer; S.navn = s.navn;
   try { await logIndFirebase(); }
-  catch (err) { $('vent').innerHTML = '<p class="msg err">Chatten kan ikke åbnes lige nu. Prøv igen om lidt.</p><button class="ghost" onclick="location.reload()">Prøv igen</button>'; return; }
+  catch (err) { console.warn('firebase', err); $('login').classList.add('jf-skjult'); $('vent').classList.remove('jf-skjult'); $('vent').innerHTML = '<p class="msg err">Chatten kan ikke åbnes lige nu. Prøv igen om lidt.</p><button class="ghost" onclick="location.reload()">Prøv igen</button>'; return; }
   $('login').classList.add('jf-skjult'); $('vent').classList.add('jf-skjult'); $('app').classList.remove('jf-skjult');
   $('fLinks').classList.toggle('jf-skjult', !S.arr);
   lyt();
