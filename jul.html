@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="2179559f60f6">
+<meta name="rtk-version" content="dbdfe363fa9c">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -114,7 +114,7 @@
   </div>
 </main>
 <input type="file" id="filer" accept="image/*" multiple hidden aria-hidden="true" tabindex="-1">
-<script src="konfig.js?v=8f01fd917301"></script>
+<script src="konfig.js?v=869b7a78d104"></script>
 <script src="niveauer.js?v=4cc686edce45"></script>
 <script>
 (function () {
@@ -306,6 +306,7 @@ function statusTekst(x) {
   if (x.valg === 'padel' && x.status === 'plads') return '🎾 Padel og middag';
   if (x.valg === 'padel') return '🎾 Venteliste til padel · middag';
   if (x.valg === 'middag') return '🍽️ Kun middag';
+  if (x.valg === 'efter') return '🌙 Kommer efter middagen';
   return 'Middag · har ikke valgt padel';
 }
 
@@ -320,6 +321,9 @@ function tegnProgram() {
   const padel = alle.filter((p) => S.del[p] && S.del[p].valg === 'padel' && S.del[p].status === 'plads').length;
   const vente = alle.filter((p) => S.del[p] && S.del[p].valg === 'padel' && S.del[p].status === 'venteliste').sort((x, y) => (S.del[x].nr || 0) - (S.del[y].nr || 0));
   const ikke = alle.filter((p) => S.del[p] && !S.del[p].valg).length;
+  // Thomas W. kommer først efter middagen (Lars 23. november kl. 22.27): han tæller ikke med til middagen
+  const efter = alle.filter((p) => S.del[p] && S.del[p].valg === 'efter');
+  const middag = alle.length - efter.length;
   const pladser = b.padelPladser || 8;
   const frist = b.frist && b.frist.toDate ? b.frist.toDate() : null;
   const efterFrist = frist && Date.now() > frist.getTime();
@@ -327,16 +331,17 @@ function tegnProgram() {
   let h = '';
   if (S.velkommen) h += '<div class="card jf-boks"><b>👋 Hej ' + esc(S.navn) + '</b><p class="jf-lille">Du er logget ind. Telefonen husker dig i 30 dage.' + (S.kode ? ' Din kode er <b>' + esc(S.kode.slice(0, 4) + '-' + S.kode.slice(4)) + '</b>, hvis du skulle få brug for den.' : '') + '</p>' + hjemTekst() + '</div>';
   h += '<div class="jf-ned">🎅 <b>' + (d > 1 ? 'Om ' + d + ' dage' : d === 1 ? 'I morgen' : d === 0 ? 'I dag!' : 'Tak for i aftes') + '</b> · torsdag 3. december</div>';
-  h += '<div class="card jf-boks"><b style="font-size:18px">🎾 Padel og middag 🍽️</b><p class="jf-lille">Middagen er bestilt til alle ' + alle.length + '. Vælg, om du også spiller padel.</p>';
+  h += '<div class="card jf-boks"><b style="font-size:18px">🎾 Padel og middag 🍽️</b><p class="jf-lille">Middagen er bestilt til ' + (efter.length ? middag + ' (' + efter.map((p) => esc(S.del[p].navn)).join(' og ') + ' kommer efter middagen)' : 'alle ' + middag) + '. Vælg, om du også spiller padel.</p>';
   if (frist) h += '<p class="jf-frist">' + (efterFrist ? 'Fristen er overskredet. Skriv til Lars, hvis du vil ændre det.' : 'Vælg senest ' + frist.toLocaleDateString('da-DK', { weekday: 'long', day: 'numeric', month: 'long' })) + '</p>';
   // Padel er bindende, når man har en plads (Lars 23. november kl. 21.10). Kun Lars kan melde fra
-  const bundet = mig.valg === 'padel' && mig.status === 'plads';
+  const bundet = (mig.valg === 'padel' && mig.status === 'plads') || mig.valg === 'efter';
   h += '<div class="jf-valg"><button type="button" data-v="padel" aria-pressed="' + (mig.valg === 'padel') + '"' + (efterFrist || bundet ? ' disabled' : '') + '>🎾 Padel og middag</button><button type="button" data-v="middag" aria-pressed="' + (mig.valg === 'middag') + '"' + (efterFrist || bundet ? ' disabled' : '') + '>🍽️ Kun middag</button></div>';
   if (!mig.valg && !efterFrist) h += '<p class="jf-lille">⚠️ Padel er bindende. Når du har fået en plads, kan du ikke melde fra igen.</p>';
   if (mig.valg === 'padel' && mig.status === 'plads') h += '<p class="jf-min">✅ Du har plads til padel kl. 17.</p><p class="jf-lille">Padel er bindende. Skriv til Lars, hvis du ikke kan alligevel.</p>' + (b.padelBetaling ? '<p class="jf-lille">' + esc(b.padelBetaling) + '</p>' : '');
   else if (mig.valg === 'padel') h += '<p class="jf-min">⏳ Du er nr. ' + (vente.indexOf(S.pid) + 1) + ' på ventelisten til padel.</p><p class="jf-lille">Du får besked, hvis du rykker op.</p>';
   else if (mig.valg === 'middag') h += '<p class="jf-min">✅ Du kommer til middagen kl. 19.</p>';
-  h += '<div class="jf-taeller"><span>🎾 Padel <b>' + padel + ' af ' + pladser + '</b></span>' + (vente.length ? '<span>Venteliste <b>' + vente.length + '</b></span>' : '') + '<span>🍽️ Middag <b>' + alle.length + '</b></span><span>Har ikke valgt <b>' + ikke + '</b></span></div>';
+  else if (mig.valg === 'efter') h += '<p class="jf-min">🌙 Du kommer efter middagen. Vi ses i byen! 🍻</p><p class="jf-lille">Skriv til Lars, hvis det er ændret.</p>';
+  h += '<div class="jf-taeller"><span>🎾 Padel <b>' + padel + ' af ' + pladser + '</b></span>' + (vente.length ? '<span>Venteliste <b>' + vente.length + '</b></span>' : '') + '<span>🍽️ Middag <b>' + middag + '</b></span>' + (efter.length ? '<span>🌙 Efter middagen <b>' + efter.length + '</b></span>' : '') + '<span>Har ikke valgt <b>' + ikke + '</b></span></div>';
   h += '<div class="jf-bar"><i style="width:' + Math.min(100, Math.round(padel / pladser * 100)) + '%"></i></div>';
   h += '<p class="jf-lille">Er padel fuld, kommer du på venteliste og rykker op, hvis nogen melder fra.</p><div class="msg jf-msg" id="valgMsg" role="status"></div></div>';
   h += '<h3 class="jf-h">🗓️ Programmet</h3>';
@@ -761,7 +766,7 @@ async function tegnLinks(ny) {
   h += '<label for="rMenuT">Menu</label><input id="rMenuT" maxlength="80" value="' + esc((b.menu || {}).titel || '') + '"><textarea id="rMenu" maxlength="600" rows="4" style="margin-top:6px">' + esc((b.menu || {}).tekst || '') + '</textarea>';
   h += '<button class="primary" style="width:100%;margin-top:14px">Gem programmet</button><div class="msg jf-msg" id="progMsg" role="status"></div></form>';
   h += '<h3 class="jf-h">Ændr en deltagers valg</h3><div class="card jf-boks jf-ret"><p class="jf-lille" style="margin-top:0">Også efter fristen. Deltageren og chatten får det at se.</p><select id="vPid">' + (b.deltagerIder || []).map((p) => '<option value="' + esc(p) + '">' + esc(navnPaa(p)) + ' · ' + esc(statusTekst(S.del[p])) + '</option>').join('') + '</select>' +
-    '<div style="display:flex;gap:6px;margin-top:8px"><button type="button" class="ghost small" data-sv="padel">Padel og middag</button><button type="button" class="ghost small" data-sv="middag">Kun middag</button></div><div class="msg jf-msg" id="svMsg" role="status"></div></div>';
+    '<div style="display:flex;gap:6px;margin-top:8px"><button type="button" class="ghost small" data-sv="padel">Padel og middag</button><button type="button" class="ghost small" data-sv="middag">Kun middag</button><button type="button" class="ghost small" data-sv="efter">Efter middagen</button></div><div class="msg jf-msg" id="svMsg" role="status"></div></div>';
   $('vis').innerHTML = h;
   const lm = $('linkMsg');
   const find = (pid) => S.gaester.find((g) => g.pid === pid);
