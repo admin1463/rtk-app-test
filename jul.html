@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="dbdfe363fa9c">
+<meta name="rtk-version" content="b141b5cf2a71">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -333,12 +333,12 @@ function tegnProgram() {
   h += '<div class="jf-ned">🎅 <b>' + (d > 1 ? 'Om ' + d + ' dage' : d === 1 ? 'I morgen' : d === 0 ? 'I dag!' : 'Tak for i aftes') + '</b> · torsdag 3. december</div>';
   h += '<div class="card jf-boks"><b style="font-size:18px">🎾 Padel og middag 🍽️</b><p class="jf-lille">Middagen er bestilt til ' + (efter.length ? middag + ' (' + efter.map((p) => esc(S.del[p].navn)).join(' og ') + ' kommer efter middagen)' : 'alle ' + middag) + '. Vælg, om du også spiller padel.</p>';
   if (frist) h += '<p class="jf-frist">' + (efterFrist ? 'Fristen er overskredet. Skriv til Lars, hvis du vil ændre det.' : 'Vælg senest ' + frist.toLocaleDateString('da-DK', { weekday: 'long', day: 'numeric', month: 'long' })) + '</p>';
-  // Padel er bindende, når man har en plads (Lars 23. november kl. 21.10). Kun Lars kan melde fra
-  const bundet = (mig.valg === 'padel' && mig.status === 'plads') || mig.valg === 'efter';
+  // Padel er bindende, når man har valgt det, også på ventelisten (Lars 23. november kl. 21.10 og 24. november kl. 6.05). Kun Lars kan melde fra
+  const bundet = mig.valg === 'padel' || mig.valg === 'efter';
   h += '<div class="jf-valg"><button type="button" data-v="padel" aria-pressed="' + (mig.valg === 'padel') + '"' + (efterFrist || bundet ? ' disabled' : '') + '>🎾 Padel og middag</button><button type="button" data-v="middag" aria-pressed="' + (mig.valg === 'middag') + '"' + (efterFrist || bundet ? ' disabled' : '') + '>🍽️ Kun middag</button></div>';
-  if (!mig.valg && !efterFrist) h += '<p class="jf-lille">⚠️ Padel er bindende. Når du har fået en plads, kan du ikke melde fra igen.</p>';
+  if (!mig.valg && !efterFrist) h += '<p class="jf-lille">⚠️ Padel er bindende. Når du har valgt padel, også på ventelisten, kan du ikke melde fra igen.</p>';
   if (mig.valg === 'padel' && mig.status === 'plads') h += '<p class="jf-min">✅ Du har plads til padel kl. 17.</p><p class="jf-lille">Padel er bindende. Skriv til Lars, hvis du ikke kan alligevel.</p>' + (b.padelBetaling ? '<p class="jf-lille">' + esc(b.padelBetaling) + '</p>' : '');
-  else if (mig.valg === 'padel') h += '<p class="jf-min">⏳ Du er nr. ' + (vente.indexOf(S.pid) + 1) + ' på ventelisten til padel.</p><p class="jf-lille">Du får besked, hvis du rykker op.</p>';
+  else if (mig.valg === 'padel') h += '<p class="jf-min">⏳ Du er nr. ' + (vente.indexOf(S.pid) + 1) + ' på ventelisten til padel.</p><p class="jf-lille">Du får besked, hvis du rykker op. Padel er bindende, også på ventelisten. Skriv til Lars, hvis du ikke kan alligevel.</p>';
   else if (mig.valg === 'middag') h += '<p class="jf-min">✅ Du kommer til middagen kl. 19.</p>';
   else if (mig.valg === 'efter') h += '<p class="jf-min">🌙 Du kommer efter middagen. Vi ses i byen! 🍻</p><p class="jf-lille">Skriv til Lars, hvis det er ændret.</p>';
   h += '<div class="jf-taeller"><span>🎾 Padel <b>' + padel + ' af ' + pladser + '</b></span>' + (vente.length ? '<span>Venteliste <b>' + vente.length + '</b></span>' : '') + '<span>🍽️ Middag <b>' + middag + '</b></span>' + (efter.length ? '<span>🌙 Efter middagen <b>' + efter.length + '</b></span>' : '') + '<span>Har ikke valgt <b>' + ikke + '</b></span></div>';
