@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="b36d46502583">
+<meta name="rtk-version" content="a4f6ad8e35d8">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -748,7 +748,10 @@ async function tegnProfilRet() {
 }
 
 // ---------- Links (kun arrangøren)
-const linkTil = (kode) => location.origin + '/jul.html#k=' + kode;
+// ?k= i stedet for #k= (Lars 24. november kl. 17.28): nogle sms-apps klipper linket ved #. Gamle links med #k= virker stadig
+const linkTil = (kode) => location.origin + '/jul.html?k=' + kode;
+const kodeTekst = (kode) => String(kode).slice(0, 4) + '-' + String(kode).slice(4);
+const reserve = (kode) => 'Virker linket ikke, så gå ind på ' + location.host + '/jul.html og skriv koden ' + kodeTekst(kode) + '.';
 async function tegnLinks(ny) {
   if (ny || !S.gaester) {
     $('vis').innerHTML = '<p class="hint">Henter …</p>';
@@ -779,13 +782,13 @@ async function tegnLinks(ny) {
   const find = (pid) => S.gaester.find((g) => g.pid === pid);
   document.querySelectorAll('[data-kopi]').forEach((k) => k.addEventListener('click', async () => {
     const g = find(k.getAttribute('data-kopi'));
-    const t = 'Hej ' + g.navn.split(' ')[0] + '. Her er dit link til julefrokosten: ' + linkTil(g.kode);
+    const t = 'Hej ' + g.navn.split(' ')[0] + '. Her er dit link til julefrokosten: ' + linkTil(g.kode) + '\n\n' + reserve(g.kode);
     try { await navigator.clipboard.writeText(t); lm.textContent = 'Linket til ' + g.navn + ' er kopieret med en kort hilsen. Sæt det ind i en privat besked.'; lm.className = 'msg okm jf-msg'; }
     catch (err) { prompt('Kopiér linket', linkTil(g.kode)); }
   }));
   document.querySelectorAll('[data-del]').forEach((k) => k.addEventListener('click', async () => {
     const g = find(k.getAttribute('data-del'));
-    try { await navigator.share({ title: 'Julefrokost', text: 'Hej ' + g.navn.split(' ')[0] + '. Her er dit link til julefrokosten:', url: linkTil(g.kode) }); } catch (err) { /* annulleret */ }
+    try { await navigator.share({ title: 'Julefrokost', text: 'Hej ' + g.navn.split(' ')[0] + '. Her er dit link til julefrokosten: ' + linkTil(g.kode) + '\n\n' + reserve(g.kode) }); } catch (err) { /* annulleret */ }
   }));
   document.querySelectorAll('[data-ny]').forEach((k) => k.addEventListener('click', async () => {
     const g = find(k.getAttribute('data-ny'));
