@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta name="rtk-version" content="b141b5cf2a71">
+<meta name="rtk-version" content="b36d46502583">
 <script src="/opdater.js?v=f299a739b234" defer></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -31,6 +31,7 @@
 .jf-hero b{display:block;font-size:30px;line-height:1.1}.jf-hero .u{display:block;font-size:14px;font-weight:600;margin:4px 0}
 .jf-hero img{position:absolute;right:16px;top:18px;width:64px}
 .jf-boks{padding:12px 14px;margin:12px 0}
+.jf-push{border:2px solid var(--teal)}
 .jf-lille{font-size:13px;color:var(--muted);margin:4px 0;line-height:1.4}
 .jf-ned{background:var(--teal);color:#fff;border-radius:12px;padding:10px 14px;font-size:15px}
 .jf-frist{margin:4px 0 0;font-size:14px;color:var(--pink);font-weight:600}
@@ -331,6 +332,8 @@ function tegnProgram() {
   let h = '';
   if (S.velkommen) h += '<div class="card jf-boks"><b>👋 Hej ' + esc(S.navn) + '</b><p class="jf-lille">Du er logget ind. Telefonen husker dig i 30 dage.' + (S.kode ? ' Din kode er <b>' + esc(S.kode.slice(0, 4) + '-' + S.kode.slice(4)) + '</b>, hvis du skulle få brug for den.' : '') + '</p>' + hjemTekst() + '</div>';
   h += '<div class="jf-ned">🎅 <b>' + (d > 1 ? 'Om ' + d + ' dage' : d === 1 ? 'I morgen' : d === 0 ? 'I dag!' : 'Tak for i aftes') + '</b> · torsdag 3. december</div>';
+  // Notifikationer er slået til fra start (Lars 23. november kl. 19.59 og 24. november kl. 6.30): telefonen kræver ét tryk, så knappen står øverst, til det er gjort
+  if (!pushSlaaet()) h += '<div class="card jf-boks jf-push" id="pushBoks"></div>';
   h += '<div class="card jf-boks"><b style="font-size:18px">🎾 Padel og middag 🍽️</b><p class="jf-lille">Middagen er bestilt til ' + (efter.length ? middag + ' (' + efter.map((p) => esc(S.del[p].navn)).join(' og ') + ' kommer efter middagen)' : 'alle ' + middag) + '. Vælg, om du også spiller padel.</p>';
   if (frist) h += '<p class="jf-frist">' + (efterFrist ? 'Fristen er overskredet. Skriv til Lars, hvis du vil ændre det.' : 'Vælg senest ' + frist.toLocaleDateString('da-DK', { weekday: 'long', day: 'numeric', month: 'long' })) + '</p>';
   // Padel er bindende, når man har valgt det, også på ventelisten (Lars 23. november kl. 21.10 og 24. november kl. 6.05). Kun Lars kan melde fra
@@ -351,7 +354,7 @@ function tegnProgram() {
     h += '<div class="jf-p"><div class="jf-kl">' + esc(p.kl) + '</div><div class="jf-ik">' + esc(p.ikon) + '</div><div><b>' + esc(p.titel) + '</b>' + (p.tekst ? '<span>' + esc(p.tekst) + kort + '</span>' : '') + '</div></div>';
   });
   if (b.menu && (b.menu.titel || b.menu.tekst)) h += '<div class="card jf-boks"><b>🍽️ ' + esc(b.menu.titel) + '</b><p class="jf-lille">' + esc(b.menu.tekst) + '</p></div>';
-  h += '<div class="card jf-boks" id="pushBoks"></div>';
+  if (pushSlaaet()) h += '<div class="card jf-boks" id="pushBoks"></div>';
   $('vis').innerHTML = h;
   document.querySelectorAll('.jf-valg button').forEach((k) => k.addEventListener('click', async () => {
     const v = k.getAttribute('data-v');
@@ -373,14 +376,17 @@ function hjemTekst() {
 
 // ---------- Notifikationer (slået til fra start, Lars kl. 19.59: man bliver spurgt med det samme, telefonen kræver et tryk)
 const pushKan = () => 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+const pushSlaaet = () => pushKan() && Notification.permission === 'granted' && !!hent('rtk.jul.push');
 function tegnPush() {
   const bx = $('pushBoks'); if (!bx) return;
-  let h = '<b>🔔 Besked, når der skrives</b>';
+  // Slået til: i chatten forsvinder boksen, i programmet står status nederst
+  if (pushSlaaet() && bx.classList.contains('jf-push')) { if (fane() === 'program') tegn(); else bx.remove(); return; }
+  let h = pushSlaaet() ? '<b>🔔 Besked, når der skrives</b>' : '<b>🔔 Slå notifikationer til</b>';
   if (erIos() && !erHjem()) h += '<p class="jf-lille">På iPhone skal siden først på hjemmeskærmen: tryk på Del og "Føj til hjemmeskærm", og åbn den derfra. Så kan du få besked, når nogen skriver.</p>';
   else if (!pushKan()) h += '<p class="jf-lille">Denne browser kan ikke vise notifikationer. Kig i chatten en gang imellem.</p>';
-  else if (Notification.permission === 'denied') h += '<p class="jf-lille">Notifikationer er slået fra for siden i telefonens indstillinger.</p>';
+  else if (Notification.permission === 'denied') h += '<p class="jf-lille">Telefonen har sagt nej til notifikationer fra siden. ' + (erIos() ? 'Slå dem til under Indstillinger, Notifikationer, Julefrokost.' : 'Slå dem til ved at trykke på ikonet til venstre for adressen, vælge Notifikationer og Tillad. Genindlæs siden bagefter.') + '</p>';
   else if (Notification.permission === 'granted' && hent('rtk.jul.push')) h += '<p class="jf-lille">Slået til på denne telefon. Du får højst én besked pr. kvarter, og ingen mellem kl. 22 og 7.</p>';
-  else h += '<p class="jf-lille">Få en notifikation, når nogen skriver i chatten.</p><button type="button" class="primary" id="pushTil" style="width:100%">Slå notifikationer til</button>';
+  else h += '<p class="jf-lille">Så får du besked, når nogen skriver eller du rykker op til padel. Telefonen spørger én gang.</p><button type="button" class="primary" id="pushTil" style="width:100%">Slå notifikationer til</button>';
   h += '<div class="msg jf-msg" id="pushMsg" role="status"></div>';
   bx.innerHTML = h;
   if ($('pushTil')) $('pushTil').addEventListener('click', slaaPushTil);
@@ -435,12 +441,13 @@ function tegnChat(ny) {
   let ol = $('chatListe');
   const vedBund = !ol || (innerHeight + scrollY >= document.body.scrollHeight - 120);
   if (!ol || ny) {
-    $('vis').innerHTML = '<ol class="jf-chat" id="chatListe"></ol><div class="jf-emojier jf-skjult" id="skrivEmoji">' + emojiGitter('data-ind') + '</div><form class="jf-skriv" id="skriv"><button type="button" class="jf-ekn" id="emojiKnap" aria-label="Emojis" aria-expanded="false">😀</button><textarea id="tekst" rows="1" maxlength="4000" placeholder="Skriv til alle" aria-label="Skriv til alle"></textarea><button class="gr-send" aria-label="Send" type="submit"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 20.5 21 12 3 3.5l.01 6.6L15 12 3.01 13.9z"/></svg></button></form>';
+    $('vis').innerHTML = (pushSlaaet() ? '' : '<div class="card jf-boks jf-push" id="pushBoks"></div>') + '<ol class="jf-chat" id="chatListe"></ol><div class="jf-emojier jf-skjult" id="skrivEmoji">' + emojiGitter('data-ind') + '</div><form class="jf-skriv" id="skriv"><button type="button" class="jf-ekn" id="emojiKnap" aria-label="Emojis" aria-expanded="false">😀</button><textarea id="tekst" rows="1" maxlength="4000" placeholder="Skriv til alle" aria-label="Skriv til alle"></textarea><button class="gr-send" aria-label="Send" type="submit"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 20.5 21 12 3 3.5l.01 6.6L15 12 3.01 13.9z"/></svg></button></form>';
     ol = $('chatListe');
     const ta = $('tekst');
     ta.addEventListener('input', () => { ta.style.height = 'auto'; ta.style.height = Math.min(150, ta.scrollHeight) + 'px'; });
     ta.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey && !matchMedia('(pointer: coarse)').matches) { e.preventDefault(); $('skriv').requestSubmit(); } });
     $('skriv').addEventListener('submit', send);
+    tegnPush();
     $('emojiKnap').addEventListener('click', () => { const g = $('skrivEmoji'); const skjult = g.classList.toggle('jf-skjult'); $('emojiKnap').setAttribute('aria-expanded', String(!skjult)); });
     $('skrivEmoji').querySelectorAll('[data-ind]').forEach((k) => k.addEventListener('click', () => {
       const e = k.getAttribute('data-ind'), a = ta.selectionStart || ta.value.length, b2 = ta.selectionEnd || ta.value.length;
